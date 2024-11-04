@@ -14,4 +14,4 @@ jobs:
           python-version: "3.x"
       - name: Run tests
         run: |
-          python -m unittest ./backend/tests.py
+          python -m unittest ./backend/tests/*.py
