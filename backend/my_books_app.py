@@ -7,14 +7,14 @@ class MyBooksApp:
     def __init__(self):
         self.users = dict()
 
-    def add_user(self, user: str) -> None:
+    def add_user(self, user: str):
         self.users[user] = set()
         return self
 
     def has_user(self, user: str) -> bool:
         return user in self.users
 
-    def user_add_item(self, user: str, item: str) -> None:
+    def user_add_item(self, user: str, item: str):
         if not user in self.users:
             return
         self.users[user].add(item)
