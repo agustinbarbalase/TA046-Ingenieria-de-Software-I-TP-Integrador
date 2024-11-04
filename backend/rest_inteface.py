@@ -1,22 +1,24 @@
 from unittest import *
 from typing import *
 
+BODY = "body"
+
 class RestInterface:
     def __init__(self):
         pass
 
-    def create_cart(self, user_id: int, password: str) -> Dict:
+    def create_cart(self, user_id: int, password: str) -> Dict[str, str]:
         response = dict()
         if user_id == 2:
-            response["body"] = "1|CART COULD NOT BE CREATED"
+            response[BODY] = "1|CART COULD NOT BE CREATED"
         else:
-            response["body"] = "0|OK"
+            response[BODY] = "0|OK"
         return response
     
     def add_to_cart(self, user_id: int, books_amount: int): 
         pass
     
-class RESTInterfaceTest(TestCase):
+class RestInterfaceTest(TestCase):
     
     def test_create_cart_success(self):
 
@@ -24,7 +26,7 @@ class RESTInterfaceTest(TestCase):
 
         response = a_rest_interface.create_cart(1, "12345")
         
-        self.assertEqual(response["body"], '0|OK')
+        self.assertEqual(response[BODY], '0|OK')
 
     def test_create_cart_failure(self):
 
@@ -32,4 +34,4 @@ class RESTInterfaceTest(TestCase):
 
         response = a_rest_interface.create_cart(2, "69420")
 
-        self.assertEqual(response["body"], '1|CART COULD NOT BE CREATED')
+        self.assertEqual(response[BODY], '1|CART COULD NOT BE CREATED')
