@@ -62,7 +62,6 @@ class ShopCartTest(TestCase):
         self.assertTrue(car.contains_item(new_item_one[0], new_item_one[1]))
         self.assertTrue(car.contains_item(new_item_two[0], new_item_two[1]))
 
-    # Agregar dos veces un item igual, suma al contador
     def test04(self):
         pass
 
