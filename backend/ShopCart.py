@@ -61,10 +61,7 @@ class ShopCartTest(TestCase):
         self.assertTrue(car.contains_item(new_item_one[0], new_item_one[1]))
         self.assertTrue(car.contains_item(new_item_two[0], new_item_two[1]))
 
-    def test04(self):
-        pass
-
-    def test05_add_non_existing_cart_in_catalog_raises_error(self):
+    def test04_add_non_existing_cart_in_catalog_raises_error(self):
         new_catalog = set()
 
         name_item_in_catalog = "cincuenta sombras de Alan key"
@@ -78,7 +75,7 @@ class ShopCartTest(TestCase):
             car.add_item(name_item_random, 1)
 
     
-    def test06_list_cart_items(self):
+    def test05_list_cart_items(self):
         car = ShopCart()
         
         new_item_one = ("cincuenta sombras de Alan key", 1)
