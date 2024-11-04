@@ -2,12 +2,12 @@ from flask import Flask, request, Response
 import sys
 from typing import *
 
-from conection_protocol import XXX 
+from rest_inteface import RestInterface
 
 class TusLibrosWebServer:
     def __init__(self):
         self.app = Flask(__name__)
-        self.xxx = XXX() 
+        self.rest_interface = RestInterface() 
         
 
         @self.app.route('/createCart')
