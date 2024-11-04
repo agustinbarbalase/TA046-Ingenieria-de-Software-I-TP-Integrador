@@ -5,7 +5,7 @@ class ShopCart:
 
     def __init__(self) -> None:
         self.item = []
-        self.catalog = None
+        self.catalog = dict()
 
     def initialize_with_catalog(self, catalog: dict) -> Self:
         self.catalog = catalog
@@ -33,11 +33,11 @@ class ItemNotInCatalog(Exception):
 
 class ShopCartTest(TestCase):
     
-    def test01RecentCreatedCartIsEmpty(self):
+    def test01_new_cart_is_empty(self):
         car = ShopCart()
         self.assertTrue(car.is_empty())
 
-    def test02(self):
+    def test02_can_add_item_to_cart(self):
         car = ShopCart()
         new_item = ("cincuenta sombras de Alan key", 1)
         
@@ -46,14 +46,7 @@ class ShopCartTest(TestCase):
         self.assertFalse(car.is_empty())
         self.assertTrue(car.contains_item(new_item[0], new_item[1]))
 
-    def test03(self):
-        car = ShopCart()
-        new_item = ("cincuenta sombras de Alan key", 1)
-
-        self.assertTrue(car.is_empty())
-        self.assertFalse(car.contains_item(new_item[0], new_item[1]))
-
-    def test04(self):
+    def test03_can_add_multiple_items(self):
         car = ShopCart()
         
         new_item_one = ("cincuenta sombras de Alan key", 1)
