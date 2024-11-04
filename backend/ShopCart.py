@@ -19,9 +19,8 @@ class ShopCart:
         return len(self.item) == 0
     
     def add_item(self, name: str, amount: int) -> Self:
-        if self.catalog:
-            if not name in self.catalog:
-                raise ItemNotInCatalog
+        if self.catalog and not name in self.catalog:
+            raise ItemNotInCatalog()
         self.item.append((name, amount))
         return self         
 
