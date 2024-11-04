@@ -27,6 +27,9 @@ class ShopCart:
 
     def contains_item(self, name: str, amount: int) -> bool:
         return (name, amount) in self.item
+    
+    def list_items(self) -> List[Tuple[str, int]]:
+        return list(self.item)
 
 class ItemNotInCatalog(Exception):
     pass
@@ -60,10 +63,10 @@ class ShopCartTest(TestCase):
         self.assertTrue(car.contains_item(new_item_two[0], new_item_two[1]))
 
     # Agregar dos veces un item igual, suma al contador
-    def test05(self):
+    def test04(self):
         pass
 
-    def test06(self):
+    def test05_add_non_existing_cart_in_catalog_raises_error(self):
         new_catalog = set()
 
         name_item_in_catalog = "cincuenta sombras de Alan key"
@@ -75,3 +78,16 @@ class ShopCartTest(TestCase):
 
         with self.assertRaises(ItemNotInCatalog):
             car.add_item(name_item_random, 1)
+
+    
+    def test06_list_cart_items(self):
+        car = ShopCart()
+        
+        new_item_one = ("cincuenta sombras de Alan key", 1)
+        new_item_two = ("el secreto de su codigo encapsulado", 2)
+
+        car.add_item(new_item_one[0], new_item_one[1])
+        car.add_item(new_item_two[0], new_item_two[1])
+
+        self.assertFalse(car.is_empty())
+        self.assertEqual([new_item_one, new_item_two], car.list_items())        
