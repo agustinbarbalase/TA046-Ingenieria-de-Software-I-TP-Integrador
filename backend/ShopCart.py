@@ -1,6 +1,5 @@
 from unittest import *
 from typing import *
-from Catalog import Catalog
 
 class ShopCart:
 
