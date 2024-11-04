@@ -1,6 +1,7 @@
 from unittest import *
 from typing import *
 
+
 class ShopCart:
 
     def __init__(self) -> None:
@@ -14,27 +15,29 @@ class ShopCart:
     @classmethod
     def with_catalog(cls, catalog: dict) -> Self:
         return cls().initialize_with_catalog(catalog)
-    
+
     def is_empty(self) -> bool:
         return len(self.item) == 0
-    
+
     def add_item(self, name: str, amount: int) -> Self:
         if self.catalog and not name in self.catalog:
             raise ItemNotInCatalog()
         self.item.append((name, amount))
-        return self         
+        return self
 
     def contains_item(self, name: str, amount: int) -> bool:
         return (name, amount) in self.item
-    
+
     def list_items(self) -> List[Tuple[str, int]]:
         return list(self.item)
+
 
 class ItemNotInCatalog(Exception):
     pass
 
+
 class ShopCartTest(TestCase):
-    
+
     def test01_new_cart_is_empty(self):
         car = ShopCart()
         self.assertTrue(car.is_empty())
@@ -42,7 +45,7 @@ class ShopCartTest(TestCase):
     def test02_can_add_item_to_cart(self):
         car = ShopCart()
         new_item = ("cincuenta sombras de Alan key", 1)
-        
+
         car.add_item(new_item[0], new_item[1])
 
         self.assertFalse(car.is_empty())
@@ -50,7 +53,7 @@ class ShopCartTest(TestCase):
 
     def test03_can_add_multiple_items(self):
         car = ShopCart()
-        
+
         new_item_one = ("cincuenta sombras de Alan key", 1)
         new_item_two = ("el secreto de su codigo encapsulado", 2)
 
@@ -74,10 +77,9 @@ class ShopCartTest(TestCase):
         with self.assertRaises(ItemNotInCatalog):
             car.add_item(name_item_random, 1)
 
-    
     def test05_list_cart_items(self):
         car = ShopCart()
-        
+
         new_item_one = ("cincuenta sombras de Alan key", 1)
         new_item_two = ("el secreto de su codigo encapsulado", 2)
 
@@ -85,4 +87,4 @@ class ShopCartTest(TestCase):
         car.add_item(new_item_two[0], new_item_two[1])
 
         self.assertFalse(car.is_empty())
-        self.assertEqual([new_item_one, new_item_two], car.list_items())        
+        self.assertEqual([new_item_one, new_item_two], car.list_items())
