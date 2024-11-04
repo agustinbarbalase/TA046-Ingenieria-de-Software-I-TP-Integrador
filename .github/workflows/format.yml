@@ -1,4 +1,4 @@
-name: Format Check with Black
+name: Format and types
 on:
   push:
   pull_request:
