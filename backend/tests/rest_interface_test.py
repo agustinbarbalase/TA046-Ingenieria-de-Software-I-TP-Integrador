@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from rest_inteface import RestInterface, BODY
+from rest_interface import RestInterface, BODY
 
 
 class RestInterfaceTest(unittest.TestCase):
