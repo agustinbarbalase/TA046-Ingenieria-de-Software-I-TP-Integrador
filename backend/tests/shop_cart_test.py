@@ -20,7 +20,7 @@ class ShopCartTest(unittest.TestCase):
         car.add_item(new_item[0], new_item[1])
 
         self.assertFalse(car.is_empty())
-        self.assertTrue(car.contains_item(new_item[0], new_item[1]))
+        self.assertTrue(car.contains_item(new_item[0]))
 
     def test03_can_add_multiple_items(self):
         car = ShopCart()
@@ -32,8 +32,8 @@ class ShopCartTest(unittest.TestCase):
         car.add_item(new_item_two[0], new_item_two[1])
 
         self.assertFalse(car.is_empty())
-        self.assertTrue(car.contains_item(new_item_one[0], new_item_one[1]))
-        self.assertTrue(car.contains_item(new_item_two[0], new_item_two[1]))
+        self.assertTrue(car.contains_item(new_item_one[0]))
+        self.assertTrue(car.contains_item(new_item_two[0]))
 
     def test04_add_non_existing_cart_in_catalog_raises_error(self):
         new_catalog = set()

@@ -27,7 +27,7 @@ class MyBooksApp:
     def user_has_item(self, user_id: str, item: str) -> bool:
         if not user_id in self.users_ids:
             return False
-        return item in self.users_ids[user_id]
+        return self.users_ids[user_id].contains_item(item)
 
     def get_user_shop_list(self, user_id: str) -> list:
         if not user_id in self.users_ids:

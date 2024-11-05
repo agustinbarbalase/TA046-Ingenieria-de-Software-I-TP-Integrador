@@ -25,8 +25,8 @@ class ShopCart:
         self.item.append((name, amount))
         return self
 
-    def contains_item(self, name: str, amount: int) -> bool:
-        return (name, amount) in self.item
+    def contains_item(self, name: str) -> bool:
+        return name in [name for name, amount in self.item]
 
     def list_items(self) -> List[Tuple[str, int]]:
         return list(self.item)

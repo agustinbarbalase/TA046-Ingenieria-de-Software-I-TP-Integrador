@@ -50,7 +50,7 @@ class MyBooksAppTest(unittest.TestCase):
         item = "Brand new world"
         my_app.user_add_item(user, item)
 
-        self.assertEqual(my_app.get_user_shop_list(user), [item])
+        self.assertEqual(my_app.get_user_shop_list(user), [(item, 1)])
 
 
 if __name__ == "__main__":
