@@ -20,22 +20,18 @@ class TusLibrosWebServer:
                 params["userId"], params["password"]
             )
             return response["body"]
-        
+
         @self.app.route("/listCart")
         def list_cart():
             params = request.args.to_dict()
-            response = self.rest_interface.list_cart(
-                params["userId"]
-            )
+            response = self.rest_interface.list_cart(params["userId"])
             return response["body"]
 
         @self.app.route("/addToCart")
         def add_to_cart():
             params = request.args.to_dict()
             response = self.rest_interface.add_to_cart(
-                params["userId"], 
-                params["bookIsbn"],
-                params["bookQuantity"]
+                params["userId"], params["bookIsbn"], params["bookQuantity"]
             )
             return response["body"]
 

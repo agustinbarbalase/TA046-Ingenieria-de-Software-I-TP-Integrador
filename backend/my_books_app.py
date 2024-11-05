@@ -34,10 +34,8 @@ class MyBooksApp:
             return []
         return self.users_ids[user_id].list_items()
 
-    def add_book_to_user(self, user_id: str, isbn: str, amount: int ):
+    def add_book_to_user(self, user_id: str, isbn: str, amount: int):
         if not user_id in self.users_ids:
             return []
         print(self.users_ids)
         return self.users_ids[user_id].add_item(isbn, 1)
-            
-        
