@@ -1,0 +1,23 @@
+name: Format and types
+on:
+  push:
+  pull_request:
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install requirements.txt
+        run: |
+          pip install -r ./backend/requirements.txt
+      - name: Run Black
+        run: |
+          black --check --diff .
+      - name: Run mypy
+        run: |
+          mypy .
