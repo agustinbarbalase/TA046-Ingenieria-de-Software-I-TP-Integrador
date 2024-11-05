@@ -62,11 +62,10 @@ export default class BookRack extends Component {
 
     async addToCart(user_id, password) {
         try {
+            // To do: set base url to const
             const response = await fetch(`http://localhost:5001/createCart?user_id=${user_id}&password=${password}`, {
-                method: 'GET'
+                method: 'GET',
             });
-            const data = await response.text();
-            console.log("Response from server:", data);
         } catch (error) {
             console.error("Error making request:", error);
         }
