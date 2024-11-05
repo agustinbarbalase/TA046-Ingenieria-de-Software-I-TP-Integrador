@@ -2,3 +2,5 @@ black==24.10.0
 Flask==3.0.3
 mypy==1.13.0
 Flask-cors==5.0.0
+types-Flask-Cors==5.0.0
+types-colorama

@@ -14,12 +14,11 @@ jobs:
           python-version: "3.x"
       - name: Install requirements.txt
         run: |
+          pip install --upgrade pip
           pip install -r ./backend/requirements.txt
-          python3 -m pip install types-Flask-Cors
       - name: Run Black
         run: |
           black --check --diff .
       - name: Run mypy
         run: |
           mypy .
-          mypy --install-types
