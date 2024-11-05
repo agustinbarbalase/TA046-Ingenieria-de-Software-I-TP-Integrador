@@ -17,14 +17,13 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(response[BODY], "0|OK")
 
-    def test_create_cart_failure(self):
+    def test_list_empty_cart(self):
 
         a_rest_interface = RestInterface()
-
-        response = a_rest_interface.create_cart(2, "69420")
-
-        self.assertEqual(response[BODY], "1|CART COULD NOT BE CREATED")
-
+        a_rest_interface.create_cart(1, "12345")
+        
+        self.assertEqual(a_rest_interface.list_cart(), "")
+        
 
 if __name__ == "__main__":
     unittest.main()

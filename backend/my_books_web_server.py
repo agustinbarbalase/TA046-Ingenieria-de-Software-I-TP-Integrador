@@ -24,8 +24,8 @@ class TusLibrosWebServer:
         @self.app.route("/listCart")
         def list_cart():
             params = request.args.to_dict()
-            response = self.rest_interface.create_cart(
-                int(params["user_id"]), params["password"]
+            response = self.rest_interface.list_cart(
+                int(params["user_id"])
             )
             return response["body"]
 
