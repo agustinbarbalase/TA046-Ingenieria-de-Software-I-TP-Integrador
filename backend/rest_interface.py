@@ -5,7 +5,6 @@ from my_books_app import MyBooksApp
 
 BODY = "body"
 
-
 class RestInterface:
     def __init__(self):
         self.book_app = MyBooksApp()
@@ -24,9 +23,6 @@ class RestInterface:
         
         book_list = self.book_app.get_user_shop_list(user_id)
         result = ["0"]
-
-        print(book_list)
-
         for element in book_list:
             result.append(element[0])
             result.append(str(element[1]))

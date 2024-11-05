@@ -10,7 +10,7 @@ class MyBooksApp:
         self.users_ids = dict()
 
     def add_user(self, user_id: str):
-        if not user_id in self.users_ids:
+        if user_id in self.users_ids:
             return self
         self.users_ids[user_id] = ShopCart()
         return self
@@ -21,7 +21,6 @@ class MyBooksApp:
     def user_add_item(self, user_id: str, item: str):
         if not user_id in self.users_ids:
             return
-        print("HOLAAAAAAAAAAAAAAA")
         self.users_ids[user_id].add_item(item, 1)
         return self
 
@@ -38,6 +37,7 @@ class MyBooksApp:
     def add_book_to_user(self, user_id: str, isbn: str, amount: int ):
         if not user_id in self.users_ids:
             return []
+        print(self.users_ids)
         return self.users_ids[user_id].add_item(isbn, 1)
             
         
