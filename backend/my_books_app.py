@@ -21,6 +21,7 @@ class MyBooksApp:
     def user_add_item(self, user_id: str, item: str):
         if not user_id in self.users_ids:
             return
+        print("HOLAAAAAAAAAAAAAAA")
         self.users_ids[user_id].add_item(item, 1)
         return self
 
