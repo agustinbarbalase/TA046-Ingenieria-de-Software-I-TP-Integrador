@@ -2,7 +2,7 @@ from flask import Flask, request, Response
 import sys
 from typing import *
 
-from rest_inteface import RestInterface
+from rest_interface import RestInterface
 
 
 class TusLibrosWebServer:
