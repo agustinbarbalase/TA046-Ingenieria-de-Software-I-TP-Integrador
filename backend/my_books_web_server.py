@@ -15,7 +15,7 @@ class TusLibrosWebServer:
             params = request.args.to_dict()
             BODY = f"Received parameters: {params}"
             STATUS_STRING = "200 OK"
-            response = self.xxx.create_cart(int(params["user_id"]), params["password"])
+            response = self.rest_interface.create_cart(int(params["user_id"]), params["password"])
             print(response)
             return Response(response=BODY, status=STATUS_STRING)
 
