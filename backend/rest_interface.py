@@ -1,7 +1,7 @@
 from unittest import TestCase
 from typing import *
 
-from my_books_app import MyBooksApp
+from my_books_app import MyBooksApp, UserDoesntExistError
 
 BODY = "body"
 
@@ -20,15 +20,20 @@ class RestInterface:
         return response
 
     def list_cart(self, user_id: str):
-
-        book_list = self.book_app.get_user_shop_list(user_id)
-        result = ["0"]
-        for element in book_list:
-            result.append(element[0])
-            result.append(str(element[1]))
-
         response = dict()
-        response[BODY] = "|".join(result) + ("|" if len(result) == 1 else "")
+
+        try:
+            book_list = self.book_app.get_user_shop_list(user_id)
+            result = ["0"]
+            
+            for element in book_list:
+                result.append(element[0])
+                result.append(str(element[1]))
+
+            response[BODY] = "|".join(result) + ("|" if len(result) == 1 else "")
+        except UserDoesntExistError:
+            response[BODY] = "1|THE USER DOESN'T EXIST"
+
         return response
 
     def add_to_cart(self, user_id: str, isbn: str, books_amount: int):

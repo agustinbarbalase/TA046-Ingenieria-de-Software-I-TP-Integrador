@@ -33,6 +33,11 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(a_rest_interface.list_cart("1")["body"], "0|1|1")
 
+    def test_try_list_not_created_cart_raise_error(self):
+        a_rest_interface = RestInterface()
+
+        self.assertEqual(a_rest_interface.list_cart("1")["body"], "1|THE USER DOESN'T EXIST")
+
 
 if __name__ == "__main__":
     unittest.main()
