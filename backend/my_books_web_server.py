@@ -1,6 +1,8 @@
-from flask import Flask, request, Response
+from flask import Flask, request
 import sys
 from typing import *
+
+from flask_cors import CORS
 
 from rest_interface import RestInterface
 
@@ -9,15 +11,15 @@ class TusLibrosWebServer:
     def __init__(self):
         self.app = Flask(__name__)
         self.rest_interface = RestInterface()
+        CORS(self.app)
 
         @self.app.route("/createCart")
         def create_cart():
             params = request.args.to_dict()
-            BODY = f"Received parameters: {params}"
-            STATUS_STRING = "200 OK"
-            response = self.xxx.create_cart(int(params["user_id"]), params["password"])
-            print(response)
-            return Response(response=BODY, status=STATUS_STRING)
+            response = self.rest_interface.create_cart(
+                int(params["user_id"]), params["password"]
+            )
+            return response["body"]
 
     def listening_on(self, port: int):
         self.app.run(port=port)

@@ -12,7 +12,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
 export default class BookRack extends Component {
-
+ 
     static propTypes = {
         app: PropTypes.object.isRequired
     };
@@ -60,6 +60,17 @@ export default class BookRack extends Component {
         </CardContent>;
     }
 
+    async addToCart(user_id, password) {
+        try {
+            // To do: set base url to const
+            const response = await fetch(`http://localhost:5001/createCart?user_id=${user_id}&password=${password}`, {
+                method: 'GET',
+            });
+        } catch (error) {
+            console.error("Error making request:", error);
+        }
+    }
+
     renderBookActionsOn(aBook) {
         return <CardActions>
             <Box sx={{
@@ -73,7 +84,7 @@ export default class BookRack extends Component {
                 <Button
                     style={{border: 0}}
                     onClick={() => {
-
+                        this.addToCart(1, "12345")
                     }}
                     title="Agregar al carrito"
                 >
