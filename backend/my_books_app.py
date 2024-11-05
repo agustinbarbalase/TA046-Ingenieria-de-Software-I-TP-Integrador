@@ -3,8 +3,10 @@ from typing import *
 
 from shop_cart import ShopCart
 
+
 class UserDoesntExistError(Exception):
     pass
+
 
 class MyBooksApp:
 

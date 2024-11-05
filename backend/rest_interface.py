@@ -25,7 +25,7 @@ class RestInterface:
         try:
             book_list = self.book_app.get_user_shop_list(user_id)
             result = ["0"]
-            
+
             for element in book_list:
                 result.append(element[0])
                 result.append(str(element[1]))
