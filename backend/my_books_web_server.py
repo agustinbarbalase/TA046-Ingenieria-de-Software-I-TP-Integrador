@@ -16,7 +16,9 @@ class TusLibrosWebServer:
         @self.app.route("/createCart")
         def create_cart():
             params = request.args.to_dict()
-            response = self.rest_interface.create_cart(int(params["user_id"]), params["password"])
+            response = self.rest_interface.create_cart(
+                int(params["user_id"]), params["password"]
+            )
             return response["body"]
 
     def listening_on(self, port: int):
