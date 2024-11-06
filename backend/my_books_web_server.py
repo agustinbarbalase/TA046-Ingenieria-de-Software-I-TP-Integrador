@@ -1,5 +1,5 @@
-from flask import Flask, request
 import sys
+from flask import Flask, request
 from typing import *
 
 from flask_cors import CORS
