@@ -1,6 +1,4 @@
-from unittest import TestCase
 from typing import *
-
 from shop_cart import ShopCart
 
 
@@ -13,6 +11,10 @@ class MyBooksApp:
     def __init__(self):
         self.users_ids = dict()
 
+    def user_doesnot_exist_validation(self, user_id: str):
+        if not user_id in self.users_ids:
+            raise UserDoesntExistError
+
     def add_user(self, user_id: str):
         if user_id in self.users_ids:
             return self
@@ -22,23 +24,14 @@ class MyBooksApp:
     def has_user(self, user_id: str) -> bool:
         return user_id in self.users_ids
 
-    def user_add_item(self, user_id: str, item: str):
-        if not user_id in self.users_ids:
-            return
-        self.users_ids[user_id].add_item(item, 1)
-        return self
-
     def user_has_item(self, user_id: str, item: str) -> bool:
-        if not user_id in self.users_ids:
-            return False
+        self.user_doesnot_exist_validation(user_id)
         return self.users_ids[user_id].contains_item(item)
 
     def get_user_shop_list(self, user_id: str) -> list:
-        if not user_id in self.users_ids:
-            raise UserDoesntExistError
+        self.user_doesnot_exist_validation(user_id)
         return self.users_ids[user_id].list_items()
 
     def add_book_to_user(self, user_id: str, isbn: str, amount: int):
-        if not user_id in self.users_ids:
-            return []
+        self.user_doesnot_exist_validation(user_id)
         return self.users_ids[user_id].add_item(isbn, 1)

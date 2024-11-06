@@ -5,6 +5,8 @@ from my_books_app import MyBooksApp, UserDoesntExistError
 
 BODY = "body"
 
+# Regex for ^\d{9}[0-9X]$
+
 
 class RestInterface:
     def __init__(self):

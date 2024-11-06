@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from my_books_app import MyBooksApp
+from my_books_app import MyBooksApp, UserDoesntExistError
 
 
 class MyBooksAppTest(unittest.TestCase):
@@ -21,7 +21,7 @@ class MyBooksAppTest(unittest.TestCase):
         my_app.add_user(user)
         item = "Brand new world"
 
-        my_app.user_add_item(user, item)
+        my_app.add_book_to_user(user, item, 1)
 
         self.assertTrue(my_app.user_has_item(user, item))
 
@@ -34,8 +34,8 @@ class MyBooksAppTest(unittest.TestCase):
 
         item1 = "Brand new world"
         item2 = "animal farm"
-        my_app.user_add_item(user1, item1)
-        my_app.user_add_item(user2, item2)
+        my_app.add_book_to_user(user1, item1, 1)
+        my_app.add_book_to_user(user2, item2, 1)
 
         self.assertTrue(my_app.user_has_item(user1, item1))
         self.assertTrue(my_app.user_has_item(user2, item2))
@@ -48,9 +48,33 @@ class MyBooksAppTest(unittest.TestCase):
         my_app.add_user(user)
 
         item = "Brand new world"
-        my_app.user_add_item(user, item)
+        my_app.add_book_to_user(user, item, 1)
 
         self.assertEqual(my_app.get_user_shop_list(user), [(item, 1)])
+
+    def test05(self):
+        my_app = MyBooksApp()
+        user = "Dijkstra"
+        my_app.add_user(user)
+
+        nonexistent_user = "Alan Kay"
+
+        item = "50 sombras de grey"
+
+        with self.assertRaises(UserDoesntExistError):
+            my_app.add_book_to_user(nonexistent_user, item, 1)
+
+    def test06(self):
+        my_app = MyBooksApp()
+        user = "Dijkstra"
+        my_app.add_user(user)
+
+        nonexistent_user = "Alan Kay"
+
+        item = "50 sombras de grey"
+
+        with self.assertRaises(UserDoesntExistError):
+            my_app.user_has_item(nonexistent_user, item)
 
 
 if __name__ == "__main__":
