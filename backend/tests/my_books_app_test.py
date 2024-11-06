@@ -60,7 +60,7 @@ class MyBooksAppTest(unittest.TestCase):
         nonexistent_user = "Alan Kay"
 
         item = "50 sombras de grey"
-        
+
         with self.assertRaises(UserDoesntExistError):
             my_app.add_book_to_user(nonexistent_user, item, 1)
 
@@ -72,9 +72,10 @@ class MyBooksAppTest(unittest.TestCase):
         nonexistent_user = "Alan Kay"
 
         item = "50 sombras de grey"
-        
+
         with self.assertRaises(UserDoesntExistError):
             my_app.user_has_item(nonexistent_user, item)
+
 
 if __name__ == "__main__":
     unittest.main()

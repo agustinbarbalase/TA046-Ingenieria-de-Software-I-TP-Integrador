@@ -40,5 +40,6 @@ class RestInterfaceTest(unittest.TestCase):
             a_rest_interface.list_cart("1")["body"], "1|THE USER DOESN'T EXIST"
         )
 
+
 if __name__ == "__main__":
     unittest.main()

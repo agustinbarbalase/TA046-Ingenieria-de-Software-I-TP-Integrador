@@ -14,7 +14,7 @@ class MyBooksApp:
     def user_doesnot_exist_validation(self, user_id: str):
         if not user_id in self.users_ids:
             raise UserDoesntExistError
-    
+
     def add_user(self, user_id: str):
         if user_id in self.users_ids:
             return self
