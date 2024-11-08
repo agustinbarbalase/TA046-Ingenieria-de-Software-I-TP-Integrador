@@ -34,4 +34,4 @@ class MyBooksApp:
 
     def add_book_to_user(self, user_id: str, isbn: str, amount: int):
         self.user_doesnot_exist_validation(user_id)
-        return self.users_ids[user_id].add_item(isbn, 1)
+        return self.users_ids[user_id].add_item(isbn, amount)

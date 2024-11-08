@@ -76,15 +76,15 @@ class MyBooksAppTest(unittest.TestCase):
         with self.assertRaises(UserDoesntExistError):
             my_app.user_has_item(nonexistent_user, item)
 
-    # def test07(self):
-    #     my_app = MyBooksApp()
-    #     user = "Dijkstra"
-    #     my_app.add_user(user)
+    def test07(self):
+        my_app = MyBooksApp()
+        user = "Dijkstra"
+        my_app.add_user(user)
 
-    #     item = "Brand new world"
-    #     my_app.add_book_to_user(user, item, 2)
+        item = "Brand new world"
+        my_app.add_book_to_user(user, item, 2)
 
-    #     self.assertEqual(my_app.get_user_shop_list(user), [(item, 2)])
+        self.assertEqual(my_app.get_user_shop_list(user), [(item, 2)])
 
 
 if __name__ == "__main__":
