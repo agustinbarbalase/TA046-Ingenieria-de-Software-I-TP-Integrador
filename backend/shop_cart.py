@@ -22,12 +22,12 @@ class ShopCart:
     def add_item(self, name: str, amount: int):
         if self.catalog and not name in self.catalog:
             raise ItemNotInCatalog()
-        
+
         if self.contains_item(name):
             self.item[name] += amount
         else:
             self.item[name] = amount
-        
+
         return self
 
     def contains_item(self, name: str) -> bool:

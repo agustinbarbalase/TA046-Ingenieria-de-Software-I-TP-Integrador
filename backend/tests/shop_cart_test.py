@@ -59,7 +59,7 @@ class ShopCartTest(unittest.TestCase):
 
         self.assertFalse(car.is_empty())
         self.assertEqual([new_item_one, new_item_two], car.list_items())
-    
+
     def test06_add_existed_item_sum(self):
         car = ShopCart()
 
