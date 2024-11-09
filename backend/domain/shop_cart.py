@@ -1,5 +1,8 @@
-from unittest import TestCase
 from typing import *
+
+
+class ItemNotInCatalog(Exception):
+    pass
 
 
 class ShopCart:
@@ -35,7 +38,3 @@ class ShopCart:
 
     def list_items(self) -> List[Tuple[str, int]]:
         return list(self.item.items())
-
-
-class ItemNotInCatalog(Exception):
-    pass

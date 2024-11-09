@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from my_books_app import MyBooksApp, UserDoesntExistError
+from backend.domain.my_books_app import MyBooksApp, UserDoesntExistError
 
 
 class MyBooksAppTest(unittest.TestCase):

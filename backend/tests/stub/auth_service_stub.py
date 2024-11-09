@@ -1,4 +1,4 @@
-from backend.auth_service_interface import AuthServiceInterface
+from backend.domain.auth.auth_service_interface import AuthServiceInterface
 
 
 class AuthServiceMock(AuthServiceInterface):

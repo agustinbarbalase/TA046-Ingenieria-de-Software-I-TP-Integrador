@@ -1,6 +1,6 @@
 from typing import *
-from backend.auth_service import AuthService
-from shop_cart import ShopCart
+from backend.domain.auth.auth_service import AuthService
+from backend.domain.shop_cart import ShopCart
 
 
 class UserDoesntExistError(Exception):
@@ -19,16 +19,18 @@ class MyBooksApp:
 
     @classmethod
     def with_authenticator(cls, authenticator: AuthService):
-        return cls().initialize_With_authenticator(authenticator)
+        return cls().initialize_with_authenticator(authenticator)
 
     def initialize_with_authenticator(self, authenticator: AuthService):
         self.auth = authenticator
 
     def user_doesnot_exist_validation(self, user_id: str):
-        # if not user_id in self.users_ids:
-        #     raise UserDoesntExistError
-        if not self.auth.autenticate_user(user, password):
+        if not user_id in self.users_ids:
             raise UserDoesntExistError
+        # user = ""
+        # password = ""
+        # if not self.auth.autenticate_user(user, password):
+        #     raise UserDoesntExistError
 
     def cant_add_non_positive_amount_of_books(self, amount: int):
         if amount <= 0:
