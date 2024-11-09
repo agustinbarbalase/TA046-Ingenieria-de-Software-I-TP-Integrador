@@ -1,13 +1,16 @@
 repos:
   - repo: local
     hooks:
-      - id: run-tests-linux
-        name: Run tests for backend in Linux OS
-        entry: python3 -m unittest ./backend/tests/*.py
+      - id: run-tests
+        name: Run tests for backend
+        entry: |
+          bash -c '
+            if [[ "$OSTYPE" == "linux"* ]];
+            then python3 -m unittest discover -s ./backend/tests -p "*.py"
+            elif [[ "$OSTYPE" == "msys"* ]];
+            then python -m unittest discover -s ./backend/tests -p "*.py";
+            fi
+          '
         language: system
-        exclude: '^(?!.*Linux).*'
-      - id: run-tests-windows
-        name: Run tests for backend in Windows OS
-        entry: python -m unittest ./backend/tests/*.py
-        language: system
-        exclude: '^(?!.*Windows).*'
+        pass_filenames: false
+        always_run: true
