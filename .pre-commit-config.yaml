@@ -14,3 +14,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: format-check
+        name: Check format for backend
+        entry: black --check --diff .
+        language: system
+        pass_filenames: false
+        always_run: true
