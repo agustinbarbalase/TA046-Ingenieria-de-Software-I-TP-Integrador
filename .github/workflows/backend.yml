@@ -31,7 +31,6 @@ jobs:
       - name: Run Black
         run: |
           black --check --diff .
-
   type-check:
     runs-on: ubuntu-24.04
     needs: [format-check]
