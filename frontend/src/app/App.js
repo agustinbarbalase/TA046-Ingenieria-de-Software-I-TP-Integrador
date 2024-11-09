@@ -4,9 +4,18 @@ import PlanningExtremeProgramming from "./prototypes/PlanningExtremeProgramming.
 import DomainDrivenDesign from "./prototypes/DomainDrivenDesign.jpg";
 import ObjectThinking from "./prototypes/ObjectThinking.jpeg";
 import TestDrivenDevelopmentByExample from "./prototypes/TestDrivenDevelopmentByExample.jpg";
+import {TusLibrosRestInterface} from "./interface/TusLibrosRestInterface";
+import {FakeRequester} from "@eryxcoop/appyx-comm";
+import NaiveAuthorizationManager from "./interface/communication/NaiveAuthorizationManager";
+import RemoteRequester from "./interface/communication/RemoteRequester";
 
 
 export class App {
+
+    constructor() {
+        this._restInterface = null;
+        this._apiUrl = 'http://localhost:9000';
+    }
 
     books() {
         return [
@@ -19,7 +28,8 @@ export class App {
                     'software professionals think about their work more effectively, manage it more successfully, ' +
                     'and genuinely improve the quality of their applications, their lives, and the lives of their' +
                     ' colleagues.',
-                score: 4.5
+                score: 4.5,
+                price: '31.505'
             },
             {
                 isbn: '9780321278654',
@@ -27,7 +37,8 @@ export class App {
                 title: 'Extreme Programming Explained',
                 description: 'Software development projects can be fun, productive, and even daring. Yet they can ' +
                     'consistently deliver value to a business and remain under control.',
-                score: 4
+                score: 4,
+                price: '45.305'
             },
             {
                 isbn: '9780201710915',
@@ -35,7 +46,8 @@ export class App {
                 title: 'Planning Extreme Programming',
                 description: 'Planning is critical; without it, software projects can quickly fall apart. Written by ' +
                     'acknowledged XP authorities Kent Beck and Martin Fowler, Planning Extreme',
-                score: 3.5
+                score: 3.5,
+                price: '45.180'
             },
             {
                 isbn: '9780321125217',
@@ -43,7 +55,8 @@ export class App {
                 title: 'Domain-Driven Design',
                 description: 'Eric Evans has written a fantastic book on how you can make the design of your ' +
                     'software match your mental model of the problem domain you are addressing',
-                score: 3
+                score: 3,
+                price: '41.000'
             },
             {
                 isbn: '9780735619654',
@@ -52,7 +65,8 @@ export class App {
                 description: 'In OBJECT THINKING, esteemed object technologist David West contends that the mindset ' +
                     'makes the programmer—not the tools and techniques. Delving into the history, philosophy, ' +
                     'and even politics of object-oriented programming',
-                score: 3
+                score: 3,
+                price: '34.900'
             },
             {
                 isbn: '9780321146533',
@@ -62,8 +76,49 @@ export class App {
                     'development. While some fear is healthy (often viewed as a conscience that tells programmers ' +
                     'to "be careful!"), the author believes that byproducts of fear include tentative, grumpy, and ' +
                     'uncommunicative programmers who are unable to absorb constructive criticism. ',
-                score: 4
+                score: 4,
+                price: '29.100'
             },
         ];
     }
+
+    createCart(userId, aPassword){
+        return this._interface().createCart(userId, aPassword)
+    }
+
+    listCartOf(userId){
+        return this._interface().listCartOf(userId)
+    }
+
+    addToCart(aBook, aQuantity, aCart){
+        return this._interface().addToCart(aBook, aQuantity, aCart)
+    }
+
+    "Privates"
+    _interface() {
+        if (this._restInterface === null) {
+            this._setUpRestInterface();
+        }
+
+        return this._restInterface;
+    }
+
+    _setUpRestInterface() {
+        const requester = this._setUpRequester();
+        this._restInterface = new TusLibrosRestInterface(requester);
+    }
+
+    _setUpRequester() {
+        if (this._isUsingFakeApi()) {
+            return new FakeRequester({});
+        }
+
+        const authorizationManager = new NaiveAuthorizationManager();
+        return new RemoteRequester(this._apiUrl, authorizationManager);
+    }
+
+    _isUsingFakeApi() {
+        return false;
+    }
+
 }

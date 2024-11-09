@@ -15,16 +15,16 @@ corre la aplicación en modo desarrollo, abriendo el navegador en [http://localh
 
 1. Instalar Node JS
 2. Instalar las dependencias del proyecto
-3. Instalar baipasear las restricciones CORS  
+3. Instalar baipasear las restricciones CORS
 
 ### Instalar Node JS
 
-Si no lo tienen, deben instalarse [Node JS](https://nodejs.org/en/download). Buscar como 
+Si no lo tienen, deben instalarse [Node JS](https://nodejs.org/en/download). Buscar como
 instalarlo en su sistema operativo. Por ejemplo en ubuntu:
-   - `sudo apt update` 
-   - `sudo apt install nodejs`
-   - `node -v`
-   - `npm -v`
+- `sudo apt update`
+- `sudo apt install nodejs`
+- `node -v`
+- `npm -v`
 
 ### Instalar las dependencias del proyecto
 En el directorio del front (donde se encuentra el archivo package.json) evaluar `npm install`

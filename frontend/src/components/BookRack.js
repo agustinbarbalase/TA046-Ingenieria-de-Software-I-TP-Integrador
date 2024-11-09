@@ -6,15 +6,17 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import {Rating, Box} from "@mui/material";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {Rating} from "@mui/material";
+import AddBooksToCart from "./AddBooksToCart";
+import Stack from "@mui/material/Stack";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 
 export default class BookRack extends Component {
- 
+
     static propTypes = {
-        app: PropTypes.object.isRequired
+        app: PropTypes.object.isRequired,
+        onAddToCartDo: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -49,48 +51,38 @@ export default class BookRack extends Component {
     }
 
     renderBookDetailOf(aBook) {
-        return <CardContent sx={{flexGrow: 1}}>
-            <Typography gutterBottom variant="h5" component="h2">
-                {aBook.title}
-            </Typography>
-            <Typography>
-                {aBook.description.slice(0, 100) + "..."}
-            </Typography>
-            <Rating value={aBook.score} precision={0.5} readOnly/>
+        return <CardContent>
+            <Stack direction="column" sx={{minHeight: "13em"}} spacing={2}>
+                <Typography variant="h5">
+                    {aBook.title}
+                </Typography>
+                <Typography>
+                    {aBook.description.slice(0, 100) + "..."}
+                </Typography>
+            </Stack>
+            <Stack direction="row" justifyContent="space-around">
+                <Rating value={aBook.score} precision={0.5} readOnly/>
+                {this.renderPriceOf(aBook)}
+            </Stack>
         </CardContent>;
-    }
-
-    async addToCart(user_id, password) {
-        try {
-            // To do: set base url to const
-            const response = await fetch(`http://localhost:5001/createCart?user_id=${user_id}&password=${password}`, {
-                method: 'GET',
-            });
-        } catch (error) {
-            console.error("Error making request:", error);
-        }
     }
 
     renderBookActionsOn(aBook) {
         return <CardActions>
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '100%',
-                p: 1,
-                m: 1,
-            }}>
-                <Button
-                    style={{border: 0}}
-                    onClick={() => {
-                        this.addToCart(1, "12345")
-                    }}
-                    title="Agregar al carrito"
-                >
-                    <ShoppingCartIcon />
-                </Button>
-            </Box>
+            {this.renderAddToCartBar(aBook)}
         </CardActions>;
     }
+
+    renderPriceOf(aBook) {
+        return <Stack direction="row" justifyContent="flex-end" alignItems="center">
+            <AttachMoneyIcon fontSize="small"/>
+            <Typography variant="h6">{aBook.price}</Typography>
+        </Stack>;
+    }
+
+    renderAddToCartBar(aBook) {
+        return <AddBooksToCart book={aBook} onAddToCartDo={this.props.onAddToCartDo}/>
+    }
 }
+
+
