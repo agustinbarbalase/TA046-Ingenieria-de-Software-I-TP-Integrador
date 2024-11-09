@@ -1,0 +1,13 @@
+repos:
+  - repo: local
+    hooks:
+      - id: run-tests-linux
+        name: Run tests for backend in Linux OS
+        entry: python3 -m unittest ./backend/tests/*.py
+        language: system
+        exclude: '^(?!.*Linux).*'
+      - id: run-tests-windows
+        name: Run tests for backend in Windows OS
+        entry: python -m unittest ./backend/tests/*.py
+        language: system
+        exclude: '^(?!.*Windows).*'
