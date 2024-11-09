@@ -1,7 +1,11 @@
 from unittest import TestCase
 from typing import *
 
-from my_books_app import MyBooksApp, UserDoesntExistError
+from my_books_app import (
+    MyBooksApp,
+    UserDoesntExistError,
+    CantAddNonPositiveAmountOfBooks,
+)
 
 BODY = "body"
 
@@ -44,6 +48,9 @@ class RestInterface:
             self.book_app.add_book_to_user(user_id, isbn, books_amount)
             response[BODY] = "0|OK"
             return response
-        except:
+        except CantAddNonPositiveAmountOfBooks:
+            response[BODY] = "1|CAN'T ADD NON POSTIVE AMOUNT OF BOOKS"
+            return response
+        else:
             response[BODY] = "1|ERROR_ADDING_BOOK"
             return response

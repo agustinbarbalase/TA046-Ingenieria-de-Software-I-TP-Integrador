@@ -60,6 +60,17 @@ class ShopCartTest(unittest.TestCase):
         self.assertFalse(car.is_empty())
         self.assertEqual([new_item_one, new_item_two], car.list_items())
 
+    def test06_add_existed_item_sum(self):
+        car = ShopCart()
+
+        new_item = "cincuenta sombras de Alan key"
+
+        car.add_item(new_item, 2)
+        car.add_item(new_item, 3)
+
+        self.assertFalse(car.is_empty())
+        self.assertEqual([(new_item, 5)], car.list_items())
+
 
 if __name__ == "__main__":
     unittest.main()

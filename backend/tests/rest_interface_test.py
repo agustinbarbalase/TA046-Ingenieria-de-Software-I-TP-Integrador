@@ -40,6 +40,26 @@ class RestInterfaceTest(unittest.TestCase):
             a_rest_interface.list_cart("1")["body"], "1|THE USER DOESN'T EXIST"
         )
 
+    def test_can_add_book_multiple_times_with_amount(self):
+        a_rest_interface = RestInterface()
+
+        a_rest_interface.create_cart("1", "12345")
+
+        a_rest_interface.add_to_cart("1", "1", 2)
+
+        self.assertEqual(a_rest_interface.list_cart("1")["body"], "0|1|2")
+
+    def test_cant_add_non_positive_amount_of_books(self):
+        a_rest_interface = RestInterface()
+
+        a_rest_interface.create_cart("1", "12345")
+
+        self.assertEqual(
+            a_rest_interface.add_to_cart("1", "1", 0)["body"],
+            "1|CAN'T ADD NON POSTIVE AMOUNT OF BOOKS",
+        )
+        self.assertEqual(a_rest_interface.list_cart("1")["body"], "0|")
+
 
 if __name__ == "__main__":
     unittest.main()
