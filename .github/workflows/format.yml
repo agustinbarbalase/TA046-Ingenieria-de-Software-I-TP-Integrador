@@ -1,7 +1,7 @@
 name: Format and types
 on:
   workflow_run:
-    workflows: ["Test backend"]
+    workflows: [Test backend]
 jobs:
   format-check:
     runs-on: ubuntu-24.04
