@@ -1,5 +1,7 @@
 name: Format and types
 on:
+  push:
+  pull_request:
   workflow_run:
     workflows: [Test backend]
     types:
