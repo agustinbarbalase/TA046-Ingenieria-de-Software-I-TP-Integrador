@@ -1,4 +1,5 @@
 from typing import *
+from backend.auth_service import AuthService
 from shop_cart import ShopCart
 
 
@@ -14,18 +15,29 @@ class MyBooksApp:
 
     def __init__(self):
         self.users_ids = dict()
+        self.auth = None
+
+    @classmethod
+    def with_authenticator(cls, authenticator: AuthService):
+        return cls().initialize_With_authenticator(authenticator)
+
+    def initialize_with_authenticator(self, authenticator: AuthService):
+        self.auth = authenticator
 
     def user_doesnot_exist_validation(self, user_id: str):
-        if not user_id in self.users_ids:
+        # if not user_id in self.users_ids:
+        #     raise UserDoesntExistError
+        if not self.auth.autenticate_user(user, password):
             raise UserDoesntExistError
+         
 
     def cant_add_non_positive_amount_of_books(self, amount: int):
         if amount <= 0:
             raise CantAddNonPositiveAmountOfBooks
 
     def add_user(self, user_id: str):
-        if user_id in self.users_ids:
-            return self
+        # if user_id in self.users_ids:
+        #     return self
         self.users_ids[user_id] = ShopCart()
         return self
 
