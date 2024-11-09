@@ -29,7 +29,6 @@ class MyBooksApp:
         #     raise UserDoesntExistError
         if not self.auth.autenticate_user(user, password):
             raise UserDoesntExistError
-         
 
     def cant_add_non_positive_amount_of_books(self, amount: int):
         if amount <= 0:
