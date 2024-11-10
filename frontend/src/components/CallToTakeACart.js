@@ -1,10 +1,13 @@
 import React, {Component} from "react";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
-export default class CallToInitializeShoppingCart extends Component {
+export default class CallToTakeACart extends Component {
     render() {
         return <Box
             sx={{
@@ -16,6 +19,7 @@ export default class CallToInitializeShoppingCart extends Component {
             <Container maxWidth="sm">
                 {this.renterTitle()}
                 {this.renderSubtitles()}
+                {this.renderInitializeOrderButton()}
             </Container>
         </Box>
     }
@@ -43,4 +47,16 @@ export default class CallToInitializeShoppingCart extends Component {
         </>;
     }
 
+    renderInitializeOrderButton() {
+        return <Stack
+            sx={{pt: 4}}
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+        >
+            <Button variant="contained" startIcon={<ShoppingCartIcon/>} onClick={()=> this.props.onActionDo()}>
+                Iniciar Pedido
+            </Button>
+        </Stack>;
+    }
 }

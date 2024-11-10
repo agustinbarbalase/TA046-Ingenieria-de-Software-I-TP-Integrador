@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import '../App.css';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import MainComponent from "./MainComponent";
+import PublisherReceptionDesk from "./PublisherReceptionDesk";
 import {App} from "../app/App";
 
 
@@ -16,7 +16,7 @@ export default class AppComponent extends Component {
   render() {
       return <ThemeProvider theme={this._defaultTheme}>
           <CssBaseline />
-          <MainComponent app={this._app} />
+          <PublisherReceptionDesk app={this._app} />
       </ThemeProvider>
   }
 }
