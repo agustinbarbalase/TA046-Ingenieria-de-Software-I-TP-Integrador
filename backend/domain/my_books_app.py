@@ -16,15 +16,17 @@ class MyBooksApp:
     def initialize_with_authenticator(self, authenticator: AuthService):
         self.auth = authenticator
 
+    @classmethod
     def user_doesnot_exist_message_error(self):
         return "The user doesn't exist"
 
+    @classmethod
     def cant_add_non_positive_amount_of_books_message_error(self):
         return "Can't add non positive amount of books"
 
     def user_doesnot_exist_validation(self, user_id: str):
         if not user_id in self.users_ids:
-            raise Exception(self.user_doesnot_exist_message_error())
+            raise Exception(MyBooksApp.user_doesnot_exist_message_error())
         # user = ""
         # password = ""
         # if not self.auth.autenticate_user(user, password):
@@ -32,7 +34,9 @@ class MyBooksApp:
 
     def cant_add_non_positive_amount_of_books_validation(self, amount: int):
         if amount <= 0:
-            raise Exception(self.cant_add_non_positive_amount_of_books_message_error())
+            raise Exception(
+                MyBooksApp.cant_add_non_positive_amount_of_books_message_error()
+            )
 
     def add_user(self, user_id: str):
         # if user_id in self.users_ids:

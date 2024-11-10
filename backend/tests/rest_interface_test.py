@@ -39,7 +39,7 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(
             a_rest_interface.list_cart("1")["body"],
-            f"1|{MyBooksApp().user_doesnot_exist_message_error().upper()}",
+            f"1|{MyBooksApp.user_doesnot_exist_message_error().upper()}",
         )
 
     def test_can_add_book_multiple_times_with_amount(self):
@@ -58,7 +58,7 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(
             a_rest_interface.add_to_cart("1", "1", 0)["body"],
-            f"1|{MyBooksApp().cant_add_non_positive_amount_of_books_message_error().upper()}",
+            f"1|{MyBooksApp.cant_add_non_positive_amount_of_books_message_error().upper()}",
         )
         self.assertEqual(a_rest_interface.list_cart("1")["body"], "0|")
 
