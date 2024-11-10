@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.domain.shop_cart import ShopCart, ItemNotInCatalog
+from backend.domain.shop_cart import ShopCart
 
 
 class ShopCartTest(unittest.TestCase):
@@ -45,8 +45,12 @@ class ShopCartTest(unittest.TestCase):
 
         car = ShopCart.with_catalog(new_catalog)
 
-        with self.assertRaises(ItemNotInCatalog):
+        with self.assertRaises(Exception) as context:
             car.add_item(name_item_random, 1)
+
+        self.assertEqual(
+            str(context.exception), ShopCart.item_not_in_catalog_message_error()
+        )
 
     def test05_list_cart_items(self):
         car = ShopCart()
