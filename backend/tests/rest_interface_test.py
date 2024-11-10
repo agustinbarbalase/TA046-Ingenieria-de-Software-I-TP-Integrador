@@ -5,6 +5,7 @@ import unittest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from backend.domain.rest_interface import RestInterface, BODY
+from backend.domain.my_books_app import MyBooksApp
 
 
 class RestInterfaceTest(unittest.TestCase):
@@ -37,7 +38,8 @@ class RestInterfaceTest(unittest.TestCase):
         a_rest_interface = RestInterface()
 
         self.assertEqual(
-            a_rest_interface.list_cart("1")["body"], "1|THE USER DOESN'T EXIST"
+            a_rest_interface.list_cart("1")["body"],
+            f"1|{MyBooksApp().user_doesnot_exist_message_error().upper()}",
         )
 
     def test_can_add_book_multiple_times_with_amount(self):

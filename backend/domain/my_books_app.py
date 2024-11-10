@@ -3,10 +3,6 @@ from backend.domain.auth.auth_service import AuthService
 from backend.domain.shop_cart import ShopCart
 
 
-class UserDoesntExistError(Exception):
-    pass
-
-
 class CantAddNonPositiveAmountOfBooks(Exception):
     pass
 
@@ -24,9 +20,12 @@ class MyBooksApp:
     def initialize_with_authenticator(self, authenticator: AuthService):
         self.auth = authenticator
 
+    def user_doesnot_exist_message_error(self):
+        return "The user doesn't exist"
+
     def user_doesnot_exist_validation(self, user_id: str):
         if not user_id in self.users_ids:
-            raise UserDoesntExistError
+            raise Exception(self.user_doesnot_exist_message_error())
         # user = ""
         # password = ""
         # if not self.auth.autenticate_user(user, password):

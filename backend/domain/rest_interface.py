@@ -3,7 +3,6 @@ from typing import *
 
 from backend.domain.my_books_app import (
     MyBooksApp,
-    UserDoesntExistError,
     CantAddNonPositiveAmountOfBooks,
 )
 
@@ -37,8 +36,9 @@ class RestInterface:
                 result.append(str(element[1]))
 
             response[BODY] = "|".join(result) + ("|" if len(result) == 1 else "")
-        except UserDoesntExistError:
-            response[BODY] = "1|THE USER DOESN'T EXIST"
+
+        except Exception as error:
+            response[BODY] = f"1|{str(error).upper()}"
 
         return response
 
