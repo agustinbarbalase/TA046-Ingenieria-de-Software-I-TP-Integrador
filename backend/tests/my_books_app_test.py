@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.domain.my_books_app import MyBooksApp, UserDoesntExistError
+from backend.domain.my_books_app import MyBooksApp
 
 
 class MyBooksAppTest(unittest.TestCase):
@@ -61,8 +61,12 @@ class MyBooksAppTest(unittest.TestCase):
 
         item = "50 sombras de grey"
 
-        with self.assertRaises(UserDoesntExistError):
+        with self.assertRaises(Exception) as context:
             my_app.add_book_to_user(nonexistent_user, item, 1)
+
+        self.assertEqual(
+            str(context.exception), my_app.user_doesnot_exist_message_error()
+        )
 
     def test06(self):
         my_app = MyBooksApp()
@@ -73,8 +77,12 @@ class MyBooksAppTest(unittest.TestCase):
 
         item = "50 sombras de grey"
 
-        with self.assertRaises(UserDoesntExistError):
+        with self.assertRaises(Exception) as context:
             my_app.user_has_item(nonexistent_user, item)
+
+        self.assertEqual(
+            str(context.exception), my_app.user_doesnot_exist_message_error()
+        )
 
     def test07(self):
         my_app = MyBooksApp()
