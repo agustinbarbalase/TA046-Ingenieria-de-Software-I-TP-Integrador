@@ -1,10 +1,6 @@
 from typing import *
 
 
-class ItemNotInCatalog(Exception):
-    pass
-
-
 class ShopCart:
 
     def __init__(self) -> None:
@@ -19,12 +15,16 @@ class ShopCart:
     def with_catalog(cls, catalog: dict[str, bool]):
         return cls().initialize_with_catalog(catalog)
 
+    @classmethod
+    def item_not_in_catalog_message_error(cls):
+        return "Item not in catalog"
+
     def is_empty(self) -> bool:
         return len(self.item) == 0
 
     def add_item(self, name: str, amount: int):
         if self.catalog and not name in self.catalog:
-            raise ItemNotInCatalog()
+            raise Exception(ShopCart.item_not_in_catalog_message_error())
 
         if self.contains_item(name):
             self.item[name] += amount
