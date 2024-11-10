@@ -58,7 +58,7 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(
             a_rest_interface.add_to_cart("1", "1", 0)["body"],
-            "1|CAN'T ADD NON POSTIVE AMOUNT OF BOOKS",
+            f"1|{MyBooksApp().cant_add_non_positive_amount_of_books_message_error().upper()}",
         )
         self.assertEqual(a_rest_interface.list_cart("1")["body"], "0|")
 

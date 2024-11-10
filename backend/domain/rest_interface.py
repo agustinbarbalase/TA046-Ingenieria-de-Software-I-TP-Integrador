@@ -1,10 +1,7 @@
 from unittest import TestCase
 from typing import *
 
-from backend.domain.my_books_app import (
-    MyBooksApp,
-    CantAddNonPositiveAmountOfBooks,
-)
+from backend.domain.my_books_app import MyBooksApp
 
 BODY = "body"
 
@@ -48,9 +45,6 @@ class RestInterface:
             self.book_app.add_book_to_user(user_id, isbn, books_amount)
             response[BODY] = "0|OK"
             return response
-        except CantAddNonPositiveAmountOfBooks:
-            response[BODY] = "1|CAN'T ADD NON POSTIVE AMOUNT OF BOOKS"
-            return response
-        else:
-            response[BODY] = "1|ERROR_ADDING_BOOK"
+        except Exception as error:
+            response[BODY] = f"1|{str(error).upper()}"
             return response
