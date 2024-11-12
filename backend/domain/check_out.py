@@ -28,7 +28,7 @@ class CheckOut:
     def _check_date(self, date):
         try:
             month, year = date[:2], date[2:]
-            expiration_date = date(int(year), int(month), 1)
+            expiration_date = datetime(int(year), int(month), 1)
             return expiration_date
         except ValueError:
             raise Exception(CheckOut.invalid_date_message_error())
