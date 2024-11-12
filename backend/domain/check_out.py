@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 
 
 class CheckOut:
@@ -42,6 +42,6 @@ class CheckOut:
             raise Exception(CheckOut.expired_card_message_error())
 
     def check_out(self, cart, card):
-        # expiration_date = self._check_date(card["card_expiration_date"])
-        # self._check_expired(expiration_date)
+        expiration_date = self._check_date(card["card_expiration_date"])
+        self._check_expired(expiration_date)
         self._check_empty_cart(cart)
