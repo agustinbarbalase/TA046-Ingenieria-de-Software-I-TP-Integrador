@@ -1,7 +1,7 @@
 from unittest import TestCase
 from typing import *
 
-from backend.domain.my_books_app import MyBooksApp
+from domain.my_books_app import MyBooksApp
 
 BODY = "body"
 

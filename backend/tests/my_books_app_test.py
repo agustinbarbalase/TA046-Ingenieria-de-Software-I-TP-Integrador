@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.domain.my_books_app import MyBooksApp
+from domain.my_books_app import MyBooksApp
 
 
 class MyBooksAppTest(unittest.TestCase):

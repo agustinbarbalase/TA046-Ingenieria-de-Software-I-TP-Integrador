@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.domain.shop_cart import ShopCart
+from domain.shop_cart import ShopCart
 
 
 class ShopCartTest(unittest.TestCase):

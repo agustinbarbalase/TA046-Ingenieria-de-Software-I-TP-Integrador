@@ -4,7 +4,7 @@ from typing import *
 
 from flask_cors import CORS
 
-from backend.domain.rest_interface import RestInterface
+from domain.rest_interface import RestInterface
 
 
 class TusLibrosWebServer:
