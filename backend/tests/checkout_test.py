@@ -37,6 +37,7 @@ class CheckOutTest(unittest.TestCase):
         card_code = "420"
 
         cart = ShopCart()
+        cart.add_item("The Lord of the rings", 1)
         check_out = Checkout()
 
         with self.assertRaises(Exception) as context:
@@ -57,6 +58,7 @@ class CheckOutTest(unittest.TestCase):
         card_code = "420"
 
         cart = ShopCart()
+        cart.add_item("The Lord of the rings", 1)
         check_out = Checkout()
 
         with self.assertRaises(Exception) as context:
