@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from domain.check_out import CheckOut
+from domain.checkout import Checkout
 from domain.shop_cart import ShopCart
 
 
@@ -16,7 +16,7 @@ class CheckOutTest(unittest.TestCase):
         card_code = "420"
 
         cart = ShopCart()
-        check_out = CheckOut()
+        check_out = Checkout()
 
         with self.assertRaises(Exception) as context:
             check_out.check_out(
@@ -29,7 +29,7 @@ class CheckOutTest(unittest.TestCase):
             )
 
         print(context.exception)
-        self.assertEqual(str(context.exception), CheckOut.empty_cart_message_error())
+        self.assertEqual(str(context.exception), Checkout.empty_cart_message_error())
 
     def test_invalid_date(self):
         card_number = "0101010101010101"
@@ -37,8 +37,7 @@ class CheckOutTest(unittest.TestCase):
         card_code = "420"
 
         cart = ShopCart()
-        cart.add_item("lord of the rings", 1)
-        check_out = CheckOut()
+        check_out = Checkout()
 
         with self.assertRaises(Exception) as context:
             check_out.check_out(
@@ -50,7 +49,7 @@ class CheckOutTest(unittest.TestCase):
                 },
             )
 
-        self.assertEqual(str(context.exception), CheckOut.invalid_date_message_error())
+        self.assertEqual(str(context.exception), Checkout.invalid_date_message_error())
 
     def test_checkout_with_expired_card(self):
         card_number = "0101010101010101"
@@ -58,8 +57,7 @@ class CheckOutTest(unittest.TestCase):
         card_code = "420"
 
         cart = ShopCart()
-        cart.add_item("lord of the rings", 1)
-        check_out = CheckOut()
+        check_out = Checkout()
 
         with self.assertRaises(Exception) as context:
             check_out.check_out(
@@ -71,4 +69,4 @@ class CheckOutTest(unittest.TestCase):
                 },
             )
 
-        self.assertEqual(str(context.exception), CheckOut.expired_card_message_error())
+        self.assertEqual(str(context.exception), Checkout.expired_card_message_error())

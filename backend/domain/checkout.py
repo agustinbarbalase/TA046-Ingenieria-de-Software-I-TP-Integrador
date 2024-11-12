@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-class CheckOut:
+class Checkout:
 
     def __init__(self):
         pass
@@ -31,15 +31,15 @@ class CheckOut:
             expiration_date = datetime(int(year), int(month), 1)
             return expiration_date
         except ValueError:
-            raise Exception(CheckOut.invalid_date_message_error())
+            raise Exception(Checkout.invalid_date_message_error())
 
     def _check_empty_cart(self, cart):
         if cart.is_empty():
-            raise Exception(CheckOut.empty_cart_message_error())
+            raise Exception(Checkout.empty_cart_message_error())
 
     def _check_expired(self, date):
         if date <= datetime.now():
-            raise Exception(CheckOut.expired_card_message_error())
+            raise Exception(Checkout.expired_card_message_error())
 
     def check_out(self, cart, card):
         expiration_date = self._check_date(card["card_expiration_date"])
