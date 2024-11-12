@@ -11,7 +11,7 @@ class TusLibrosWebServer:
     def __init__(self):
         self.app = Flask(__name__)
         self.rest_interface = RestInterface()
-        CORS(self.app)
+        CORS(self.app, origins=["http://localhost:3000"], supports_credentials=True)
 
         @self.app.route("/createCart")
         def create_cart():
