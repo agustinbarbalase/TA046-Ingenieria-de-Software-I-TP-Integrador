@@ -28,7 +28,3 @@ class GregorianMonthOfYearTest(unittest.TestCase):
     def test_is_not_greater_than_today(self):
         future_instance = GregorianMonthOfYear(5, 2028)
         self.assertTrue(future_instance.is_greater_than_today())
-
-
-if __name__ == "__main__":
-    unittest.main()
