@@ -6,6 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from domain.checkout import Checkout
 from domain.shop_cart import ShopCart
+from domain.xyz import XYZStub
 
 
 class CheckOutTest(unittest.TestCase):
@@ -64,4 +65,16 @@ class CheckOutTest(unittest.TestCase):
         self.assertEqual(str(context.exception), Checkout.expired_card_message_error())
 
     def test_checkout_sucessfully(self):
-        pass
+        xyz = XYZStub()
+        check_out = Checkout.with_xyz(xyz)
+
+        ticket = check_out.check_out(
+            self.fully_cart,
+            {
+                "card_number": self.card_number,
+                "card_expiration_date": self.card_expiration_date,
+                "card_code": self.card_code,
+            },
+        )
+
+        self.assertEqual(ticket, "Sucessfully sell")

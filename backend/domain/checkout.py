@@ -4,10 +4,18 @@ from datetime import datetime
 class Checkout:
 
     def __init__(self):
-        pass
+        self.xyz = None
 
     def initialize_date(self, date):
         self.month = date
+
+    def initialize_xyz(self, xyz):
+        self.xyz = xyz
+        return self
+
+    @classmethod
+    def with_xyz(cls, xyz):
+        return cls().initialize_xyz(xyz)
 
     @classmethod
     def empty_cart_message_error(cls):
@@ -45,3 +53,4 @@ class Checkout:
         expiration_date = self._check_date(card["card_expiration_date"])
         self._check_expired(expiration_date)
         self._check_empty_cart(cart)
+        return self.xyz.return_ticket(cart, card)
