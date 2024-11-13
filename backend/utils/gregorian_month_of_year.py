@@ -17,8 +17,7 @@ class GregorianMonthOfYear:
             raise Exception(GregorianMonthOfYear.invalid_month_error())
         return cls(month, year)
 
-    def is_greater_than_today(self):
-        today = dt.today()
+    def is_greater_than_today(self, today=dt.today()):
         return (self.year > today.year) or (
             self.year == today.year and self.month > today.month
         )
