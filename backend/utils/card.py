@@ -22,9 +22,9 @@ class Card:
 
     @classmethod
     def cannot_create_expired_card(cls, number, gregorian_month_of_year):
-        if gregorian_month_of_year.is_greater_than_today():
+        if not gregorian_month_of_year <= GregorianMonthOfYear.current():
             raise Exception(Card.cannot_create_expired_card_message())
         return cls(number, gregorian_month_of_year)
 
     def is_expired(self):
-        return self.gregorian_month_of_year.is_greater_than_today()
+        return not self.gregorian_month_of_year <= GregorianMonthOfYear.current()
