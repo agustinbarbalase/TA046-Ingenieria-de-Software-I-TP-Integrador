@@ -12,9 +12,7 @@ class Card:
     def initialize_with_number_and_month_and_year(
         cls, number: int, month: int, year: int
     ):
-        gregorian_month_of_year = GregorianMonthOfYear.initialize_with_month_and_year(
-            month, year
-        )
+        gregorian_month_of_year = GregorianMonthOfYear(month, year)
         cls.cannot_create_expired_card(number, gregorian_month_of_year)
         return cls(number, gregorian_month_of_year)
 
@@ -29,4 +27,4 @@ class Card:
         return cls(number, gregorian_month_of_year)
 
     def is_expired(self):
-        return self.gregorian_month_of_year.is_greater_than_today()
+        return not self.gregorian_month_of_year <= GregorianMonthOfYear.current()
