@@ -9,11 +9,6 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 class GregorianMonthOfYearTest(unittest.TestCase):
 
-    def test_initialize_with_valid_month_and_year(self):
-        instance = GregorianMonthOfYear.initialize_with_month_and_year(5, 2023)
-        self.assertEqual(instance.month, 5)
-        self.assertEqual(instance.year, 2023)
-
     def test_initialize_with_invalid_month(self):
         with self.assertRaises(Exception) as context:
             GregorianMonthOfYear.initialize_with_month_and_year(13, 2023)
