@@ -1,4 +1,4 @@
-from backend.domain.auth.auth_service_interface import AuthServiceInterface
+from domain.auth.auth_service_interface import AuthServiceInterface
 
 
 class AuthService(AuthServiceInterface):

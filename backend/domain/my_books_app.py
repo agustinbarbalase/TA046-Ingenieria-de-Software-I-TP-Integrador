@@ -1,6 +1,6 @@
 from typing import *
-from backend.domain.auth.auth_service import AuthService
-from backend.domain.shop_cart import ShopCart
+from domain.auth.auth_service import AuthService
+from domain.shop_cart import ShopCart
 
 
 class MyBooksApp:

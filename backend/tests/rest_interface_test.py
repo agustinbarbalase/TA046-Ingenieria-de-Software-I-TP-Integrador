@@ -4,8 +4,8 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.domain.rest_interface import RestInterface, BODY
-from backend.domain.my_books_app import MyBooksApp
+from domain.rest_interface import RestInterface, BODY
+from domain.my_books_app import MyBooksApp
 
 
 class RestInterfaceTest(unittest.TestCase):
