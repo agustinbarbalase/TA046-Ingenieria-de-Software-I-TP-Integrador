@@ -15,7 +15,6 @@ class Card:
     def cannot_create_expired_card_message(cls):
         return "Card date is expired can not be created"
 
-    @classmethod
     def cannot_create_card_with_invalid_number_message_error(cls):
         return "Card with invalid number can not be created"
 
