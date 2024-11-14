@@ -23,17 +23,17 @@ class MyBooksAppTest(unittest.TestCase):
         self.app = MyBooksApp(self.catalog)
 
     def test_can_create_cart_for_user(self):
-        self.app.add_user(self.user_one)
+        self.app.add_user(self.user_one, "")
         self.assertTrue(self.app.has_user(self.user_one))
 
     def test_user_can_add_items_to_cart(self):
-        self.app.add_user(self.user_one)
+        self.app.add_user(self.user_one, "")
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.assertTrue(self.app.user_has_item(self.user_one, self.item_one))
 
     def test_can_create_multiple_carts_and_each_users_add_for_each_cart(self):
-        self.app.add_user(self.user_one)
-        self.app.add_user(self.user_two)
+        self.app.add_user(self.user_one, "")
+        self.app.add_user(self.user_two, "")
 
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.app.add_book_to_user(self.user_two, self.item_two, 1)
@@ -45,7 +45,7 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertFalse(self.app.user_has_item(self.user_two, self.item_one))
 
     def test_can_list_items_from_cart(self):
-        self.app.add_user(self.user_one)
+        self.app.add_user(self.user_one, "")
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one), [(self.item_one, 1)]
@@ -68,7 +68,7 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test_can_add_multiple_items_to_cart(self):
-        self.app.add_user(self.user_one)
+        self.app.add_user(self.user_one, "")
         self.app.add_book_to_user(self.user_one, self.item_one, 2)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one), [(self.item_one, 2)]

@@ -23,7 +23,7 @@ class RestInterface:
 
     def create_cart(self, user_id: int, password: str) -> Response:
         def closure():
-            self.book_app.add_user(user_id)
+            self.book_app.add_user(user_id, password)
             return Response("0|OK", 200)
 
         return self._return_response(closure)

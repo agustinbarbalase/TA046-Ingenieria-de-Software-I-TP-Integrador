@@ -11,6 +11,14 @@ class MyBooksApp:
         self.auth = None
 
     @classmethod
+    def with_auth(cls, catalog: set[str], auth: AuthService):
+        return cls(catalog).initialize_with_auth(auth)
+
+    def initialize_with_auth(self, auth):
+        self.auth = auth
+        return self
+
+    @classmethod
     def user_doesnot_exist_message_error(self):
         return "The user doesn't exist"
 
@@ -28,7 +36,9 @@ class MyBooksApp:
                 MyBooksApp.cant_add_non_positive_amount_of_books_message_error()
             )
 
-    def add_user(self, user_id: str):
+    def add_user(self, user_id: str, password: str):
+        if self.auth:
+            self.auth.autenticate_user(user_id, password)
         self.users_ids[user_id] = ShopCart(self.catalog)
 
     def has_user(self, user_id: str) -> bool:

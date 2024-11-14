@@ -6,5 +6,5 @@ class AuthService(AuthServiceInterface):
     def __init__(self):
         super().__init__()
 
-    def autenticate_user(self, user: str, password: str) -> bool:
+    def autenticate_user(self, user: str, password: str):
         return False
