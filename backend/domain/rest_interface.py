@@ -3,9 +3,6 @@ from typing import *
 
 from domain.my_books_app import MyBooksApp
 
-BODY = "body"
-STATUS_CODE = "status_code"
-
 # Regex for ^\d{9}[0-9X]$
 
 

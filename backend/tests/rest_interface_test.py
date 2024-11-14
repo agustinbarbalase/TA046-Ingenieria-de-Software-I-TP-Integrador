@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from domain.rest_interface import RestInterface, BODY, STATUS_CODE
+from domain.rest_interface import RestInterface
 from domain.my_books_app import MyBooksApp
 
 
