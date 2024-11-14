@@ -17,6 +17,7 @@ class GregorianMonthOfYearTest(unittest.TestCase):
     def test_initialize_with_invalid_month(self):
         with self.assertRaises(Exception) as context:
             GregorianMonthOfYear(13, 2023)
+
         self.assertEqual(
             str(context.exception), GregorianMonthOfYear.invalid_month_error()
         )
