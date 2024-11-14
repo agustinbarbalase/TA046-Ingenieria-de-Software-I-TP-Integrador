@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from domain.checkout import Checkout
 from domain.shop_cart import ShopCart
-from domain.xyz import XYZStub
+from tests.stub.postnet_stub import PostNetStub
 from utils.card import Card
 from utils.gregorian_month_of_year import GregorianMonthOfYear
 
@@ -22,7 +22,7 @@ class CheckOutTest(unittest.TestCase):
         self.fully_cart = ShopCart(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
-        self.xyz = XYZStub()
+        self.xyz = PostNetStub()
         self.check_out = Checkout(self.xyz)
 
     def test_checkout_with_empty_cart(self):
