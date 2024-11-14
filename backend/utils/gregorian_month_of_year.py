@@ -19,11 +19,7 @@ class GregorianMonthOfYear:
         today = dt.now()
         return cls(today.month, today.year)
 
-    def _year(self) -> int:
-        return self.year
-
-    def _month(self) -> int:
-        return self.month
-
     def __le__(self, other) -> bool:
-        return self.year <= other._year() or self.month <= other._month()
+        return self.year <= other.year or (
+            self.year == other.year and self.month <= other.month
+        )
