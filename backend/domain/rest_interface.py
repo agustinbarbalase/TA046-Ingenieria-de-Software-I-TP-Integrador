@@ -15,12 +15,21 @@ class RestInterface:
     def __init__(self, app):
         self.book_app = app
 
+    def _return_response(self, closure) -> Response:
+        try:
+            return closure()
+        except Exception as error:
+            return Response(f"1|{str(error).upper()}", 422)
+
     def create_cart(self, user_id: int, password: str) -> Response:
-        self.book_app.add_user(user_id)
-        return Response("0|OK", 200)
+        def closure():
+            self.book_app.add_user(user_id)
+            return Response("0|OK", 200)
+
+        return self._return_response(closure)
 
     def list_cart(self, user_id: str) -> Response:
-        try:
+        def closure():
             book_list = self.book_app.get_user_shop_list(user_id)
             result = ["0"]
 
@@ -29,12 +38,12 @@ class RestInterface:
                 result.append(str(element[1]))
 
             return Response("|".join(result) + ("|" if len(result) == 1 else ""), 200)
-        except Exception as error:
-            return Response(f"1|{str(error).upper()}", 422)
+
+        return self._return_response(closure)
 
     def add_to_cart(self, user_id: str, isbn: str, books_amount: int) -> Response:
-        try:
+        def closure():
             self.book_app.add_book_to_user(user_id, isbn, books_amount)
             return Response("0|OK", 200)
-        except Exception as error:
-            return Response(f"1|{str(error).upper()}", 422)
+
+        return self._return_response(closure)
