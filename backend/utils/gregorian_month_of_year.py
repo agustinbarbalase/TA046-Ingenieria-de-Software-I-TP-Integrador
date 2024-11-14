@@ -15,7 +15,7 @@ class GregorianMonthOfYear:
         return "Invalid month"
 
     @classmethod
-    def current_month_of_year(cls):
+    def current(cls):
         today = dt.now()
         return cls(today.month, today.year)
 
