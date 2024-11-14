@@ -17,8 +17,9 @@ class CheckOutTest(unittest.TestCase):
         self.valid_card = Card(1234567891234567, GregorianMonthOfYear(11, 2028))
         self.expired_card = Card(1234567891234567, GregorianMonthOfYear(11, 2023))
 
-        self.empty_cart = ShopCart()
-        self.fully_cart = ShopCart()
+        self.catalog = set(["The Lord of the rings"])
+        self.empty_cart = ShopCart(self.catalog)
+        self.fully_cart = ShopCart(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
         self.xyz = XYZStub()
