@@ -17,19 +17,20 @@ class GregorianMonthOfYearTest(unittest.TestCase):
     def test_initialize_with_invalid_month(self):
         with self.assertRaises(Exception) as context:
             GregorianMonthOfYear(13, 2023)
+
         self.assertEqual(
             str(context.exception), GregorianMonthOfYear.invalid_month_error()
         )
 
     def test_is_greater_than_today(self):
         future_instance = GregorianMonthOfYear(5, 2023)
-        today = GregorianMonthOfYear.current_month_of_year()
+        today = GregorianMonthOfYear.current()
 
         self.assertFalse(today <= future_instance)
 
     def test_is_not_greater_than_today(self):
         future_instance = GregorianMonthOfYear(5, 2028)
-        today = GregorianMonthOfYear.current_month_of_year()
+        today = GregorianMonthOfYear.current()
 
         self.assertTrue(today <= future_instance)
 

@@ -6,75 +6,38 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from domain.checkout import Checkout
 from domain.shop_cart import ShopCart
-from domain.xyz import XYZStub
+from tests.stub.postnet_stub import PostNetStub
+from utils.card import Card
+from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class CheckOutTest(unittest.TestCase):
 
     def setUp(self):
-        self.card_number = "0101010101010101"
-        self.card_expiration_date = "112028"
-        self.card_code = "420"
+        self.valid_card = Card(1234567891234567, GregorianMonthOfYear(11, 2028))
+        self.expired_card = Card(1234567891234567, GregorianMonthOfYear(11, 2023))
 
-        self.invalid_card_expiration_date = "142024"
-        self.card_expirated_date = "112020"
-
-        self.empty_cart = ShopCart()
-        self.fully_cart = ShopCart()
+        self.catalog = set(["The Lord of the rings"])
+        self.empty_cart = ShopCart(self.catalog)
+        self.fully_cart = ShopCart(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
-        self.check_out = Checkout()
+        self.xyz = PostNetStub()
+        self.check_out = Checkout(self.xyz)
 
     def test_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:
-            self.check_out.check_out(
-                self.empty_cart,
-                {
-                    "card_number": self.card_number,
-                    "card_expiration_date": self.card_expiration_date,
-                    "card_code": self.card_code,
-                },
-            )
+            self.check_out.check_out(self.empty_cart, self.valid_card)
 
         self.assertEqual(str(context.exception), Checkout.empty_cart_message_error())
 
-    def test_invalid_date(self):
-        with self.assertRaises(Exception) as context:
-            self.check_out.check_out(
-                self.fully_cart,
-                {
-                    "card_number": self.card_number,
-                    "card_expiration_date": self.invalid_card_expiration_date,
-                    "card_code": self.card_code,
-                },
-            )
-
-        self.assertEqual(str(context.exception), Checkout.invalid_date_message_error())
-
     def test_checkout_with_expired_card(self):
         with self.assertRaises(Exception) as context:
-            self.check_out.check_out(
-                self.fully_cart,
-                {
-                    "card_number": self.card_number,
-                    "card_expiration_date": self.card_expirated_date,
-                    "card_code": self.card_code,
-                },
-            )
+            self.check_out.check_out(self.fully_cart, self.expired_card)
 
         self.assertEqual(str(context.exception), Checkout.expired_card_message_error())
 
     def test_checkout_sucessfully(self):
-        xyz = XYZStub()
-        check_out = Checkout.with_xyz(xyz)
-
-        ticket = check_out.check_out(
-            self.fully_cart,
-            {
-                "card_number": self.card_number,
-                "card_expiration_date": self.card_expiration_date,
-                "card_code": self.card_code,
-            },
-        )
+        ticket = self.check_out.check_out(self.fully_cart, self.valid_card)
 
         self.assertEqual(ticket, "Sucessfully sell")

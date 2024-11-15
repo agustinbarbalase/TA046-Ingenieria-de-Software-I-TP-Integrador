@@ -3,28 +3,33 @@ from typing import *
 
 from domain.my_books_app import MyBooksApp
 
-BODY = "body"
-
 # Regex for ^\d{9}[0-9X]$
 
 
+class Response(NamedTuple):
+    body: str
+    status_code: int
+
+
 class RestInterface:
-    def __init__(self):
-        self.book_app = MyBooksApp()
+    def __init__(self, app):
+        self.book_app = app
 
-    def create_cart(self, user_id: int, password: str) -> dict[str, str]:
-        response = dict()
-        if password == "1234":
-            response[BODY] = "1|CART COULD NOT BE CREATED"
-        else:
-            self.book_app.add_user(user_id)
-            response[BODY] = "0|OK"
-        return response
-
-    def list_cart(self, user_id: str):
-        response = dict()
-
+    def _return_response(self, closure) -> Response:
         try:
+            return closure()
+        except Exception as error:
+            return Response(f"1|{str(error).upper()}", 422)
+
+    def create_cart(self, user_id: int, password: str) -> Response:
+        def closure():
+            self.book_app.add_user(user_id, password)
+            return Response("0|OK", 200)
+
+        return self._return_response(closure)
+
+    def list_cart(self, user_id: str) -> Response:
+        def closure():
             book_list = self.book_app.get_user_shop_list(user_id)
             result = ["0"]
 
@@ -32,19 +37,13 @@ class RestInterface:
                 result.append(element[0])
                 result.append(str(element[1]))
 
-            response[BODY] = "|".join(result) + ("|" if len(result) == 1 else "")
+            return Response("|".join(result) + ("|" if len(result) == 1 else ""), 200)
 
-        except Exception as error:
-            response[BODY] = f"1|{str(error).upper()}"
+        return self._return_response(closure)
 
-        return response
-
-    def add_to_cart(self, user_id: str, isbn: str, books_amount: int):
-        response = dict()
-        try:
+    def add_to_cart(self, user_id: str, isbn: str, books_amount: int) -> Response:
+        def closure():
             self.book_app.add_book_to_user(user_id, isbn, books_amount)
-            response[BODY] = "0|OK"
-            return response
-        except Exception as error:
-            response[BODY] = f"1|{str(error).upper()}"
-            return response
+            return Response("0|OK", 200)
+
+        return self._return_response(closure)

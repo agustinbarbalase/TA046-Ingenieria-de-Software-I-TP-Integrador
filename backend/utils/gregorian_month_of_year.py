@@ -15,20 +15,11 @@ class GregorianMonthOfYear:
         return "Invalid month"
 
     @classmethod
-    def current_month_of_year(cls):
+    def current(cls):
         today = dt.now()
         return cls(today.month, today.year)
 
-    def is_greater_than_today(self, today=dt.today()):
-        return (self.year > today.year) or (
-            self.year == today.year and self.month > today.month
-        )
-
-    def _year(self) -> int:
-        return self.year
-
-    def _month(self) -> int:
-        return self.month
-
     def __le__(self, other) -> bool:
-        return self.year <= other._year() or self.month <= other._month()
+        return self.year <= other.year or (
+            self.year == other.year and self.month <= other.month
+        )

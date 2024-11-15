@@ -13,10 +13,10 @@ class ShopCartTest(unittest.TestCase):
         self.item_name_one = "Cincuenta sombras de Alan key"
         self.item_name_two = "El secreto de su codigo encapsulado"
 
-        self.catalog = set(list(self.item_name_one))
+        self.catalog = set([self.item_name_one, self.item_name_two])
         self.item_non_catalog = "1984"
 
-        self.cart = ShopCart()
+        self.cart = ShopCart(self.catalog)
 
     def test01_new_cart_is_empty(self):
         self.assertTrue(self.cart.is_empty())
@@ -36,10 +36,8 @@ class ShopCartTest(unittest.TestCase):
         self.assertTrue(self.cart.contains_item(self.item_name_two))
 
     def test04_add_non_existing_cart_in_catalog_raises_error(self):
-        car_with_catalog = ShopCart.with_catalog(self.catalog)
-
         with self.assertRaises(Exception) as context:
-            car_with_catalog.add_item(self.item_non_catalog, 1)
+            self.cart.add_item(self.item_non_catalog, 1)
 
         self.assertEqual(
             str(context.exception), ShopCart.item_not_in_catalog_message_error()

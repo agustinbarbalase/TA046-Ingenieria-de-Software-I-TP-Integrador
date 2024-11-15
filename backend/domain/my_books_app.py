@@ -5,16 +5,18 @@ from domain.shop_cart import ShopCart
 
 class MyBooksApp:
 
-    def __init__(self):
-        self.users_ids = dict()
+    def __init__(self, catalog: set[str]):
+        self.users_ids: dict[str, ShopCart] = dict()
+        self.catalog: set[str] = catalog
         self.auth = None
 
     @classmethod
-    def with_authenticator(cls, authenticator: AuthService):
-        return cls().initialize_with_authenticator(authenticator)
+    def with_auth(cls, catalog: set[str], auth: AuthService):
+        return cls(catalog).initialize_with_auth(auth)
 
-    def initialize_with_authenticator(self, authenticator: AuthService):
-        self.auth = authenticator
+    def initialize_with_auth(self, auth):
+        self.auth = auth
+        return self
 
     @classmethod
     def user_doesnot_exist_message_error(self):
@@ -27,10 +29,6 @@ class MyBooksApp:
     def user_doesnot_exist_validation(self, user_id: str):
         if not user_id in self.users_ids:
             raise Exception(MyBooksApp.user_doesnot_exist_message_error())
-        # user = ""
-        # password = ""
-        # if not self.auth.autenticate_user(user, password):
-        #     raise UserDoesntExistError
 
     def cant_add_non_positive_amount_of_books_validation(self, amount: int):
         if amount <= 0:
@@ -38,11 +36,10 @@ class MyBooksApp:
                 MyBooksApp.cant_add_non_positive_amount_of_books_message_error()
             )
 
-    def add_user(self, user_id: str):
-        # if user_id in self.users_ids:
-        #     return self
-        self.users_ids[user_id] = ShopCart()
-        return self
+    def add_user(self, user_id: str, password: str):
+        if self.auth:
+            self.auth.autenticate_user(user_id, password)
+        self.users_ids[user_id] = ShopCart(self.catalog)
 
     def has_user(self, user_id: str) -> bool:
         return user_id in self.users_ids

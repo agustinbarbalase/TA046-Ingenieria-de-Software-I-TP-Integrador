@@ -3,17 +3,9 @@ from typing import *
 
 class ShopCart:
 
-    def __init__(self) -> None:
+    def __init__(self, catalog: set[str]) -> None:
         self.item: dict[str, int] = dict()
-        self.catalog: dict[str, bool] = dict()
-
-    def initialize_with_catalog(self, catalog: dict):
-        self.catalog = catalog
-        return self
-
-    @classmethod
-    def with_catalog(cls, catalog: dict[str, bool]):
-        return cls().initialize_with_catalog(catalog)
+        self.catalog: set[str] = catalog
 
     @classmethod
     def item_not_in_catalog_message_error(cls):
@@ -23,7 +15,7 @@ class ShopCart:
         return len(self.item) == 0
 
     def add_item(self, name: str, amount: int):
-        if self.catalog and not name in self.catalog:
+        if not name in self.catalog:
             raise Exception(ShopCart.item_not_in_catalog_message_error())
 
         if self.contains_item(name):
