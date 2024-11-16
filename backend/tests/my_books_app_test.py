@@ -22,16 +22,16 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.app = MyBooksApp(self.catalog)
 
-    def test_can_create_cart_for_user(self):
+    def test01_can_create_cart_for_user(self):
         self.app.add_user(self.user_one, "")
         self.assertTrue(self.app.has_user(self.user_one))
 
-    def test_user_can_add_items_to_cart(self):
+    def test02_user_can_add_items_to_cart(self):
         self.app.add_user(self.user_one, "")
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.assertTrue(self.app.user_has_item(self.user_one, self.item_one))
 
-    def test_can_create_multiple_carts_and_each_users_add_for_each_cart(self):
+    def test03_can_create_multiple_carts_and_each_users_add_for_each_cart(self):
         self.app.add_user(self.user_one, "")
         self.app.add_user(self.user_two, "")
 
@@ -44,14 +44,14 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertFalse(self.app.user_has_item(self.user_one, self.item_two))
         self.assertFalse(self.app.user_has_item(self.user_two, self.item_one))
 
-    def test_can_list_items_from_cart(self):
+    def test04_can_list_items_from_cart(self):
         self.app.add_user(self.user_one, "")
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one), [(self.item_one, 1)]
         )
 
-    def test_cannot_add_books_for_non_existent_user(self):
+    def test05_cannot_add_books_for_non_existent_user(self):
         with self.assertRaises(Exception) as context:
             self.app.add_book_to_user(self.non_existent_user, self.item_one, 1)
 
@@ -59,7 +59,7 @@ class MyBooksAppTest(unittest.TestCase):
             str(context.exception), MyBooksApp.user_doesnot_exist_message_error()
         )
 
-    def test_cannot_check_items_for_non_existent_user(self):
+    def test06_cannot_check_items_for_non_existent_user(self):
         with self.assertRaises(Exception) as context:
             self.app.user_has_item(self.non_existent_user, self.item_one)
 
@@ -67,7 +67,7 @@ class MyBooksAppTest(unittest.TestCase):
             str(context.exception), MyBooksApp.user_doesnot_exist_message_error()
         )
 
-    def test_can_add_multiple_items_to_cart(self):
+    def test07_can_add_multiple_items_to_cart(self):
         self.app.add_user(self.user_one, "")
         self.app.add_book_to_user(self.user_one, self.item_one, 2)
         self.assertEqual(

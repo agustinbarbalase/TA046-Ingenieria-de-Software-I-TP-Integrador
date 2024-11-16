@@ -20,20 +20,20 @@ class RestInterfaceTest(unittest.TestCase):
         self.app = MyBooksApp(self.catalog)
         self.rest_interface = RestInterface(self.app)
 
-    def test_create_cart_success(self):
+    def test01_create_cart_success(self):
         response = self.rest_interface.create_cart(self.user_id, self.password)
 
         self.assertEqual(response.body, "0|OK")
         self.assertEqual(response.status_code, 200)
 
-    def test_list_empty_cart(self):
+    def test02_list_empty_cart(self):
         self.rest_interface.create_cart(self.user_id, self.password)
         response = self.rest_interface.list_cart(self.user_id)
 
         self.assertEqual(response.body, "0|")
         self.assertEqual(response.status_code, 200)
 
-    def test_add_book_to_cart(self):
+    def test03_add_book_to_cart(self):
         self.rest_interface.create_cart(self.user_id, self.password)
         self.rest_interface.add_to_cart(self.user_id, self.isbn, 1)
         response = self.rest_interface.list_cart(self.user_id)
@@ -41,7 +41,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.assertEqual(response.body, f"0|{self.isbn}|1")
         self.assertEqual(response.status_code, 200)
 
-    def test_try_list_not_created_cart_raise_error(self):
+    def test04_try_list_not_created_cart_raise_error(self):
         response = self.rest_interface.list_cart(self.user_id)
 
         self.assertEqual(
@@ -50,7 +50,7 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
-    def test_can_add_book_multiple_times_with_amount(self):
+    def test05_can_add_book_multiple_times_with_amount(self):
         self.rest_interface.create_cart(self.user_id, self.password)
         self.rest_interface.add_to_cart(self.user_id, self.isbn, 2)
         response = self.rest_interface.list_cart(self.user_id)
@@ -58,7 +58,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.assertEqual(response.body, f"0|{self.isbn}|2")
         self.assertEqual(response.status_code, 200)
 
-    def test_cant_add_non_positive_amount_of_books(self):
+    def test06_cant_add_non_positive_amount_of_books(self):
         self.rest_interface.create_cart(self.user_id, self.password)
         response = self.rest_interface.add_to_cart(self.user_id, self.isbn, 0)
 

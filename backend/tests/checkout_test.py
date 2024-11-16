@@ -25,19 +25,19 @@ class CheckOutTest(unittest.TestCase):
         self.xyz = PostNetStub()
         self.check_out = Checkout(self.xyz)
 
-    def test_checkout_with_empty_cart(self):
+    def test01_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:
             self.check_out.check_out(self.empty_cart, self.valid_card)
 
         self.assertEqual(str(context.exception), Checkout.empty_cart_message_error())
 
-    def test_checkout_with_expired_card(self):
+    def test02_checkout_with_expired_card(self):
         with self.assertRaises(Exception) as context:
             self.check_out.check_out(self.fully_cart, self.expired_card)
 
         self.assertEqual(str(context.exception), Checkout.expired_card_message_error())
 
-    def test_checkout_sucessfully(self):
+    def test03_checkout_sucessfully(self):
         ticket = self.check_out.check_out(self.fully_cart, self.valid_card)
 
         self.assertEqual(ticket, "Sucessfully sell")
