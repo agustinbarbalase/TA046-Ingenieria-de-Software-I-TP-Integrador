@@ -15,14 +15,27 @@ class RestInterface:
     def __init__(self, app):
         self.book_app = app
 
+    @classmethod
+    def cant_send_empty_params_message_error(cls):
+        return "Cant send empty params"
+
     def _return_response(self, closure) -> Response:
         try:
             return closure()
         except Exception as error:
             return Response(f"1|{str(error).upper()}", 422)
 
+    def _check_empty_params(self, value: str):
+        if len(value) == 0:
+            raise Exception(RestInterface.cant_send_empty_params_message_error())
+
+    def _validate_params(self, params: dict[str, str]):
+        for key in params:
+            self._check_empty_params(params[key])
+
     def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
+            self._validate_params(params)
             self.book_app.add_user(params["userId"], params["password"])
             return Response("0|OK", 200)
 
@@ -30,6 +43,7 @@ class RestInterface:
 
     def list_cart(self, params: dict[str, str]) -> Response:
         def closure():
+            self._validate_params(params)
             book_list = self.book_app.get_user_shop_list(params["userId"])
             result = ["0"]
 
@@ -43,6 +57,7 @@ class RestInterface:
 
     def add_to_cart(self, params: dict[str, str]) -> Response:
         def closure():
+            self._validate_params(params)
             self.book_app.add_book_to_user(
                 params["userId"], params["isbn"], int(params["amount"])
             )

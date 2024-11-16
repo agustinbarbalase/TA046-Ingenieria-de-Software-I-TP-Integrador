@@ -98,6 +98,43 @@ class RestInterfaceTest(unittest.TestCase):
         self.assertEqual(response.status_code, 422)
         self.assertEqual(self.rest_interface.list_cart(params_for_list_cart).body, "0|")
 
+    def test07_validate_empty_params_in_create_cart(self):
+        params_for_create_cart = {"userId": "", "password": ""}
+
+        response = self.rest_interface.create_cart(params_for_create_cart)
+
+        self.assertEqual(
+            response.body,
+            f"1|{RestInterface.cant_send_empty_params_message_error().upper()}",
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test08_validate_empty_params_in_list_cart(self):
+        params_for_list_cart = {"userId": ""}
+
+        response = self.rest_interface.list_cart(params_for_list_cart)
+
+        self.assertEqual(
+            response.body,
+            f"1|{RestInterface.cant_send_empty_params_message_error().upper()}",
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test09_validate_empty_params_in_add_to_cart(self):
+        params_for_add_to_cart = {
+            "userId": "",
+            "isbn": "",
+            "amount": "",
+        }
+
+        response = self.rest_interface.add_to_cart(params_for_add_to_cart)
+
+        self.assertEqual(
+            response.body,
+            f"1|{RestInterface.cant_send_empty_params_message_error().upper()}",
+        )
+        self.assertEqual(response.status_code, 422)
+
 
 if __name__ == "__main__":
     unittest.main()
