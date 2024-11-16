@@ -69,9 +69,9 @@ class RestInterface:
 
     def add_to_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self._validate_params(params, ["userId", "isbn", "amount"])
+            self._validate_params(params, ["userId", "bookIsbn", "bookQuantity"])
             self.book_app.add_book_to_user(
-                params["userId"], params["isbn"], int(params["amount"])
+                params["userId"], params["bookIsbn"], int(params["bookQuantity"])
             )
             return Response("0|OK", 200)
 

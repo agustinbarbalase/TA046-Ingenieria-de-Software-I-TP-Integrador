@@ -14,8 +14,8 @@ class RestInterfaceTest(unittest.TestCase):
         self.user_id = "Gauss"
         self.password = "30-04-1777"
 
-        self.isbn = "9780387862545"
-        self.catalog = set([self.isbn])
+        self.bookIsbn = "9780387862545"
+        self.catalog = set([self.bookIsbn])
 
         self.app = MyBooksApp(self.catalog)
         self.rest_interface = RestInterface(self.app)
@@ -41,8 +41,8 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "isbn": self.isbn,
-            "amount": "1",
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
         }
         params_for_list_cart = {"userId": self.user_id}
 
@@ -50,7 +50,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.add_to_cart(params_for_add_to_cart)
         response = self.rest_interface.list_cart(params_for_list_cart)
 
-        self.assertEqual(response.body, f"0|{self.isbn}|1")
+        self.assertEqual(response.body, f"0|{self.bookIsbn}|1")
         self.assertEqual(response.status_code, 200)
 
     def test04_try_list_not_created_cart_raise_error(self):
@@ -63,12 +63,12 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
-    def test05_can_add_book_multiple_times_with_amount(self):
+    def test05_can_add_book_multiple_times_with_bookQuantity(self):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "isbn": self.isbn,
-            "amount": "2",
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "2",
         }
         params_for_list_cart = {"userId": self.user_id}
 
@@ -76,15 +76,15 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.add_to_cart(params_for_add_to_cart)
         response = self.rest_interface.list_cart(params_for_list_cart)
 
-        self.assertEqual(response.body, f"0|{self.isbn}|2")
+        self.assertEqual(response.body, f"0|{self.bookIsbn}|2")
         self.assertEqual(response.status_code, 200)
 
-    def test06_cant_add_non_positive_amount_of_books(self):
+    def test06_cant_add_non_positive_bookQuantity_of_books(self):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "isbn": self.isbn,
-            "amount": "0",
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "0",
         }
         params_for_list_cart = {"userId": self.user_id}
 
@@ -123,8 +123,8 @@ class RestInterfaceTest(unittest.TestCase):
     def test09_validate_empty_params_in_add_to_cart(self):
         params_for_add_to_cart = {
             "userId": "",
-            "isbn": "",
-            "amount": "",
+            "bookIsbn": "",
+            "bookQuantity": "",
         }
 
         response = self.rest_interface.add_to_cart(params_for_add_to_cart)
@@ -160,7 +160,7 @@ class RestInterfaceTest(unittest.TestCase):
     def test12_validate_abstent_params_in_add_to_cart(self):
         params_for_add_to_cart = {
             "userId": "",
-            "amount": "",
+            "bookQuantity": "",
         }
 
         response = self.rest_interface.add_to_cart(params_for_add_to_cart)
