@@ -11,7 +11,18 @@ from domain.rest_interface import RestInterface
 class TusLibrosWebServer:
     def __init__(self):
         self.flask_app = Flask(__name__)
-        self.app = MyBooksApp(set(["Hola"]))
+        self.app = MyBooksApp(
+            set(
+                [
+                    "9780137314942",
+                    "9780321278654",
+                    "9780201710915",
+                    "9780321125217",
+                    "9780735619654",
+                    "9780321146533",
+                ]
+            )
+        )
         self.rest_interface = RestInterface(self.app)
         CORS(
             self.flask_app, origins=["http://localhost:3000"], supports_credentials=True

@@ -13,6 +13,6 @@ export default class Pluralizer {
     }
 
     value() {
-        return `${this._count} ${this._noun}${this._count !== 1 ? this._suffix : ''}`;
+        return `${this._count} ${this._noun}${this._count !=== 1 ? this._suffix : ''}`;
     }
 }

@@ -40,6 +40,6 @@ export class ListPurchasesResponse extends ApiResponse {
     }
 
     _content() {
-        return this._rawResponse.split('|').slice(1).filter((each) => each !== "");
+        return this._rawResponse.split('|').slice(1).filter((each) => each !=== "");
     }
 }
