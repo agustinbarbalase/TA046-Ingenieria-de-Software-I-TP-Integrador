@@ -135,6 +135,42 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test10_validate_abstent_params_in_create_cart(self):
+        params_for_create_cart = {"userId": ""}
+
+        response = self.rest_interface.create_cart(params_for_create_cart)
+
+        self.assertEqual(
+            response.body,
+            f"1|{RestInterface.cant_send_request_with_abstent_params_message_error().upper()}",
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test11_validate_abstent_params_in_list_cart(self):
+        params_for_list_cart = {}
+
+        response = self.rest_interface.list_cart(params_for_list_cart)
+
+        self.assertEqual(
+            response.body,
+            f"1|{RestInterface.cant_send_request_with_abstent_params_message_error().upper()}",
+        )
+        self.assertEqual(response.status_code, 422)
+
+    def test12_validate_abstent_params_in_add_to_cart(self):
+        params_for_add_to_cart = {
+            "userId": "",
+            "amount": "",
+        }
+
+        response = self.rest_interface.add_to_cart(params_for_add_to_cart)
+
+        self.assertEqual(
+            response.body,
+            f"1|{RestInterface.cant_send_request_with_abstent_params_message_error().upper()}",
+        )
+        self.assertEqual(response.status_code, 422)
+
 
 if __name__ == "__main__":
     unittest.main()

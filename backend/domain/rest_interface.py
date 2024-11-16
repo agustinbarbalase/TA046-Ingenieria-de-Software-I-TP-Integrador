@@ -17,7 +17,11 @@ class RestInterface:
 
     @classmethod
     def cant_send_empty_params_message_error(cls):
-        return "Cant send empty params"
+        return "Can't send empty params"
+
+    @classmethod
+    def cant_send_request_with_abstent_params_message_error(self):
+        return "Can't sent request with abstent params"
 
     def _return_response(self, closure) -> Response:
         try:
@@ -29,13 +33,21 @@ class RestInterface:
         if len(value) == 0:
             raise Exception(RestInterface.cant_send_empty_params_message_error())
 
-    def _validate_params(self, params: dict[str, str]):
+    def _check_abstent_params(self, expected_param: str, params: dict[str, str]):
+        if expected_param not in params:
+            raise Exception(
+                RestInterface.cant_send_request_with_abstent_params_message_error()
+            )
+
+    def _validate_params(self, params: dict[str, str], expected_params: list[str]):
+        for expected_param in expected_params:
+            self._check_abstent_params(expected_param, params)
         for key in params:
             self._check_empty_params(params[key])
 
     def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self._validate_params(params)
+            self._validate_params(params, ["userId", "password"])
             self.book_app.add_user(params["userId"], params["password"])
             return Response("0|OK", 200)
 
@@ -43,7 +55,7 @@ class RestInterface:
 
     def list_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self._validate_params(params)
+            self._validate_params(params, ["userId"])
             book_list = self.book_app.get_user_shop_list(params["userId"])
             result = ["0"]
 
@@ -57,7 +69,7 @@ class RestInterface:
 
     def add_to_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self._validate_params(params)
+            self._validate_params(params, ["userId", "isbn", "amount"])
             self.book_app.add_book_to_user(
                 params["userId"], params["isbn"], int(params["amount"])
             )
