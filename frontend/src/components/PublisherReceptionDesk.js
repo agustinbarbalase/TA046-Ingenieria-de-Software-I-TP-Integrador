@@ -8,6 +8,7 @@ import Cart from "./Cart";
 import CallToTakeACart from "./CallToTakeACart";
 import {Alert, Snackbar} from "@mui/material";
 import TakeACart from "./TakeACart";
+import Checkout from "./Checkout/Checkout";
 
 
 export default class PublisherReceptionDesk extends Component {
@@ -20,6 +21,7 @@ export default class PublisherReceptionDesk extends Component {
         super(props);
         this.state = {
             showCartPanel: false,
+            showCheckout: false,
             cart: null,
             message: null
         }
@@ -28,7 +30,7 @@ export default class PublisherReceptionDesk extends Component {
     render() {
         return <>
             {this.renderHeader()}
-            {this.renderMainContent()}
+            {this.renderMainPanel()}
             {this.renderMessage()}
         </>
     }
@@ -37,18 +39,31 @@ export default class PublisherReceptionDesk extends Component {
         return <Header onActionDo={() => this._listCart()} cartSize={this._cartSize()}/>;
     }
 
-    renderMainContent() {
+    renderMainPanel() {
         return <main>
-            {this.renderCallToTakeACart()}
             {this.renderCartPanel()}
-            <Container sx={{py: 8}} maxWidth="md">
-                <BookRack app={this.props.app} onAddToCartDo={ (aBook, aQuantity) => this._addToCart(aBook, aQuantity)}/>
-            </Container>
+            {this.renderContent()}
         </main>;
     }
 
+    renderContent() {
+        if (this.state.showCheckout) {
+            return <Checkout
+                        app={this.props.app}
+                        cart={this._cart()}
+                        notifyMessageWith={ (severity, text) => this._notifyMessageWith(severity, text)}
+                        cancelCheckout={ () => this._cancelCheckout() }/>
+        }
+        return <>
+            {this.renderCallToTakeACart()}
+            <Container sx={{py: 8}} maxWidth="md">
+                <BookRack app={this.props.app} onAddToCartDo={ (aBook, aQuantity) => this._addToCart(aBook, aQuantity)}/>
+            </Container>
+        </>;
+    }
+
     renderCallToTakeACart() {
-        return <CallToTakeACart onActionDo={() => this._takeANewCart()}/>
+        return <CallToTakeACart onTakeACartDo={() => this._takeANewCart()} />
     }
 
     renderCartPanel() {
@@ -63,7 +78,7 @@ export default class PublisherReceptionDesk extends Component {
 
     renderCartPanelContent() {
         if (this._hasTakenACart()){
-            return <Cart cart={this.state.cart}/>;
+            return <Cart cart={this.state.cart} onCheckoutDo={ () => this._checkout() }/>;
         }
         else {
             return <TakeACart onActionDo={ (aClientId, aPassword) => this._takeACartFor(aClientId, aPassword) }/>
@@ -150,5 +165,13 @@ export default class PublisherReceptionDesk extends Component {
 
     _cartSize() {
         return this._cart().items.length
+    }
+
+    _checkout() {
+        this.setState({showCheckout: true, showCartPanel: false})
+    }
+
+    _cancelCheckout() {
+        this.setState({showCheckout: false})
     }
 }

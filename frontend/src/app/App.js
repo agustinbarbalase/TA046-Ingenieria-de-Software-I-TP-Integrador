@@ -94,6 +94,20 @@ export class App {
         return this._interface().addToCart(aBook, aQuantity, aCart)
     }
 
+    checkout(aCard, aCart) {
+        return this._interface().checkout(aCard, aCart);
+    }
+
+    totalOf(aCart) {
+        return aCart.items.reduce( (total, aCartItem) => total + this._priceOf(aCartItem), 0)
+    }
+
+    _priceOf(aCartItem){
+        const price = parseFloat(aCartItem.article.price.replace('.', ''));
+        const quantity = parseInt(aCartItem.quantity);
+        return price * quantity
+    }
+
     "Privates"
     _interface() {
         if (this._restInterface === null) {

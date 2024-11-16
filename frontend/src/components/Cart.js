@@ -1,18 +1,20 @@
 import React, {Component} from "react";
 import Typography from "@mui/material/Typography";
-import {Avatar, Chip, Divider, List, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
+import {Avatar, Divider, List, ListItem, ListItemAvatar, ListItemText} from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import PropTypes from "prop-types";
-import MdPhone from '@mui/icons-material/Phone';
+import PaymentIcon from '@mui/icons-material/Payment';
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 
 export default class Cart extends Component {
 
     static propTypes = {
-        cart: PropTypes.object.isRequired
+        cart: PropTypes.object.isRequired,
+        onCheckoutDo: PropTypes.func.isRequired,
     };
 
 
@@ -48,16 +50,16 @@ export default class Cart extends Component {
     }
 
     renderCheckout() {
-        if (this._hasItems()) {
-            return <Typography
-                variant="h5"
-                align="center"
-                color="text.secondary"
-                gutterBottom
-            >
-                <Chip icon={<MdPhone/>} label="Llama ahora para finalizar el pedido"/>
-            </Typography>;
-        }
+        return <Typography
+            variant="h5"
+            align="center"
+            color="text.secondary"
+            gutterBottom
+        >
+            <Button variant="contained" startIcon={<PaymentIcon />} onClick={()=> this.props.onCheckoutDo()}>
+                Iniciar Pago
+            </Button>
+        </Typography>;
     }
 
     renderItem(cartItem) {
