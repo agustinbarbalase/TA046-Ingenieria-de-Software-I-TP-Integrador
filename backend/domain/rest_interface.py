@@ -21,16 +21,16 @@ class RestInterface:
         except Exception as error:
             return Response(f"1|{str(error).upper()}", 422)
 
-    def create_cart(self, user_id: int, password: str) -> Response:
+    def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self.book_app.add_user(user_id, password)
+            self.book_app.add_user(params["userId"], params["password"])
             return Response("0|OK", 200)
 
         return self._return_response(closure)
 
-    def list_cart(self, user_id: str) -> Response:
+    def list_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            book_list = self.book_app.get_user_shop_list(user_id)
+            book_list = self.book_app.get_user_shop_list(params["userId"])
             result = ["0"]
 
             for element in book_list:
@@ -41,9 +41,11 @@ class RestInterface:
 
         return self._return_response(closure)
 
-    def add_to_cart(self, user_id: str, isbn: str, books_amount: int) -> Response:
+    def add_to_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self.book_app.add_book_to_user(user_id, isbn, books_amount)
+            self.book_app.add_book_to_user(
+                params["userId"], params["isbn"], int(params["amount"])
+            )
             return Response("0|OK", 200)
 
         return self._return_response(closure)

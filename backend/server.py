@@ -19,17 +19,14 @@ class TusLibrosWebServer:
 
         @self.flask_app.route("/createCart", methods=["GET"])
         def create_cart():
-            params = request.args.to_dict()
-            response = self.rest_interface.create_cart(
-                params["userId"], params["password"]
-            )
-            return response["body"]
+            response = self.rest_interface.create_cart(request.args.to_dict())
+            return response.body, response.status_code
 
         @self.flask_app.route("/listCart", methods=["GET"])
         def list_cart():
             params = request.args.to_dict()
             response = self.rest_interface.list_cart(params["userId"])
-            return response["body"]
+            return response.body
 
         @self.flask_app.route("/addToCart", methods=["GET"])
         def add_to_cart():
@@ -37,7 +34,7 @@ class TusLibrosWebServer:
             response = self.rest_interface.add_to_cart(
                 params["userId"], params["bookIsbn"], params["bookQuantity"]
             )
-            return response["body"]
+            return response.body
 
     def listening_on(self, port: int):
         self.flask_app.run(port=port)
