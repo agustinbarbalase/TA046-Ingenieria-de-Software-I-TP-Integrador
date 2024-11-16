@@ -4,8 +4,8 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 class Checkout:
 
-    def __init__(self, xyz):
-        self.xyz = xyz
+    def __init__(self, postnet):
+        self.postnet = postnet
 
     @classmethod
     def empty_cart_message_error(cls):
@@ -26,4 +26,4 @@ class Checkout:
     def check_out(self, cart, card):
         self._check_expired(card)
         self._check_empty_cart(cart)
-        return self.xyz.return_ticket(cart, card)
+        return self.postnet.return_ticket(cart, card)
