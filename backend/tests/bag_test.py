@@ -35,3 +35,14 @@ class BagTest(unittest.TestCase):
         self.bag.add(self.book_item)
         self.bag.add(self.book_item)
         self.assertEqual(self.bag.amount_of(self.book_item), 2)
+
+    def test06_add_with_amount(self):
+        self.bag.add_with_amount(self.book_item, 5)
+        self.assertEqual(self.bag.amount_of(self.book_item), 5)
+
+    def test07_list_items(self):
+        self.bag.add(self.book_item)
+        self.bag.add_with_amount(self.knife_item, 3)
+        self.assertEqual(
+            [(self.book_item, 1), (self.knife_item, 3)], self.bag.list_items()
+        )
