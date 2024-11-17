@@ -1,10 +1,12 @@
 from typing import *
 
+from utils.bag import Bag
+
 
 class ShopCart:
 
     def __init__(self, catalog: set[str]) -> None:
-        self.item: dict[str, int] = dict()
+        self.item: Bag = Bag()
         self.catalog: set[str] = catalog
 
     @classmethod
@@ -12,21 +14,16 @@ class ShopCart:
         return "Item not in catalog"
 
     def is_empty(self) -> bool:
-        return len(self.item) == 0
+        return self.item.is_empty()
 
     def add_item(self, name: str, amount: int):
         if not name in self.catalog:
             raise Exception(ShopCart.item_not_in_catalog_message_error())
-
-        if self.contains_item(name):
-            self.item[name] += amount
-        else:
-            self.item[name] = amount
-
+        self.item.add_with_amount(name, amount)
         return self
 
     def contains_item(self, name: str) -> bool:
-        return name in self.item
+        return self.item.contains(name)
 
     def list_items(self) -> List[Tuple[str, int]]:
-        return list(self.item.items())
+        return list(self.item.list_items())

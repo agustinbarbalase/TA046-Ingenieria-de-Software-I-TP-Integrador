@@ -14,3 +14,9 @@ class Bag:
 
     def amount_of(self, item: str) -> int:
         return self.items.get(item, 0)
+
+    def add_with_amount(self, item: str, amount: int) -> None:
+        self.items[item] = self.items.get(item, 0) + amount
+
+    def list_items(self) -> list:
+        return list(self.items.items())
