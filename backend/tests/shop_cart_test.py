@@ -35,7 +35,7 @@ class ShopCartTest(unittest.TestCase):
         self.assertTrue(self.cart.contains_item(self.item_name_one))
         self.assertTrue(self.cart.contains_item(self.item_name_two))
 
-    def test04_add_non_existing_cart_in_catalog_raises_error(self):
+    def test04_add_non_existing_item_in_catalog_raises_error(self):
         with self.assertRaises(Exception) as context:
             self.cart.add_item(self.item_non_catalog, 1)
 

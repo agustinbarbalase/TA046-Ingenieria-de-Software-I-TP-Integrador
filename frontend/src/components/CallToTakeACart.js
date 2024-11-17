@@ -5,9 +5,15 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PropTypes from "prop-types";
 
 
 export default class CallToTakeACart extends Component {
+
+    static propTypes = {
+        onTakeACartDo: PropTypes.func.isRequired,
+    };
+
     render() {
         return <Box
             sx={{
@@ -54,7 +60,7 @@ export default class CallToTakeACart extends Component {
             spacing={2}
             justifyContent="center"
         >
-            <Button variant="contained" startIcon={<ShoppingCartIcon/>} onClick={()=> this.props.onActionDo()}>
+            <Button variant="contained" startIcon={<ShoppingCartIcon/>} onClick={()=> this.props.onTakeACartDo()}>
                 Iniciar Pedido
             </Button>
         </Stack>;

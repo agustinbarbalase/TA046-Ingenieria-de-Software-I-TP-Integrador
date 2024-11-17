@@ -24,7 +24,7 @@ export default class TakeACart extends Component {
     };
 
     render() {
-        return <Grid item xs={12} sm={8} md={12} square>
+        return <Grid item xs={12} sm={8} md={12}>
             <Box
                 sx={{
                     my: 8,

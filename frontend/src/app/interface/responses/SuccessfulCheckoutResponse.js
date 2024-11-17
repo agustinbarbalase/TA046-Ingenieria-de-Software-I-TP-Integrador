@@ -1,7 +1,7 @@
 import ApiResponse from "../communication/ApiResponse";
 
 
-export class CreateCartResponse extends ApiResponse {
+export class SuccessfulCheckoutResponse extends ApiResponse {
 
     static understandThis(aRawResponse) {
         const result = aRawResponse.split('|');
@@ -18,4 +18,7 @@ export class CreateCartResponse extends ApiResponse {
         return []
     }
 
+    transactionId(){
+        return this._rawResponse.split('|')[1];
+    }
 }

@@ -15,22 +15,48 @@ class RestInterface:
     def __init__(self, app):
         self.book_app = app
 
+    @classmethod
+    def cant_send_empty_params_message_error(cls):
+        return "Can't send empty params"
+
+    @classmethod
+    def cant_send_request_with_abstent_params_message_error(self):
+        return "Can't sent request with abstent params"
+
     def _return_response(self, closure) -> Response:
         try:
             return closure()
         except Exception as error:
             return Response(f"1|{str(error).upper()}", 422)
 
-    def create_cart(self, user_id: int, password: str) -> Response:
+    def _check_empty_params(self, value: str):
+        if len(value) == 0:
+            raise Exception(RestInterface.cant_send_empty_params_message_error())
+
+    def _check_abstent_params(self, expected_param: str, params: dict[str, str]):
+        if expected_param not in params:
+            raise Exception(
+                RestInterface.cant_send_request_with_abstent_params_message_error()
+            )
+
+    def _validate_params(self, params: dict[str, str], expected_params: list[str]):
+        for expected_param in expected_params:
+            self._check_abstent_params(expected_param, params)
+        for key in params:
+            self._check_empty_params(params[key])
+
+    def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self.book_app.add_user(user_id, password)
+            self._validate_params(params, ["userId", "password"])
+            self.book_app.add_user(params["userId"], params["password"])
             return Response("0|OK", 200)
 
         return self._return_response(closure)
 
-    def list_cart(self, user_id: str) -> Response:
+    def list_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            book_list = self.book_app.get_user_shop_list(user_id)
+            self._validate_params(params, ["userId"])
+            book_list = self.book_app.get_user_shop_list(params["userId"])
             result = ["0"]
 
             for element in book_list:
@@ -41,9 +67,12 @@ class RestInterface:
 
         return self._return_response(closure)
 
-    def add_to_cart(self, user_id: str, isbn: str, books_amount: int) -> Response:
+    def add_to_cart(self, params: dict[str, str]) -> Response:
         def closure():
-            self.book_app.add_book_to_user(user_id, isbn, books_amount)
+            self._validate_params(params, ["userId", "bookIsbn", "bookQuantity"])
+            self.book_app.add_book_to_user(
+                params["userId"], params["bookIsbn"], int(params["bookQuantity"])
+            )
             return Response("0|OK", 200)
 
         return self._return_response(closure)
