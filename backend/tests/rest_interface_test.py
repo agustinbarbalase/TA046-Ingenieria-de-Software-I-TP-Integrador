@@ -246,6 +246,74 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(response.body, "1|EXPIRED CARD")
 
+    def test16(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+
+        card_number = "1234567890123461"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|EMPTY CART")
+
+    def test17(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = ""
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CAN'T SEND EMPTY PARAMS")
+
+    def test18(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CAN'T SENT REQUEST WITH ABSTENT PARAMS")
+
 
 if __name__ == "__main__":
     unittest.main()
