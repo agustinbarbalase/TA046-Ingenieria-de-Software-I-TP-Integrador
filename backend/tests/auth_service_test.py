@@ -19,7 +19,7 @@ class AuthServiceTest(unittest.TestCase):
         self.invalid_user_password = "Edipo"
 
         self.users = {self.user: self.password}
-        self.auth = AuthServiceStub(self.users)
+        self.auth = AuthServiceStub()
 
         self.catalog = set(["9781530959334"])
         self.app = MyBooksApp.with_auth(self.catalog, self.auth)
