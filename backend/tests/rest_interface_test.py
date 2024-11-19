@@ -171,6 +171,81 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test13_user_successfull_checkout(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "0|1234")
+
+    def test14(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "123456789012346"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CARD WITH INVALID NUMBER CAN NOT BE CREATED")
+
+    def test15(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "123456789012346"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CARD WITH INVALID NUMBER CAN NOT BE CREATED")
+
 
 if __name__ == "__main__":
     unittest.main()
