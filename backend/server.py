@@ -45,7 +45,7 @@ class TusLibrosWebServer:
 
         @self.flask_app.route("/checkOutCart", methods=["GET"])
         def check_out_cart():
-            response = self.rest_interface.check_out_cart(request.args.to_dict())
+            response = self.rest_interface.checkout(request.args.to_dict())
             return response.body, response.status_code
 
     def listening_on(self, port: int):

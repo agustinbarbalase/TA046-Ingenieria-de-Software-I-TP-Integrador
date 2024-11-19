@@ -88,8 +88,9 @@ class RestInterface:
         def closure():
             self._validate_params(params, ["userId", "ccn", "cced", "cco"])
             card: Card = self._create_card(params)
+            transaction_id = self.book_app.checkout(params["userId"], card)
             return Response(
-                self.book_app.checkout(params["userId"], card),
+                f"0|{transaction_id}",
                 200,
             )
 
