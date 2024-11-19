@@ -5,8 +5,6 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 from utils.card import Card
 from domain.my_books_app import MyBooksApp
 
-# Regex for ^\d{9}[0-9X]$
-
 
 class Response(NamedTuple):
     body: str
