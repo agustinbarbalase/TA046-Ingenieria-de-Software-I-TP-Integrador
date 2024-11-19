@@ -3,9 +3,9 @@ from domain.auth.auth_service_interface import AuthServiceInterface
 
 class AuthServiceStub(AuthServiceInterface):
 
-    def __init__(self, users: dict[str, str]):
+    def __init__(self):
         super().__init__()
-        self.registered_users = users
+        self.registered_users = {"Alan Turing": "M=(Q,Σ,Γ,s,b,F,δ)"}
 
     @classmethod
     def invalid_user_message_error(cls):
