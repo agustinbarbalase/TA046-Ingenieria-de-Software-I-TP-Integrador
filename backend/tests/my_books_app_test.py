@@ -1,3 +1,4 @@
+from time import sleep
 import sys
 import os
 import unittest
@@ -73,6 +74,21 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one), [(self.item_one, 2)]
         )
+
+    def test08_user_session_is_expired(self):
+        self.app.add_user(self.user_one, "")
+        sleep(4)
+        with self.assertRaises(Exception) as ctx:
+            self.app.get_user_shop_list(self.user_one)
+
+        self.assertEqual(
+            str(ctx.exception), MyBooksApp.user_expired_session_message_error()
+        )
+
+    def test08_user_session_is_not_expired(self):
+        self.app.add_user(self.user_one, "")
+        sleep(1)
+        self.app.get_user_shop_list(self.user_one)
 
 
 if __name__ == "__main__":
