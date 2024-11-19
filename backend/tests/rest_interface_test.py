@@ -231,8 +231,8 @@ class RestInterfaceTest(unittest.TestCase):
         }
 
         self.rest_interface.add_to_cart(params_for_add_to_cart)
-        card_number = "123456789012346"
-        card_expiry = "122025"
+        card_number = "1234567890123461"
+        card_expiry = "122023"
         card_name = self.user_id
 
         check_out_params = {
@@ -244,7 +244,7 @@ class RestInterfaceTest(unittest.TestCase):
 
         response = self.rest_interface.checkout(check_out_params)
 
-        self.assertEqual(response.body, "1|CARD WITH INVALID NUMBER CAN NOT BE CREATED")
+        self.assertEqual(response.body, "1|EXPIRED CARD")
 
 
 if __name__ == "__main__":
