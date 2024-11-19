@@ -76,3 +76,15 @@ class RestInterface:
             return Response("0|OK", 200)
 
         return self._return_response(closure)
+
+    def checkout(self, params: dict[str, str]) -> Response:
+        def closure():
+            self._validate_params(params, ["userId", "ccn", "cced", "cco"])
+            return Response(
+                self.book_app.checkout(
+                    params["userId"], params["ccn"], params["cced"], params["cco"]
+                ),
+                200,
+            )
+
+        return self._return_response(closure)
