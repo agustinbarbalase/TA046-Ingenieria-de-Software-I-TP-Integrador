@@ -1,6 +1,8 @@
 from unittest import TestCase
 from typing import *
 
+from utils.gregorian_month_of_year import GregorianMonthOfYear
+from utils.card import Card
 from domain.my_books_app import MyBooksApp
 
 # Regex for ^\d{9}[0-9X]$
@@ -45,6 +47,11 @@ class RestInterface:
         for key in params:
             self._check_empty_params(params[key])
 
+    def _create_card(self, params: dict[str, str]) -> Card:
+        month = int(params["cced"][:2])
+        year = int(params["cced"][2:])
+        return Card(int(params["ccn"]), GregorianMonthOfYear(month, year))
+
     def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "password"])
@@ -74,5 +81,17 @@ class RestInterface:
                 params["userId"], params["bookIsbn"], int(params["bookQuantity"])
             )
             return Response("0|OK", 200)
+
+        return self._return_response(closure)
+
+    def checkout(self, params: dict[str, str]) -> Response:
+        def closure():
+            self._validate_params(params, ["userId", "ccn", "cced", "cco"])
+            card: Card = self._create_card(params)
+            transaction_id = self.book_app.checkout(params["userId"], card)
+            return Response(
+                f"0|{transaction_id}",
+                200,
+            )
 
         return self._return_response(closure)

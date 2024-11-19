@@ -1,4 +1,8 @@
 from typing import *
+from domain.checkout import Checkout
+
+from domain.postnet.postnet import Postnet
+from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
 
@@ -9,6 +13,7 @@ class MyBooksApp:
         self.users_ids: dict[str, ShopCart] = dict()
         self.catalog: set[str] = catalog
         self.auth = None
+        self.checkout_instance = Checkout(Postnet())
 
     @classmethod
     def with_auth(cls, catalog: set[str], auth: AuthService):
@@ -56,3 +61,8 @@ class MyBooksApp:
         self.user_doesnot_exist_validation(user_id)
         self.cant_add_non_positive_amount_of_books_validation(amount)
         return self.users_ids[user_id].add_item(isbn, amount)
+
+    def checkout(self, user_id: str, card: Card):
+        self.user_doesnot_exist_validation(user_id)
+        user_cart = self.users_ids.get(user_id)
+        return self.checkout_instance.check_out(user_cart, card)

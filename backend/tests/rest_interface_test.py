@@ -171,6 +171,149 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    def test13_user_successfull_checkout(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "0|1234")
+
+    def test14_checkout_using_invalid_card_number(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "123456789012346"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CARD WITH INVALID NUMBER CAN NOT BE CREATED")
+
+    def test15_checkout_using_expired_card(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123461"
+        card_expiry = "122023"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|EXPIRED CARD")
+
+    def test16_checkout_with_empty_card(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+
+        card_number = "1234567890123461"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|EMPTY CART")
+
+    def test17_checkout_empty_card_name(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = ""
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CAN'T SEND EMPTY PARAMS")
+
+    def test18_misssing_parameter_checking_out(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+        }
+
+        response = self.rest_interface.checkout(check_out_params)
+
+        self.assertEqual(response.body, "1|CAN'T SENT REQUEST WITH ABSTENT PARAMS")
+
 
 if __name__ == "__main__":
     unittest.main()
