@@ -83,6 +83,7 @@ class MyBooksApp:
     def add_book_to_user(self, user_id: str, isbn: str, amount: int):
         self.user_doesnot_exist_validation(user_id)
         self.cant_add_non_positive_amount_of_books_validation(amount)
+        self.validate_user_expired_session(user_id)
         user_data = self.users_ids.get(user_id)
         if not user_data:
             raise Exception()
@@ -90,6 +91,7 @@ class MyBooksApp:
 
     def checkout(self, user_id: str, card: Card):
         self.user_doesnot_exist_validation(user_id)
+        self.validate_user_expired_session(user_id)
         user_data = self.users_ids.get(user_id)
         if not user_data:
             raise Exception()
