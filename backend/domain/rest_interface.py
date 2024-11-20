@@ -1,3 +1,4 @@
+from datetime import datetime
 from unittest import TestCase
 from typing import *
 
@@ -50,18 +51,18 @@ class RestInterface:
         year = int(params["cced"][2:])
         return Card(int(params["ccn"]), GregorianMonthOfYear(month, year))
 
-    def create_cart(self, params: dict[str, str]) -> Response:
+    def create_cart(self, params: dict[str, str], current_time: datetime) -> Response:
         def closure():
             self._validate_params(params, ["userId", "password"])
-            self.book_app.add_user(params["userId"], params["password"])
+            self.book_app.add_user(params["userId"], params["password"], current_time)
             return Response("0|OK", 200)
 
         return self._return_response(closure)
 
-    def list_cart(self, params: dict[str, str]) -> Response:
+    def list_cart(self, params: dict[str, str], current_time: datetime) -> Response:
         def closure():
             self._validate_params(params, ["userId"])
-            book_list = self.book_app.get_user_shop_list(params["userId"])
+            book_list = self.book_app.get_user_shop_list(params["userId"], current_time)
             result = ["0"]
 
             for element in book_list:
@@ -72,21 +73,26 @@ class RestInterface:
 
         return self._return_response(closure)
 
-    def add_to_cart(self, params: dict[str, str]) -> Response:
+    def add_to_cart(self, params: dict[str, str], current_time: datetime) -> Response:
         def closure():
             self._validate_params(params, ["userId", "bookIsbn", "bookQuantity"])
             self.book_app.add_book_to_user(
-                params["userId"], params["bookIsbn"], int(params["bookQuantity"])
+                params["userId"],
+                params["bookIsbn"],
+                int(params["bookQuantity"]),
+                current_time,
             )
             return Response("0|OK", 200)
 
         return self._return_response(closure)
 
-    def checkout(self, params: dict[str, str]) -> Response:
+    def checkout(self, params: dict[str, str], current_time: datetime) -> Response:
         def closure():
             self._validate_params(params, ["userId", "ccn", "cced", "cco"])
             card: Card = self._create_card(params)
-            transaction_id = self.book_app.checkout(params["userId"], card)
+            transaction_id = self.book_app.checkout(
+                params["userId"], card, current_time
+            )
             return Response(
                 f"0|{transaction_id}",
                 200,
