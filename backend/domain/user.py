@@ -1,5 +1,7 @@
 from copy import copy
 from datetime import datetime
+from domain.checkout import Checkout
+from utils.card import Card
 from utils.bag import Bag
 from domain.shop_cart import ShopCart
 
@@ -24,3 +26,6 @@ class User:
 
     def user_cart(self):
         return copy(self.cart)
+
+    def check_out_user(self, checkout: Checkout, card: Card):
+        return checkout.check_out(self.cart, card)

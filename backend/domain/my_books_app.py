@@ -98,5 +98,4 @@ class MyBooksApp:
         if user is None:
             self.user_does_not_exist_error()
         self.validate_user_expired_session(user_id)
-        user_shop_cart = user.user_cart()
-        return self.checkout_instance.check_out(user_shop_cart, card)
+        return user.check_out_user(self.checkout_instance, card)
