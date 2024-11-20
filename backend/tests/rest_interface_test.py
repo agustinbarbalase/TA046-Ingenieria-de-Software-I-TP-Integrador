@@ -147,7 +147,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.assertEqual(response.status_code, 422)
 
     def test11_validate_abstent_params_in_list_cart(self):
-        params_for_list_cart = {}
+        params_for_list_cart: dict[str, str] = {}
 
         response = self.rest_interface.list_cart(params_for_list_cart)
 

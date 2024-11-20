@@ -26,9 +26,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-      # - id: type-check
-      #   name: Type format for backend
-      #   entry: mypy .
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: true
+      - id: type-check
+        name: Type format for backend
+        entry: mypy .
+        language: system
+        pass_filenames: false
+        always_run: true

@@ -6,7 +6,7 @@ from domain.shop_cart import ShopCart
 
 class User:
 
-    def __init__(self, catalog: Bag, expiration_date: datetime):
+    def __init__(self, catalog: set[str], expiration_date: datetime):
         self.cart: ShopCart = ShopCart(catalog)
         self.expiration_date = expiration_date
 
