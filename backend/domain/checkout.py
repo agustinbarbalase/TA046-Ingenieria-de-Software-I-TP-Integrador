@@ -1,4 +1,6 @@
 from datetime import datetime
+from domain.shop_cart import ShopCart
+from utils.card import Card
 from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
@@ -23,7 +25,7 @@ class Checkout:
         if card.is_expired(GregorianMonthOfYear.current()):
             raise Exception(Checkout.expired_card_message_error())
 
-    def check_out(self, cart, card):
+    def check_out(self, cart: ShopCart, card: Card):
         self._check_expired(card)
         self._check_empty_cart(cart)
         return self.postnet.return_ticket(cart, card)

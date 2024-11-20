@@ -1,3 +1,4 @@
+from datetime import datetime
 import sys
 import os
 import unittest
@@ -23,10 +24,15 @@ class AuthServiceTest(unittest.TestCase):
 
         self.catalog = set(["9781530959334"])
         self.app = MyBooksApp.with_auth(self.catalog, self.auth)
+        self.user_creation_date = datetime(2018, 12, 9, 0, 0)
+        self.user_action = datetime(2018, 12, 9, 0, 1)
+        self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
 
     def test01_invalid_user_cannot_create_a_cart(self):
         with self.assertRaises(Exception) as context:
-            self.app.add_user(self.invalid_user, self.invalid_user_password)
+            self.app.add_user(
+                self.invalid_user, self.invalid_user_password, self.user_creation_date
+            )
 
         self.assertEqual(
             str(context.exception), AuthServiceStub.invalid_user_message_error()
@@ -34,12 +40,12 @@ class AuthServiceTest(unittest.TestCase):
 
     def test02_valid_user_with_invalid_password_cannot_create_a_cart(self):
         with self.assertRaises(Exception) as context:
-            self.app.add_user(self.user, self.invalid_password)
+            self.app.add_user(self.user, self.invalid_password, self.user_creation_date)
 
         self.assertEqual(
             str(context.exception), AuthServiceStub.invalid_password_message_error()
         )
 
     def test03_valid_user_can_create_and_list_cart(self):
-        self.app.add_user(self.user, self.password)
-        self.assertEqual(self.app.get_user_shop_list(self.user), [])
+        self.app.add_user(self.user, self.password, self.user_creation_date)
+        self.assertEqual(self.app.get_user_shop_list(self.user, self.user_action), [])

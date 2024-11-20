@@ -50,7 +50,7 @@ jobs:
           mypy .
   run-with-coverage:
     runs-on: ubuntu-latest
-    needs: [run-tests, type-check]
+    needs: [run-tests]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

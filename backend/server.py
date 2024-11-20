@@ -1,3 +1,4 @@
+from datetime import datetime
 import sys
 from flask import Flask, request
 from typing import *
@@ -30,22 +31,30 @@ class TusLibrosWebServer:
 
         @self.flask_app.route("/createCart", methods=["GET"])
         def create_cart():
-            response = self.rest_interface.create_cart(request.args.to_dict())
+            response = self.rest_interface.create_cart(
+                request.args.to_dict(), datetime.now()
+            )
             return response.body, response.status_code
 
         @self.flask_app.route("/listCart", methods=["GET"])
         def list_cart():
-            response = self.rest_interface.list_cart(request.args.to_dict())
+            response = self.rest_interface.list_cart(
+                request.args.to_dict(), datetime.now()
+            )
             return response.body, response.status_code
 
         @self.flask_app.route("/addToCart", methods=["GET"])
         def add_to_cart():
-            response = self.rest_interface.add_to_cart(request.args.to_dict())
+            response = self.rest_interface.add_to_cart(
+                request.args.to_dict(), datetime.now()
+            )
             return response.body, response.status_code
 
         @self.flask_app.route("/checkOutCart", methods=["GET"])
         def check_out_cart():
-            response = self.rest_interface.checkout(request.args.to_dict())
+            response = self.rest_interface.checkout(
+                request.args.to_dict(), datetime.now()
+            )
             return response.body, response.status_code
 
     def listening_on(self, port: int):
