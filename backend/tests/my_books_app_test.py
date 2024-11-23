@@ -156,6 +156,20 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
 
+    def test14_shopping_the_same_book_counts_in_a_single_registration(self):
+        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
+        self.app.checkout(self.user_one, self.valid_card, self.user_action)
+
+        self.app.add_book_to_user(self.user_one, self.item_one, 4, self.user_action)
+        self.app.checkout(self.user_one, self.valid_card, self.user_action)
+
+        history = Bag()
+        history.add_with_amount(self.item_one, 5)
+        list_items = history.list_items()
+
+        self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
+
 
 if __name__ == "__main__":
     unittest.main()

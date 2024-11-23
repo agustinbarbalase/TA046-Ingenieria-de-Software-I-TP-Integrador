@@ -13,6 +13,7 @@ class User:
         self.cart: ShopCart = ShopCart(catalog)
         self.expiration_date = expiration_date
         self.shop_history: Bag = Bag()
+        self.succesful_transactions: int = 0
 
     def is_expired(self, current_date: datetime):
         return self.expiration_date < current_date
@@ -34,9 +35,10 @@ class User:
         shop_ticket = checkout.check_out(self.cart, card)
         self.shop_history.add_list(self.cart.list_items())
         self.cart = ShopCart(self.cart.catalog)
+        self.succesful_transactions += 1
         return shop_ticket
 
     def shop_history_list(self):
-        if len(self.shop_history) < 2:
+        if self.succesful_transactions < 2:
             return []
         return self.shop_history.list_items()
