@@ -3,6 +3,7 @@ import sys
 import os
 import unittest
 
+from utils.bag import Bag
 from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -148,13 +149,12 @@ class MyBooksAppTest(unittest.TestCase):
         self.app.add_book_to_user(self.user_one, self.item_two, 1, self.user_action)
         self.app.checkout(self.user_one, self.valid_card, self.user_action)
 
-        self.assertEqual(
-            self.app.user_shop_history(self.user_one),
-            [
-                [(self.item_one, 1)],
-                [(self.item_two, 1)],
-            ],
-        )
+        history = Bag()
+        history.add_with_amount(self.item_one, 1)
+        history.add_with_amount(self.item_two, 1)
+        list_items = history.list_items()
+
+        self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
 
 
 if __name__ == "__main__":

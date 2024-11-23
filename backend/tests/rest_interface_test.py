@@ -16,7 +16,8 @@ class RestInterfaceTest(unittest.TestCase):
         self.password = "30-04-1777"
 
         self.bookIsbn = "9780387862545"
-        self.catalog = set([self.bookIsbn])
+        self.bookIsbn2 = "9780387862546"
+        self.catalog = set([self.bookIsbn, self.bookIsbn2])
 
         self.app = MyBooksApp(self.catalog)
         self.rest_interface = RestInterface(self.app)
@@ -330,6 +331,56 @@ class RestInterfaceTest(unittest.TestCase):
         response = self.rest_interface.checkout(check_out_params, self.user_action)
 
         self.assertEqual(response.body, "1|CAN'T SENT REQUEST WITH ABSTENT PARAMS")
+
+    def test19_shop_cart_list(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params, self.user_creation_date)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params, self.user_action)
+
+        self.rest_interface.create_cart(create_card_params, self.user_creation_date)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.bookIsbn2,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params, self.user_action)
+
+        response = self.rest_interface.user_shop_history(
+            {"userId": self.user_id, "password": self.password}
+        )
+
+        self.assertEqual(response.body, f"0|{self.bookIsbn}|{1}|{self.bookIsbn2}|{1}")
 
 
 if __name__ == "__main__":

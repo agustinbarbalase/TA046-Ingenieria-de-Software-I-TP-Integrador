@@ -20,3 +20,10 @@ class Bag:
 
     def list_items(self) -> list:
         return list(self.items.items())
+
+    def __len__(self):
+        return len(self.items)
+
+    def add_list(self, items: list):
+        for item in items:
+            self.add_with_amount(item[0], item[1])

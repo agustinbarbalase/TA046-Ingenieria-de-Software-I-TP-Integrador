@@ -12,7 +12,7 @@ class User:
     def __init__(self, catalog: set[str], expiration_date: datetime):
         self.cart: ShopCart = ShopCart(catalog)
         self.expiration_date = expiration_date
-        self.shop_history: List[List[tuple[str, int]]] = []
+        self.shop_history: Bag = Bag()
 
     def is_expired(self, current_date: datetime):
         return self.expiration_date < current_date
@@ -32,9 +32,11 @@ class User:
     def check_out_user(self, checkout: Checkout, card: Card):
         ## To do: revisar que pasa cuando la compra no sea correcta
         shop_ticket = checkout.check_out(self.cart, card)
-        self.shop_history.append(self.cart.list_items())
+        self.shop_history.add_list(self.cart.list_items())
         self.cart = ShopCart(self.cart.catalog)
         return shop_ticket
 
     def shop_history_list(self):
-        return self.shop_history if len(self.shop_history) >= 2 else []
+        if len(self.shop_history) < 2:
+            return []
+        return self.shop_history.list_items()

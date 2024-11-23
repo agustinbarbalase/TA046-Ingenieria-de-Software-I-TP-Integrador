@@ -99,3 +99,15 @@ class RestInterface:
             )
 
         return self._return_response(closure)
+
+    def user_shop_history(self, params: dict[str, str]) -> Response:
+        def closure():
+            self._validate_params(params, ["userId", "password"])
+            result = ["0"]
+            shop_history = self.book_app.user_shop_history(params["userId"])
+            for element in shop_history:
+                result.append(element[0])
+                result.append(str(element[1]))
+            return Response("|".join(result) + ("|" if len(result) == 1 else ""), 200)
+
+        return self._return_response(closure)
