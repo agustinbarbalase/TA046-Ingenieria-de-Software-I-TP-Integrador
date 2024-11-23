@@ -101,3 +101,9 @@ class MyBooksApp:
             self.user_does_not_exist_error()
         self.validate_user_expired_session(user_id, current_time)
         return user.check_out_user(self.checkout_instance, card)
+
+    def user_shop_history(self, user_id: str):
+        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
+        if user is None:
+            self.user_does_not_exist_error()
+        return user.shop_history_list()

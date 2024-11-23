@@ -136,6 +136,26 @@ class MyBooksAppTest(unittest.TestCase):
             str(ctx.exception), MyBooksApp.user_expired_session_message_error()
         )
 
+    def test12_new_user_shows_empty_buy_history(self):
+        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.assertEqual(self.app.user_shop_history(self.user_one), [])
+
+    def test13_after_shopping_two_times_the_user_has_shopping_history(self):
+        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
+        self.app.checkout(self.user_one, self.valid_card, self.user_action)
+
+        self.app.add_book_to_user(self.user_one, self.item_two, 1, self.user_action)
+        self.app.checkout(self.user_one, self.valid_card, self.user_action)
+
+        self.assertEqual(
+            self.app.user_shop_history(self.user_one),
+            [
+                [(self.item_one, 1)],
+                [(self.item_two, 1)],
+            ],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
