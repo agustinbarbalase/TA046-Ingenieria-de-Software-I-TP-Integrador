@@ -13,8 +13,12 @@ class Response(NamedTuple):
 
 
 class RestInterface:
+    """Initialization"""
+
     def __init__(self, app):
         self.book_app = app
+
+    """Error messages"""
 
     @classmethod
     def cant_send_empty_params_message_error(cls):
@@ -29,6 +33,8 @@ class RestInterface:
             return closure()
         except Exception as error:
             return Response(f"1|{str(error).upper()}", 422)
+
+    """Private - validations"""
 
     def _check_empty_params(self, value: str):
         if len(value) == 0:
@@ -50,6 +56,8 @@ class RestInterface:
         month = int(params["cced"][:2])
         year = int(params["cced"][2:])
         return Card(int(params["ccn"]), GregorianMonthOfYear(month, year))
+
+    """Main protocol"""
 
     def create_cart(self, params: dict[str, str], current_time: datetime) -> Response:
         def closure():

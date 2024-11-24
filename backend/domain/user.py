@@ -8,12 +8,15 @@ from domain.shop_cart import ShopCart
 
 
 class User:
+    """Initialization"""
 
     def __init__(self, catalog: set[str], expiration_date: datetime):
         self.cart: ShopCart = ShopCart(catalog)
         self.expiration_date = expiration_date
         self.shop_history: Bag = Bag()
         self.succesful_transactions: int = 0
+
+    """Main protocol"""
 
     def is_expired(self, current_date: datetime):
         return self.expiration_date < current_date

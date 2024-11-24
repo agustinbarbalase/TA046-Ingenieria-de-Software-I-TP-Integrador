@@ -13,6 +13,7 @@ SESSION_DURATION_IN_SECONDS = 60
 
 
 class MyBooksApp:
+    """Initialization"""
 
     def __init__(self, catalog: set[str]):
         self.users_ids: dict[str, User] = dict()
@@ -27,6 +28,8 @@ class MyBooksApp:
     def initialize_with_auth(self, auth):
         self.auth = auth
         return self
+
+    """Error messages"""
 
     @classmethod
     def user_doesnot_exist_message_error(self):
@@ -47,18 +50,22 @@ class MyBooksApp:
         if not user_id in self.users_ids:
             self.user_does_not_exist_error()
 
-    def cant_add_non_positive_amount_of_books_validation(self, amount: int):
+    """Private - validations"""
+
+    def _cant_add_non_positive_amount_of_books_validation(self, amount: int):
         if amount <= 0:
             raise Exception(
                 MyBooksApp.cant_add_non_positive_amount_of_books_message_error()
             )
 
-    def validate_user_expired_session(self, user_id: str, current_time: datetime):
+    def _validate_user_expired_session(self, user_id: str, current_time: datetime):
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
         if user.is_expired(current_time):
             raise Exception(MyBooksApp.user_expired_session_message_error())
+
+    """Main protocol"""
 
     def add_user(self, user_id: str, password: str, current: datetime):
         if self.auth:
@@ -81,7 +88,7 @@ class MyBooksApp:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
-        self.validate_user_expired_session(user_id, current_time)
+        self._validate_user_expired_session(user_id, current_time)
         user = self.users_ids.get(user_id)
         return user.get_user_shop_list()
 
@@ -91,15 +98,15 @@ class MyBooksApp:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
-        self.cant_add_non_positive_amount_of_books_validation(amount)
-        self.validate_user_expired_session(user_id, current_time)
+        self._cant_add_non_positive_amount_of_books_validation(amount)
+        self._validate_user_expired_session(user_id, current_time)
         return user.add_book(isbn, amount)
 
     def checkout(self, user_id: str, card: Card, current_time: datetime):
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
-        self.validate_user_expired_session(user_id, current_time)
+        self._validate_user_expired_session(user_id, current_time)
         return user.check_out_user(self.checkout_instance, card)
 
     def user_shop_history(self, user_id: str):
