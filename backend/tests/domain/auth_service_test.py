@@ -20,10 +20,10 @@ class AuthServiceTest(unittest.TestCase):
         self.invalid_user_password = "Edipo"
 
         self.users = {self.user: self.password}
-        self.auth = AuthServiceStub()
+        self.auth = AuthServiceStub.with_users({self.user: self.password})
 
         self.catalog = set(["9781530959334"])
-        self.app = MyBooksApp.with_auth(self.catalog, self.auth)
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)

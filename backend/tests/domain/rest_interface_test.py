@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from domain.rest_interface import RestInterface
 from domain.my_books_app import MyBooksApp
+from tests.stub.auth_service_stub import AuthServiceStub
 
 
 class RestInterfaceTest(unittest.TestCase):
@@ -19,8 +20,11 @@ class RestInterfaceTest(unittest.TestCase):
         self.bookIsbn2 = "9780387862546"
         self.catalog = set([self.bookIsbn, self.bookIsbn2])
 
-        self.app = MyBooksApp(self.catalog)
+        self.auth = AuthServiceStub.with_users({self.user_id: self.password})
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
+
         self.rest_interface = RestInterface.with_app(self.app)
+
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)

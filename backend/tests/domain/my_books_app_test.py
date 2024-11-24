@@ -10,6 +10,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.card import Card
 from domain.my_books_app import MyBooksApp
+from tests.stub.auth_service_stub import AuthServiceStub
 
 
 class MyBooksAppTest(unittest.TestCase):
@@ -25,7 +26,10 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.invalid_item = "50 sombras de Grey"
 
-        self.app = MyBooksApp(self.catalog)
+        self.auth = AuthServiceStub.with_users(
+            {self.user_one: "O(|E|log|V|)", self.user_two: "M=(Q,Σ,Γ,s,b,F,δ)"}
+        )
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
 
         self.valid_card = Card(1234567891234567, GregorianMonthOfYear(11, 2028))
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)

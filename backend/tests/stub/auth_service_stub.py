@@ -2,10 +2,16 @@ from domain.auth.auth_service_interface import AuthServiceInterface
 
 
 class AuthServiceStub(AuthServiceInterface):
+    """Initialization"""
 
-    def __init__(self):
-        super().__init__()
-        self.registered_users = {"Alan Turing": "M=(Q,Σ,Γ,s,b,F,δ)"}
+    def __init__(self, registered_users: dict[str, str]):
+        self.registered_users = registered_users
+
+    @classmethod
+    def with_users(cls, registered_users: dict[str, str]):
+        return cls(registered_users)
+
+    """Error messages"""
 
     @classmethod
     def invalid_user_message_error(cls):
@@ -14,6 +20,8 @@ class AuthServiceStub(AuthServiceInterface):
     @classmethod
     def invalid_password_message_error(cls):
         return "Invalid password"
+
+    """Main protocol"""
 
     def autenticate_user(self, user_id: str, password: str):
         if not user_id in self.registered_users:

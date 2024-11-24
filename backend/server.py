@@ -7,23 +7,24 @@ from flask_cors import CORS
 
 from domain.my_books_app import MyBooksApp
 from domain.rest_interface import RestInterface
+from domain.auth.auth_service import AuthService
 
 
 class TusLibrosWebServer:
     def __init__(self):
         self.flask_app = Flask(__name__)
-        self.app = MyBooksApp(
-            set(
-                [
-                    "9780137314942",
-                    "9780321278654",
-                    "9780201710915",
-                    "9780321125217",
-                    "9780735619654",
-                    "9780321146533",
-                ]
-            )
+        self.auth = AuthService.with_users({})
+        self.catalog = set(
+            [
+                "9780137314942",
+                "9780321278654",
+                "9780201710915",
+                "9780321125217",
+                "9780735619654",
+                "9780321146533",
+            ]
         )
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
         self.rest_interface = RestInterface.with_app(self.app)
         CORS(
             self.flask_app, origins=["http://localhost:3000"], supports_credentials=True
