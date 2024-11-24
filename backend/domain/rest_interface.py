@@ -62,7 +62,7 @@ class RestInterface:
         month = int(params["cced"][:2])
         year = int(params["cced"][2:])
         return Card.with_number_and_month_of_year(
-            int(params["ccn"]), GregorianMonthOfYear(month, year)
+            int(params["ccn"]), GregorianMonthOfYear.with_month_and_year(month, year)
         )
 
     """Main protocol"""

@@ -5,6 +5,10 @@ class GregorianMonthOfYear:
     """Instance creation - class"""
 
     @classmethod
+    def with_month_and_year(cls, month: int, year: int):
+        return cls(month, year)
+
+    @classmethod
     def current(cls):
         today = dt.now()
         return cls(today.month, today.year)

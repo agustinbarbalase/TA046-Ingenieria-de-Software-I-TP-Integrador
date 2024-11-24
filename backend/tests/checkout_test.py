@@ -14,11 +14,18 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 class CheckOutTest(unittest.TestCase):
 
     def setUp(self):
+        self.valid_gregorian_month_of_year = GregorianMonthOfYear.with_month_and_year(
+            11, 2028
+        )
+        self.expired_gregorian_month_of_year = GregorianMonthOfYear.with_month_and_year(
+            11, 2023
+        )
+
         self.valid_card = Card.with_number_and_month_of_year(
-            1234567891234567, GregorianMonthOfYear(11, 2028)
+            1234567891234567, self.valid_gregorian_month_of_year
         )
         self.expired_card = Card.with_number_and_month_of_year(
-            1234567891234567, GregorianMonthOfYear(11, 2023)
+            1234567891234567, self.expired_gregorian_month_of_year
         )
 
         self.catalog = {"The Lord of the rings": "π"}
