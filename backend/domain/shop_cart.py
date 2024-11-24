@@ -6,12 +6,12 @@ from utils.bag import Bag
 class ShopCart:
     """Initialization"""
 
-    def __init__(self, catalog: set[str]):
+    def __init__(self, catalog: dict[str, str]):
         self.item: Bag = Bag()
-        self.catalog: set[str] = catalog
+        self.catalog: dict[str, str] = catalog
 
     @classmethod
-    def with_catalog(cls, catalog: set[str]):
+    def with_catalog(cls, catalog: dict[str, str]):
         return cls(catalog)
 
     """Error messages"""

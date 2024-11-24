@@ -10,7 +10,7 @@ from domain.shop_cart import ShopCart
 class User:
     """Initialization"""
 
-    def __init__(self, catalog: set[str], expiration_date: datetime):
+    def __init__(self, catalog: dict[str, str], expiration_date: datetime):
         self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
         self.shop_history: Bag = Bag()

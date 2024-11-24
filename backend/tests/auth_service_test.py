@@ -22,7 +22,7 @@ class AuthServiceTest(unittest.TestCase):
         self.users = {self.user: self.password}
         self.auth = AuthServiceStub.with_users({self.user: self.password})
 
-        self.catalog = set(["9781530959334"])
+        self.catalog = {"9781530959334": "π"}
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)

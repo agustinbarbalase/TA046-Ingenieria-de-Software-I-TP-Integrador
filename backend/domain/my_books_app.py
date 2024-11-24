@@ -15,14 +15,14 @@ SESSION_DURATION_IN_SECONDS = 60
 class MyBooksApp:
     """Initialization"""
 
-    def __init__(self, catalog: set[str], auth: AuthServiceInterface):
+    def __init__(self, catalog: dict[str, str], auth: AuthServiceInterface):
         self.users_ids: dict[str, User] = dict()
-        self.catalog: set[str] = catalog
+        self.catalog: dict[str, str] = catalog
         self.auth = auth
         self.checkout_instance = Checkout.with_postnet(Postnet())
 
     @classmethod
-    def with_catalog_and_auth(cls, catalog: set[str], auth: AuthServiceInterface):
+    def with_catalog_and_auth(cls, catalog: dict[str, str], auth: AuthServiceInterface):
         return cls(catalog, auth)
 
     """Error messages"""

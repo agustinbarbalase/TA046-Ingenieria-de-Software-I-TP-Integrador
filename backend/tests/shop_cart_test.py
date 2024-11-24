@@ -13,7 +13,7 @@ class ShopCartTest(unittest.TestCase):
         self.item_name_one = "Cincuenta sombras de Alan key"
         self.item_name_two = "El secreto de su codigo encapsulado"
 
-        self.catalog = set([self.item_name_one, self.item_name_two])
+        self.catalog = {self.item_name_one: "π", self.item_name_two: "e"}
         self.item_non_catalog = "1984"
 
         self.cart = ShopCart.with_catalog(self.catalog)

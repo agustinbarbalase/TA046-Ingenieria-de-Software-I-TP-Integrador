@@ -24,7 +24,7 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.item_one = "Brand new world"
         self.item_two = "Animal Farm"
-        self.catalog = set([self.item_one, self.item_two])
+        self.catalog = {self.item_one: "π", self.item_two: "e"}
 
         self.invalid_item = "50 sombras de Grey"
 
