@@ -13,19 +13,13 @@ SESSION_DURATION_IN_SECONDS = 60
 
 
 class MyBooksApp:
-    """Initialization"""
-
-    def __init__(self, catalog: dict[str, str], auth: AuthServiceInterface):
-        self.users_ids: dict[str, User] = dict()
-        self.catalog: dict[str, str] = catalog
-        self.auth = auth
-        self.checkout_instance = Checkout.with_postnet(Postnet())
+    """Instance creation - class"""
 
     @classmethod
     def with_catalog_and_auth(cls, catalog: dict[str, str], auth: AuthServiceInterface):
         return cls(catalog, auth)
 
-    """Error messages"""
+    """Error messages - class"""
 
     @classmethod
     def user_doesnot_exist_message_error(self):
@@ -38,6 +32,14 @@ class MyBooksApp:
     @classmethod
     def user_expired_session_message_error(cls):
         return "User session expired"
+
+    """Initialization"""
+
+    def __init__(self, catalog: dict[str, str], auth: AuthServiceInterface):
+        self.users_ids: dict[str, User] = dict()
+        self.catalog: dict[str, str] = catalog
+        self.auth = auth
+        self.checkout_instance = Checkout.with_postnet(Postnet())
 
     def user_does_not_exist_error(self):
         raise Exception(MyBooksApp.user_doesnot_exist_message_error())

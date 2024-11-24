@@ -6,16 +6,13 @@ from domain.postnet.postnet_interface import PostnetInterface
 
 
 class Checkout:
-    """Initialization"""
-
-    def __init__(self, postnet):
-        self.postnet = postnet
+    """Instance creation - class"""
 
     @classmethod
     def with_postnet(cls, postnet: PostnetInterface):
         return cls(postnet)
 
-    """Error messages"""
+    """Error messages - class"""
 
     @classmethod
     def empty_cart_message_error(cls):
@@ -24,6 +21,11 @@ class Checkout:
     @classmethod
     def expired_card_message_error(cls):
         return "Expired card"
+
+    """Initialization"""
+
+    def __init__(self, postnet):
+        self.postnet = postnet
 
     """Private - checks"""
 

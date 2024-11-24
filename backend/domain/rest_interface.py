@@ -13,16 +13,13 @@ class Response(NamedTuple):
 
 
 class RestInterface:
-    """Initialization"""
-
-    def __init__(self, app):
-        self.book_app = app
+    """Instance creation - class"""
 
     @classmethod
     def with_app(cls, app):
         return cls(app)
 
-    """Error messages"""
+    """Error messages - class"""
 
     @classmethod
     def cant_send_empty_params_message_error(cls):
@@ -31,6 +28,11 @@ class RestInterface:
     @classmethod
     def cant_send_request_with_abstent_params_message_error(self):
         return "Can't sent request with abstent params"
+
+    """Initialization"""
+
+    def __init__(self, app):
+        self.book_app = app
 
     def _return_response(self, closure) -> Response:
         try:
