@@ -1,4 +1,10 @@
 class Bag:
+    """Instance creation - class"""
+
+    @classmethod
+    def new(cls):
+        return cls()
+
     """Initialization"""
 
     def __init__(self):

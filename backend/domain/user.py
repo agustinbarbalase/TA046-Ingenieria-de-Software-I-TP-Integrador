@@ -13,7 +13,7 @@ class User:
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):
         self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
-        self.shop_history: Bag = Bag()
+        self.shop_history: Bag = Bag.new()
         self.succesful_transactions: int = 0
 
     """Main protocol"""

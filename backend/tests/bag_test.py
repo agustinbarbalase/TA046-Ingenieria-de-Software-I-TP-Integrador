@@ -15,7 +15,7 @@ class BagTest(unittest.TestCase):
         self.knife_item = "knife"
 
     def test01_bag_is_empty(self):
-        bag = Bag()
+        bag = Bag.new()
         self.assertTrue(bag.is_empty())
 
     def test02_bag_can_add_item(self):

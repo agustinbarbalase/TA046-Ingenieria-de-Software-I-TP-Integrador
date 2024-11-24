@@ -19,7 +19,7 @@ class ShopCart:
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str]):
-        self.item: Bag = Bag()
+        self.item: Bag = Bag.new()
         self.catalog: dict[str, str] = catalog
 
     """Main protocol"""
