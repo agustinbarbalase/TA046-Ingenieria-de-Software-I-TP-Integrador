@@ -1,7 +1,10 @@
 class Bag:
+    """Initialization"""
 
     def __init__(self):
         self.items = dict()
+
+    """Main protocol"""
 
     def is_empty(self):
         return len(self.items) == 0

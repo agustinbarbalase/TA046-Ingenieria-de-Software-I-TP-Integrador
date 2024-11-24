@@ -3,6 +3,7 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class Card:
+    """Initialization"""
 
     def __init__(self, number: int, gregorian_month_of_year):
         if not re.match(r"^\d{16}$", str(number)):
@@ -11,9 +12,13 @@ class Card:
         self.number = number
         self.gregorian_month_of_year = gregorian_month_of_year
 
+    """Error messages"""
+
     @classmethod
     def cannot_create_card_with_invalid_number_message_error(cls):
         return "Card with invalid number can not be created"
+
+    """Main protocol"""
 
     def is_expired(self, date):
         return self.gregorian_month_of_year <= date

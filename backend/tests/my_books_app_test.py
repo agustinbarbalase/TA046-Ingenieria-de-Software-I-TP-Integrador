@@ -17,7 +17,9 @@ class MyBooksAppTest(unittest.TestCase):
 
     def setUp(self):
         self.user_one = "Dijkstra"
+        self.password_one = "O(|E|log|V|)"
         self.user_two = "Turing"
+        self.password_two = "M=(Q,Σ,Γ,s,b,F,δ)"
         self.non_existent_user = "Alan Kay"
 
         self.item_one = "Brand new world"
@@ -27,7 +29,7 @@ class MyBooksAppTest(unittest.TestCase):
         self.invalid_item = "50 sombras de Grey"
 
         self.auth = AuthServiceStub.with_users(
-            {self.user_one: "O(|E|log|V|)", self.user_two: "M=(Q,Σ,Γ,s,b,F,δ)"}
+            {self.user_one: self.password_one, self.user_two: self.password_two}
         )
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
 
@@ -37,19 +39,19 @@ class MyBooksAppTest(unittest.TestCase):
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
 
     def test01_can_create_cart_for_user(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.assertTrue(self.app.has_user(self.user_one))
 
     def test02_user_can_add_items_to_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
         self.assertTrue(
             self.app.user_has_item(self.user_one, self.item_one, self.user_action)
         )
 
     def test03_can_create_multiple_carts_and_each_users_add_for_each_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
-        self.app.add_user(self.user_two, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
+        self.app.add_user(self.user_two, self.password_two, self.user_creation_date)
 
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
         self.app.add_book_to_user(self.user_two, self.item_two, 1, self.user_action)
@@ -69,7 +71,7 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test04_can_list_items_from_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one, self.user_action),
@@ -97,7 +99,7 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test07_can_add_multiple_items_to_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 2, self.user_action)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one, self.user_action),
@@ -105,7 +107,7 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test08_user_session_is_expired_when_list_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         with self.assertRaises(Exception) as ctx:
             self.app.get_user_shop_list(self.user_one, self.user_expirated_date)
 
@@ -114,11 +116,11 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test09_user_session_is_not_expired_when_list_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.get_user_shop_list(self.user_one, self.user_action)
 
     def test10_user_session_is_expired_when_try_add_item_in_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
 
         with self.assertRaises(Exception) as ctx:
@@ -131,7 +133,7 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test11_user_session_is_expired_when_try_add_item_in_cart(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
 
         with self.assertRaises(Exception) as ctx:
@@ -142,11 +144,11 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test12_new_user_shows_empty_buy_history(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.assertEqual(self.app.user_shop_history(self.user_one), [])
 
     def test13_after_shopping_two_times_the_user_has_shopping_history(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
         self.app.checkout(self.user_one, self.valid_card, self.user_action)
 
@@ -161,7 +163,7 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
 
     def test14_shopping_the_same_book_counts_in_a_single_registration(self):
-        self.app.add_user(self.user_one, "", self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
         self.app.checkout(self.user_one, self.valid_card, self.user_action)
 

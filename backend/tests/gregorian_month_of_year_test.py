@@ -19,7 +19,7 @@ class GregorianMonthOfYearTest(unittest.TestCase):
             GregorianMonthOfYear(13, 2023)
 
         self.assertEqual(
-            str(context.exception), GregorianMonthOfYear.invalid_month_error()
+            str(context.exception), GregorianMonthOfYear.invalid_month_message_error()
         )
 
     def test03_is_greater_than_today(self):
