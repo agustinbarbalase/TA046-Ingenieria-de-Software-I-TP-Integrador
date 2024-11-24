@@ -16,7 +16,7 @@ class ShopCartTest(unittest.TestCase):
         self.catalog = set([self.item_name_one, self.item_name_two])
         self.item_non_catalog = "1984"
 
-        self.cart = ShopCart(self.catalog)
+        self.cart = ShopCart.with_catalog(self.catalog)
 
     def test01_new_cart_is_empty(self):
         self.assertTrue(self.cart.is_empty())

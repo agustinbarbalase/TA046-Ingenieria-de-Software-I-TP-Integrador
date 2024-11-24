@@ -11,7 +11,7 @@ class User:
     """Initialization"""
 
     def __init__(self, catalog: set[str], expiration_date: datetime):
-        self.cart: ShopCart = ShopCart(catalog)
+        self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
         self.shop_history: Bag = Bag()
         self.succesful_transactions: int = 0
@@ -37,7 +37,7 @@ class User:
         ## To do: revisar que pasa cuando la compra no sea correcta
         shop_ticket = checkout.check_out(self.cart, card)
         self.shop_history.add_list(self.cart.list_items())
-        self.cart = ShopCart(self.cart.catalog)
+        self.cart = ShopCart.with_catalog(self.cart.catalog)
         self.succesful_transactions += 1
         return shop_ticket
 

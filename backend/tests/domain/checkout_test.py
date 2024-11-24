@@ -18,8 +18,8 @@ class CheckOutTest(unittest.TestCase):
         self.expired_card = Card(1234567891234567, GregorianMonthOfYear(11, 2023))
 
         self.catalog = set(["The Lord of the rings"])
-        self.empty_cart = ShopCart(self.catalog)
-        self.fully_cart = ShopCart(self.catalog)
+        self.empty_cart = ShopCart.with_catalog(self.catalog)
+        self.fully_cart = ShopCart.with_catalog(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
         self.xyz = PostNetStub()
