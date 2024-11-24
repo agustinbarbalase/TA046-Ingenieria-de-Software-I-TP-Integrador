@@ -20,7 +20,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.catalog = set([self.bookIsbn, self.bookIsbn2])
 
         self.app = MyBooksApp(self.catalog)
-        self.rest_interface = RestInterface(self.app)
+        self.rest_interface = RestInterface.with_app(self.app)
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)

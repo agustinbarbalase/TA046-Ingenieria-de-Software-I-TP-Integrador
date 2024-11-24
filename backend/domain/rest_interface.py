@@ -17,6 +17,11 @@ class RestInterface:
 
     def __init__(self, app):
         self.book_app = app
+        return self
+
+    @classmethod
+    def with_app(cls, app):
+        return cls(app)
 
     """Error messages"""
 

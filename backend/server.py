@@ -24,7 +24,7 @@ class TusLibrosWebServer:
                 ]
             )
         )
-        self.rest_interface = RestInterface(self.app)
+        self.rest_interface = RestInterface.with_app(self.app)
         CORS(
             self.flask_app, origins=["http://localhost:3000"], supports_credentials=True
         )
