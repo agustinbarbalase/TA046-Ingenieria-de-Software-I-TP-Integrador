@@ -61,7 +61,9 @@ class RestInterface:
     def _create_card(self, params: dict[str, str]) -> Card:
         month = int(params["cced"][:2])
         year = int(params["cced"][2:])
-        return Card(int(params["ccn"]), GregorianMonthOfYear(month, year))
+        return Card.with_number_and_month_of_year(
+            int(params["ccn"]), GregorianMonthOfYear(month, year)
+        )
 
     """Main protocol"""
 

@@ -33,7 +33,9 @@ class MyBooksAppTest(unittest.TestCase):
         )
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
 
-        self.valid_card = Card(1234567891234567, GregorianMonthOfYear(11, 2028))
+        self.valid_card = Card.with_number_and_month_of_year(
+            1234567891234567, GregorianMonthOfYear(11, 2028)
+        )
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)

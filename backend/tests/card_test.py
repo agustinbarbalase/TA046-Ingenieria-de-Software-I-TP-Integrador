@@ -17,16 +17,22 @@ class CardTest(unittest.TestCase):
         self.expired_month_of_year = GregorianMonthOfYear(12, 2023)
 
     def test01_recently_created_card_is_not_expired(self):
-        card = Card(self.valid_number, self.valid_month_of_year)
+        card = Card.with_number_and_month_of_year(
+            self.valid_number, self.valid_month_of_year
+        )
         self.assertFalse(card.is_expired(GregorianMonthOfYear.current()))
 
     def test02_cannot_create_a_expired_card(self):
-        expired_card = Card(self.valid_number, self.expired_month_of_year)
+        expired_card = Card.with_number_and_month_of_year(
+            self.valid_number, self.expired_month_of_year
+        )
         self.assertTrue(expired_card.is_expired(GregorianMonthOfYear.current()))
 
     def test03_cannot_create_card_with_invalid_number(self):
         with self.assertRaises(Exception) as context:
-            Card(self.invalid_number, self.valid_month_of_year)
+            Card.with_number_and_month_of_year(
+                self.invalid_number, self.valid_month_of_year
+            )
 
         self.assertEqual(
             str(context.exception),
