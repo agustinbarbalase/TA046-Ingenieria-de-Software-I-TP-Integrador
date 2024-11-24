@@ -9,12 +9,15 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class CardTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
         self.valid_number = 1234567890123456
         self.invalid_number = 4302820348032403209402340
         self.valid_month_of_year = GregorianMonthOfYear.with_month_and_year(12, 2028)
         self.expired_month_of_year = GregorianMonthOfYear.with_month_and_year(12, 2023)
+
+    """tests"""
 
     def test01_recently_created_card_is_not_expired(self):
         card = Card.with_number_and_month_of_year(

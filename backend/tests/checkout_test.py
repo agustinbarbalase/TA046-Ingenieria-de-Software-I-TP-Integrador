@@ -12,6 +12,7 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class CheckOutTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
         self.valid_gregorian_month_of_year = GregorianMonthOfYear.with_month_and_year(
@@ -35,6 +36,8 @@ class CheckOutTest(unittest.TestCase):
 
         self.postnet = PostNetStub()
         self.check_out = Checkout.with_postnet(self.postnet)
+
+    """tests"""
 
     def test01_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:

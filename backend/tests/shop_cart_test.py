@@ -8,6 +8,7 @@ from domain.shop_cart import ShopCart
 
 
 class ShopCartTest(unittest.TestCase):
+    """setupt"""
 
     def setUp(self):
         self.item_name_one = "Cincuenta sombras de Alan key"
@@ -17,6 +18,8 @@ class ShopCartTest(unittest.TestCase):
         self.item_non_catalog = "1984"
 
         self.cart = ShopCart.with_catalog(self.catalog)
+
+    """tests"""
 
     def test01_new_cart_is_empty(self):
         self.assertTrue(self.cart.is_empty())

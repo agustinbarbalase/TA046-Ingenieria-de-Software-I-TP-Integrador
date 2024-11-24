@@ -11,6 +11,7 @@ from tests.stub.auth_service_stub import AuthServiceStub
 
 
 class RestInterfaceTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
         self.user_id = "Gauss"
@@ -28,6 +29,8 @@ class RestInterfaceTest(unittest.TestCase):
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
+
+    """tests - main protocol"""
 
     def test01_create_cart_success(self):
         params = {"userId": self.user_id, "password": self.password}
@@ -112,6 +115,8 @@ class RestInterfaceTest(unittest.TestCase):
             "0|",
         )
 
+    """tests - validation"""
+
     def test07_validate_empty_params_in_create_cart(self):
         params_for_create_cart = {"userId": "", "password": ""}
 
@@ -192,6 +197,8 @@ class RestInterfaceTest(unittest.TestCase):
             f"1|{RestInterface.cant_send_request_with_abstent_params_message_error().upper()}",
         )
         self.assertEqual(response.status_code, 422)
+
+    """tests - checkout"""
 
     def test13_user_successfull_checkout(self):
         create_card_params = {"userId": self.user_id, "password": self.password}
@@ -335,6 +342,8 @@ class RestInterfaceTest(unittest.TestCase):
         response = self.rest_interface.checkout(check_out_params, self.user_action)
 
         self.assertEqual(response.body, "1|CAN'T SENT REQUEST WITH ABSTENT PARAMS")
+
+    """tests - user history"""
 
     def test19_shop_cart_list(self):
         create_card_params = {"userId": self.user_id, "password": self.password}

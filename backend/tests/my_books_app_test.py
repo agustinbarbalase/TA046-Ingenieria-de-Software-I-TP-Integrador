@@ -14,6 +14,7 @@ from tests.stub.auth_service_stub import AuthServiceStub
 
 
 class MyBooksAppTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
         self.user_one = "Dijkstra"
@@ -39,6 +40,8 @@ class MyBooksAppTest(unittest.TestCase):
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
+
+    """tests - main protocol"""
 
     def test01_can_create_cart_for_user(self):
         self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
@@ -108,6 +111,8 @@ class MyBooksAppTest(unittest.TestCase):
             [(self.item_one, 2)],
         )
 
+    """tests - session expiration"""
+
     def test08_user_session_is_expired_when_list_cart(self):
         self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         with self.assertRaises(Exception) as ctx:
@@ -144,6 +149,8 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertEqual(
             str(ctx.exception), MyBooksApp.user_expired_session_message_error()
         )
+
+    """tests - user history"""
 
     def test12_new_user_shows_empty_buy_history(self):
         self.app.add_user(self.user_one, self.password_one, self.user_creation_date)

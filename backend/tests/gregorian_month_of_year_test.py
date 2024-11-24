@@ -8,6 +8,7 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class GregorianMonthOfYearTest(unittest.TestCase):
+    """tests"""
 
     def test01_initialize_with_valid_month_and_year(self):
         instance = GregorianMonthOfYear.with_month_and_year(5, 2023)
