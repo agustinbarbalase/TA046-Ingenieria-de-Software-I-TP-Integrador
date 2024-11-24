@@ -2,6 +2,7 @@ from datetime import datetime
 from domain.shop_cart import ShopCart
 from utils.card import Card
 from utils.gregorian_month_of_year import GregorianMonthOfYear
+from domain.postnet.postnet_interface import PostnetInterface
 
 
 class Checkout:
@@ -9,6 +10,10 @@ class Checkout:
 
     def __init__(self, postnet):
         self.postnet = postnet
+
+    @classmethod
+    def with_postnet(cls, postnet: PostnetInterface):
+        return cls(postnet)
 
     """Error messages"""
 

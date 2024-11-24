@@ -22,8 +22,8 @@ class CheckOutTest(unittest.TestCase):
         self.fully_cart = ShopCart.with_catalog(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
-        self.xyz = PostNetStub()
-        self.check_out = Checkout(self.xyz)
+        self.postnet = PostNetStub()
+        self.check_out = Checkout.with_postnet(self.postnet)
 
     def test01_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:

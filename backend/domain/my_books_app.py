@@ -19,7 +19,7 @@ class MyBooksApp:
         self.users_ids: dict[str, User] = dict()
         self.catalog: set[str] = catalog
         self.auth = None
-        self.checkout_instance = Checkout(Postnet())
+        self.checkout_instance = Checkout.with_postnet(Postnet())
 
     @classmethod
     def with_auth(cls, catalog: set[str], auth: AuthServiceInterface):
