@@ -12,18 +12,32 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class CheckOutTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
-        self.valid_card = Card(1234567891234567, GregorianMonthOfYear(11, 2028))
-        self.expired_card = Card(1234567891234567, GregorianMonthOfYear(11, 2023))
+        self.valid_gregorian_month_of_year = GregorianMonthOfYear.with_month_and_year(
+            11, 2028
+        )
+        self.expired_gregorian_month_of_year = GregorianMonthOfYear.with_month_and_year(
+            11, 2023
+        )
 
-        self.catalog = set(["The Lord of the rings"])
-        self.empty_cart = ShopCart(self.catalog)
-        self.fully_cart = ShopCart(self.catalog)
+        self.valid_card = Card.with_number_and_month_of_year(
+            1234567891234567, self.valid_gregorian_month_of_year
+        )
+        self.expired_card = Card.with_number_and_month_of_year(
+            1234567891234567, self.expired_gregorian_month_of_year
+        )
+
+        self.catalog = {"The Lord of the rings": "π"}
+        self.empty_cart = ShopCart.with_catalog(self.catalog)
+        self.fully_cart = ShopCart.with_catalog(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
-        self.xyz = PostNetStub()
-        self.check_out = Checkout(self.xyz)
+        self.postnet = PostNetStub()
+        self.check_out = Checkout.with_postnet(self.postnet)
+
+    """tests"""
 
     def test01_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:

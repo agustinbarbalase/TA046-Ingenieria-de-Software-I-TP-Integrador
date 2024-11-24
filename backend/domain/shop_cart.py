@@ -4,14 +4,25 @@ from utils.bag import Bag
 
 
 class ShopCart:
+    """Instance creation - class"""
 
-    def __init__(self, catalog: set[str]) -> None:
-        self.item: Bag = Bag()
-        self.catalog: set[str] = catalog
+    @classmethod
+    def with_catalog(cls, catalog: dict[str, str]):
+        return cls(catalog)
+
+    """Error messages - class"""
 
     @classmethod
     def item_not_in_catalog_message_error(cls):
         return "Item not in catalog"
+
+    """Initialization"""
+
+    def __init__(self, catalog: dict[str, str]):
+        self.item: Bag = Bag.new()
+        self.catalog: dict[str, str] = catalog
+
+    """Main protocol"""
 
     def is_empty(self) -> bool:
         return self.item.is_empty()

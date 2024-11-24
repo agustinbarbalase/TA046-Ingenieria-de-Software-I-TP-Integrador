@@ -8,15 +8,18 @@ from domain.shop_cart import ShopCart
 
 
 class ShopCartTest(unittest.TestCase):
+    """setupt"""
 
     def setUp(self):
         self.item_name_one = "Cincuenta sombras de Alan key"
         self.item_name_two = "El secreto de su codigo encapsulado"
 
-        self.catalog = set([self.item_name_one, self.item_name_two])
+        self.catalog = {self.item_name_one: "π", self.item_name_two: "e"}
         self.item_non_catalog = "1984"
 
-        self.cart = ShopCart(self.catalog)
+        self.cart = ShopCart.with_catalog(self.catalog)
+
+    """tests"""
 
     def test01_new_cart_is_empty(self):
         self.assertTrue(self.cart.is_empty())

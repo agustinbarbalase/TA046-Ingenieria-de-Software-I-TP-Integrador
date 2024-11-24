@@ -13,8 +13,13 @@ class Response(NamedTuple):
 
 
 class RestInterface:
-    def __init__(self, app):
-        self.book_app = app
+    """Instance creation - class"""
+
+    @classmethod
+    def with_app(cls, app):
+        return cls(app)
+
+    """Error messages - class"""
 
     @classmethod
     def cant_send_empty_params_message_error(cls):
@@ -24,11 +29,18 @@ class RestInterface:
     def cant_send_request_with_abstent_params_message_error(self):
         return "Can't sent request with abstent params"
 
+    """Initialization"""
+
+    def __init__(self, app):
+        self.book_app = app
+
     def _return_response(self, closure) -> Response:
         try:
             return closure()
         except Exception as error:
             return Response(f"1|{str(error).upper()}", 422)
+
+    """Private - validations"""
 
     def _check_empty_params(self, value: str):
         if len(value) == 0:
@@ -49,7 +61,11 @@ class RestInterface:
     def _create_card(self, params: dict[str, str]) -> Card:
         month = int(params["cced"][:2])
         year = int(params["cced"][2:])
-        return Card(int(params["ccn"]), GregorianMonthOfYear(month, year))
+        return Card.with_number_and_month_of_year(
+            int(params["ccn"]), GregorianMonthOfYear.with_month_and_year(month, year)
+        )
+
+    """Main protocol"""
 
     def create_cart(self, params: dict[str, str], current_time: datetime) -> Response:
         def closure():
@@ -97,5 +113,17 @@ class RestInterface:
                 f"0|{transaction_id}",
                 200,
             )
+
+        return self._return_response(closure)
+
+    def user_shop_history(self, params: dict[str, str]) -> Response:
+        def closure():
+            self._validate_params(params, ["userId", "password"])
+            result = ["0"]
+            shop_history = self.book_app.user_shop_history(params["userId"])
+            for element in shop_history:
+                result.append(element[0])
+                result.append(str(element[1]))
+            return Response("|".join(result) + ("|" if len(result) == 1 else ""), 200)
 
         return self._return_response(closure)

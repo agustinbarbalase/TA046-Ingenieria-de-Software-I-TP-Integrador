@@ -1,0 +1,22 @@
+[
+  {
+    "user_id": "Albert Einstein",
+    "password": "299792458"
+  },
+  {
+    "user_id": "Isaac Newton",
+    "password": "25121642"
+  },
+  {
+    "user_id": "Alan Turing",
+    "password": "23061912"
+  },
+  {
+    "user_id": "Carl Friedrich Gauss",
+    "password": "5050"
+  },
+  {
+    "user_id": "Leonhard Euler",
+    "password": "2.71828"
+  }
+]

@@ -1,7 +1,16 @@
 class Bag:
+    """Instance creation - class"""
+
+    @classmethod
+    def new(cls):
+        return cls()
+
+    """Initialization"""
 
     def __init__(self):
         self.items = dict()
+
+    """Main protocol"""
 
     def is_empty(self):
         return len(self.items) == 0
@@ -20,3 +29,10 @@ class Bag:
 
     def list_items(self) -> list:
         return list(self.items.items())
+
+    def __len__(self):
+        return len(self.items)
+
+    def add_list(self, items: list):
+        for item in items:
+            self.add_with_amount(item[0], item[1])

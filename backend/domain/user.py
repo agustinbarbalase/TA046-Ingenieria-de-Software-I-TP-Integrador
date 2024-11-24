@@ -1,5 +1,6 @@
 from copy import copy
 from datetime import datetime
+from typing import List
 from domain.checkout import Checkout
 from utils.card import Card
 from utils.bag import Bag
@@ -7,10 +8,15 @@ from domain.shop_cart import ShopCart
 
 
 class User:
+    """Initialization"""
 
-    def __init__(self, catalog: set[str], expiration_date: datetime):
-        self.cart: ShopCart = ShopCart(catalog)
+    def __init__(self, catalog: dict[str, str], expiration_date: datetime):
+        self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
+        self.shop_history: Bag = Bag.new()
+        self.succesful_transactions: int = 0
+
+    """Main protocol"""
 
     def is_expired(self, current_date: datetime):
         return self.expiration_date < current_date
@@ -28,4 +34,14 @@ class User:
         return copy(self.cart)
 
     def check_out_user(self, checkout: Checkout, card: Card):
-        return checkout.check_out(self.cart, card)
+        ## To do: revisar que pasa cuando la compra no sea correcta
+        shop_ticket = checkout.check_out(self.cart, card)
+        self.shop_history.add_list(self.cart.list_items())
+        self.cart = ShopCart.with_catalog(self.cart.catalog)
+        self.succesful_transactions += 1
+        return shop_ticket
+
+    def shop_history_list(self):
+        if self.succesful_transactions < 2:
+            return []
+        return self.shop_history.list_items()

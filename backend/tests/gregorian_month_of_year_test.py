@@ -8,9 +8,10 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 
 
 class GregorianMonthOfYearTest(unittest.TestCase):
+    """tests"""
 
     def test01_initialize_with_valid_month_and_year(self):
-        instance = GregorianMonthOfYear(5, 2023)
+        instance = GregorianMonthOfYear.with_month_and_year(5, 2023)
         self.assertEqual(instance.month, 5)
         self.assertEqual(instance.year, 2023)
 
@@ -19,17 +20,17 @@ class GregorianMonthOfYearTest(unittest.TestCase):
             GregorianMonthOfYear(13, 2023)
 
         self.assertEqual(
-            str(context.exception), GregorianMonthOfYear.invalid_month_error()
+            str(context.exception), GregorianMonthOfYear.invalid_month_message_error()
         )
 
     def test03_is_greater_than_today(self):
-        future_instance = GregorianMonthOfYear(5, 2023)
+        future_instance = GregorianMonthOfYear.with_month_and_year(5, 2023)
         today = GregorianMonthOfYear.current()
 
         self.assertFalse(today <= future_instance)
 
     def test04_is_not_greater_than_today(self):
-        future_instance = GregorianMonthOfYear(5, 2028)
+        future_instance = GregorianMonthOfYear.with_month_and_year(5, 2028)
         today = GregorianMonthOfYear.current()
 
         self.assertTrue(today <= future_instance)

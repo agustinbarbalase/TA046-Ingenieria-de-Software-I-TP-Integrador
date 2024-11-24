@@ -7,22 +7,30 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from domain.rest_interface import RestInterface
 from domain.my_books_app import MyBooksApp
+from tests.stub.auth_service_stub import AuthServiceStub
 
 
 class RestInterfaceTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
         self.user_id = "Gauss"
         self.password = "30-04-1777"
 
-        self.bookIsbn = "9780387862545"
-        self.catalog = set([self.bookIsbn])
+        self.book_isbn_one = "9780387862545"
+        self.book_isbn_two = "9780387862546"
+        self.catalog = {self.book_isbn_one: "π", self.book_isbn_two: "e"}
 
-        self.app = MyBooksApp(self.catalog)
-        self.rest_interface = RestInterface(self.app)
+        self.auth = AuthServiceStub.with_users({self.user_id: self.password})
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
+
+        self.rest_interface = RestInterface.with_app(self.app)
+
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
+
+    """tests - main protocol"""
 
     def test01_create_cart_success(self):
         params = {"userId": self.user_id, "password": self.password}
@@ -45,7 +53,7 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "1",
         }
         params_for_list_cart = {"userId": self.user_id}
@@ -54,7 +62,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
         response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
 
-        self.assertEqual(response.body, f"0|{self.bookIsbn}|1")
+        self.assertEqual(response.body, f"0|{self.book_isbn_one}|1")
         self.assertEqual(response.status_code, 200)
 
     def test04_try_list_not_created_cart_raise_error(self):
@@ -71,7 +79,7 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "2",
         }
         params_for_list_cart = {"userId": self.user_id}
@@ -80,14 +88,14 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
         response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
 
-        self.assertEqual(response.body, f"0|{self.bookIsbn}|2")
+        self.assertEqual(response.body, f"0|{self.book_isbn_one}|2")
         self.assertEqual(response.status_code, 200)
 
     def test06_cant_add_non_positive_bookQuantity_of_books(self):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "0",
         }
         params_for_list_cart = {"userId": self.user_id}
@@ -106,6 +114,8 @@ class RestInterfaceTest(unittest.TestCase):
             self.rest_interface.list_cart(params_for_list_cart, self.user_action).body,
             "0|",
         )
+
+    """tests - validation"""
 
     def test07_validate_empty_params_in_create_cart(self):
         params_for_create_cart = {"userId": "", "password": ""}
@@ -188,12 +198,14 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
 
+    """tests - checkout"""
+
     def test13_user_successfull_checkout(self):
         create_card_params = {"userId": self.user_id, "password": self.password}
         self.rest_interface.create_cart(create_card_params, self.user_creation_date)
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "1",
         }
 
@@ -218,7 +230,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.create_cart(create_card_params, self.user_creation_date)
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "1",
         }
 
@@ -243,7 +255,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.create_cart(create_card_params, self.user_creation_date)
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "1",
         }
 
@@ -287,7 +299,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.create_cart(create_card_params, self.user_creation_date)
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "1",
         }
 
@@ -312,7 +324,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.rest_interface.create_cart(create_card_params, self.user_creation_date)
         params_for_add_to_cart = {
             "userId": self.user_id,
-            "bookIsbn": self.bookIsbn,
+            "bookIsbn": self.book_isbn_one,
             "bookQuantity": "1",
         }
 
@@ -330,6 +342,60 @@ class RestInterfaceTest(unittest.TestCase):
         response = self.rest_interface.checkout(check_out_params, self.user_action)
 
         self.assertEqual(response.body, "1|CAN'T SENT REQUEST WITH ABSTENT PARAMS")
+
+    """tests - user history"""
+
+    def test19_shop_cart_list(self):
+        create_card_params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(create_card_params, self.user_creation_date)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.book_isbn_one,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params, self.user_action)
+
+        self.rest_interface.create_cart(create_card_params, self.user_creation_date)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.book_isbn_two,
+            "bookQuantity": "1",
+        }
+
+        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
+
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+
+        response = self.rest_interface.checkout(check_out_params, self.user_action)
+
+        response = self.rest_interface.user_shop_history(
+            {"userId": self.user_id, "password": self.password}
+        )
+
+        self.assertEqual(
+            response.body, f"0|{self.book_isbn_one}|{1}|{self.book_isbn_two}|{1}"
+        )
 
 
 if __name__ == "__main__":
