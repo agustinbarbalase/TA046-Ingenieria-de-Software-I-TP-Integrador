@@ -33,14 +33,6 @@ class User:
     def user_cart(self):
         return copy(self.cart)
 
-    def check_out_user(self, checkout: Checkout, card: Card):
-        ## To do: revisar que pasa cuando la compra no sea correcta
-        shop_ticket = checkout.check_out(self.cart, card)
-        self.shop_history.add_list(self.cart.list_items())
-        self.cart = ShopCart.with_catalog(self.cart.catalog)
-        self.succesful_transactions += 1
-        return shop_ticket
-
     def register_purcharse(self, purcharse):
         self.succesful_transactions += 1
         self.shop_history.add_list(purcharse)
