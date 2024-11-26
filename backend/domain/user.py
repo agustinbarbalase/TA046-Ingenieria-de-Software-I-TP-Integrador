@@ -41,6 +41,11 @@ class User:
         self.succesful_transactions += 1
         return shop_ticket
 
+    def register_purcharse(self, purcharse):
+        self.succesful_transactions += 1
+        self.shop_history.add_list(purcharse)
+        self.cart = ShopCart.with_catalog(self.cart.catalog)
+
     def shop_history_list(self):
         if self.succesful_transactions < 2:
             return []
