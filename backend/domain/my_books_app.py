@@ -20,9 +20,13 @@ class MyBooksApp:
     ## To-do: Change name, also add postnet
     @classmethod
     def with_catalog_and_auth(
-        cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
+        cls,
+        catalog: dict[str, str],
+        auth: AuthServiceInterface,
+        clock: ClockInterface,
+        user_session_time: int,
     ):
-        return cls(catalog, auth, clock)
+        return cls(catalog, auth, clock, user_session_time)
 
     """Error messages - class"""
 
@@ -41,7 +45,11 @@ class MyBooksApp:
     """Initialization"""
 
     def __init__(
-        self, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
+        self,
+        catalog: dict[str, str],
+        auth: AuthServiceInterface,
+        clock: ClockInterface,
+        user_session_time: int,
     ):
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
@@ -51,6 +59,7 @@ class MyBooksApp:
             Postnet(), self.shopping_history
         )
         self.clock = clock
+        self.user_session_time = user_session_time
 
     def user_does_not_exist_error(self):
         raise Exception(MyBooksApp.user_doesnot_exist_message_error())
@@ -82,7 +91,7 @@ class MyBooksApp:
         if self.auth:
             self.auth.autenticate_user(user_id, password)
         new_user = UserSession(
-            self.catalog, self.clock.later_date_to_seconds(SESSION_DURATION_IN_SECONDS)
+            self.catalog, self.clock.later_date_to_seconds(self.user_session_time)
         )
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 

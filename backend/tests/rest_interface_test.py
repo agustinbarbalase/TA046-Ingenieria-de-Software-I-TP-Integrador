@@ -24,7 +24,9 @@ class RestInterfaceTest(unittest.TestCase):
         self.clock = ClockStub.with_current_time(datetime(2023, 1, 1, 0, 0))
 
         self.auth = AuthServiceStub.with_users({self.user_id: self.password})
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
+        self.app = MyBooksApp.with_catalog_and_auth(
+            self.catalog, self.auth, self.clock, 30
+        )
 
         self.rest_interface = RestInterface.with_app(self.app)
 

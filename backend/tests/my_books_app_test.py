@@ -37,7 +37,9 @@ class MyBooksAppTest(unittest.TestCase):
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.clock = ClockStub.with_current_time(self.user_creation_date)
 
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
+        self.app = MyBooksApp.with_catalog_and_auth(
+            self.catalog, self.auth, self.clock, 30
+        )
 
         self.valid_card = Card.with_number_and_month_of_year(
             1234567891234567, GregorianMonthOfYear.with_month_and_year(11, 2028)
@@ -102,7 +104,9 @@ class MyBooksAppTest(unittest.TestCase):
     """tests - session expiration"""
 
     def test08_user_session_is_expired_when_list_cart(self):
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
+        self.app = MyBooksApp.with_catalog_and_auth(
+            self.catalog, self.auth, self.clock, 30
+        )
         self.app.add_user(self.user_one, self.password_one)
 
         self.clock.step_seconds(31)

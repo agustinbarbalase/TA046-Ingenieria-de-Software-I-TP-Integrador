@@ -31,7 +31,9 @@ class AuthServiceTest(unittest.TestCase):
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
 
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
+        self.app = MyBooksApp.with_catalog_and_auth(
+            self.catalog, self.auth, self.clock, 30
+        )
 
     """tests"""
 
