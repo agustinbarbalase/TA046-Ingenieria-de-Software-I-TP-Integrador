@@ -22,7 +22,7 @@ class ShoppingHistoryTest(unittest.TestCase):
         self.user_shopping_history = UserShoppingHistory.new()
 
     def test01(self):
-        self.assertEqual(self.user_shopping_history.user_shopping_history(), (0, []))
+        self.assertEqual(self.user_shopping_history.history(), (0, []))
 
     def test02(self):
 
@@ -30,7 +30,7 @@ class ShoppingHistoryTest(unittest.TestCase):
 
         self.user_shopping_history.register_purcharse_for_user(self.cart_one)
 
-        self.assertEqual(self.user_shopping_history.user_shopping_history(), (0, []))
+        self.assertEqual(self.user_shopping_history.history(), (0, []))
 
     def test03(self):
 
@@ -42,7 +42,7 @@ class ShoppingHistoryTest(unittest.TestCase):
         self.user_shopping_history.register_purcharse_for_user(self.cart_two)
 
         self.assertEqual(
-            self.user_shopping_history.user_shopping_history(),
+            self.user_shopping_history.history(),
             (
                 12.13,
                 [(self.book_isbn_one, 3), (self.book_isbn_two, 1)],

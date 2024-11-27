@@ -28,7 +28,7 @@ class UserShoppingHistory:
         self.total_amount += cart.total_amount()
         self.total_successfull_transaction += 1
 
-    def user_shopping_history(self):
+    def history(self):
         if self.total_successfull_transaction < 2:
             return (0, [])
         return (float("%.2f" % self.total_amount), self.books.list_items())
