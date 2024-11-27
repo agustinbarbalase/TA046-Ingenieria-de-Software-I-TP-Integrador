@@ -67,18 +67,18 @@ class RestInterface:
 
     """Main protocol"""
 
-    def create_cart(self, params: dict[str, str], current_time: datetime) -> Response:
+    def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "password"])
-            self.book_app.add_user(params["userId"], params["password"], current_time)
+            self.book_app.add_user(params["userId"], params["password"])
             return Response("0|OK", 200)
 
         return self._return_response(closure)
 
-    def list_cart(self, params: dict[str, str], current_time: datetime) -> Response:
+    def list_cart(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId"])
-            book_list = self.book_app.get_user_shop_list(params["userId"], current_time)
+            book_list = self.book_app.get_user_shop_list(params["userId"])
             result = ["0"]
 
             for element in book_list:
@@ -89,26 +89,21 @@ class RestInterface:
 
         return self._return_response(closure)
 
-    def add_to_cart(self, params: dict[str, str], current_time: datetime) -> Response:
+    def add_to_cart(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "bookIsbn", "bookQuantity"])
             self.book_app.add_book_to_user(
-                params["userId"],
-                params["bookIsbn"],
-                int(params["bookQuantity"]),
-                current_time,
+                params["userId"], params["bookIsbn"], int(params["bookQuantity"])
             )
             return Response("0|OK", 200)
 
         return self._return_response(closure)
 
-    def checkout(self, params: dict[str, str], current_time: datetime) -> Response:
+    def checkout(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "ccn", "cced", "cco"])
             card: Card = self._create_card(params)
-            transaction_id = self.book_app.checkout(
-                params["userId"], card, current_time
-            )
+            transaction_id = self.book_app.checkout(params["userId"], card)
             return Response(
                 f"0|{transaction_id}",
                 200,

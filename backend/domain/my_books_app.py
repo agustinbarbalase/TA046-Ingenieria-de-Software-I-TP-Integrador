@@ -1,23 +1,28 @@
 from datetime import datetime, timedelta
 from typing import *
+from utils.clock.clock_interface import ClockInterface
 from domain.auth.auth_service_interface import AuthServiceInterface
-from domain.user import User
-from domain.checkout import Checkout
+from domain.user_session import UserSession
+from domain.cashier import Cashier
 
 from domain.postnet.postnet import Postnet
+from domain.shopping_history_book import ShopingHistoryBook
 from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
 
-SESSION_DURATION_IN_SECONDS = 60
+SESSION_DURATION_IN_SECONDS = 30
 
 
 class MyBooksApp:
     """Instance creation - class"""
 
+    ## To-do: Change name, also add postnet
     @classmethod
-    def with_catalog_and_auth(cls, catalog: dict[str, str], auth: AuthServiceInterface):
-        return cls(catalog, auth)
+    def with_catalog_and_auth(
+        cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
+    ):
+        return cls(catalog, auth, clock)
 
     """Error messages - class"""
 
@@ -35,11 +40,17 @@ class MyBooksApp:
 
     """Initialization"""
 
-    def __init__(self, catalog: dict[str, str], auth: AuthServiceInterface):
-        self.users_ids: dict[str, User] = dict()
+    def __init__(
+        self, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
+    ):
+        self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
-        self.checkout_instance = Checkout.with_postnet(Postnet())
+        self.shopping_history = ShopingHistoryBook.new()
+        self.cashier = Cashier.with_postnet_and_shopping_history(
+            Postnet(), self.shopping_history
+        )
+        self.clock = clock
 
     def user_does_not_exist_error(self):
         raise Exception(MyBooksApp.user_doesnot_exist_message_error())
@@ -56,59 +67,72 @@ class MyBooksApp:
                 MyBooksApp.cant_add_non_positive_amount_of_books_message_error()
             )
 
-    def _validate_user_expired_session(self, user_id: str, current_time: datetime):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+    def _validate_user_expired_session(self, user_id: str):
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        if user.is_expired(current_time):
+        if user_session.is_expired(self.clock):
             raise Exception(MyBooksApp.user_expired_session_message_error())
 
     """Main protocol"""
 
-    def add_user(self, user_id: str, password: str, current: datetime):
+    def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
-        duration = timedelta(seconds=SESSION_DURATION_IN_SECONDS)
-        new_user = User(self.catalog, current + duration)
+        new_user = UserSession(
+            self.catalog, self.clock.later_date_to_seconds(SESSION_DURATION_IN_SECONDS)
+        )
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:
         return user_id in self.users_ids
 
-    def user_has_item(self, user_id: str, item: str, current_time: datetime) -> bool:
+    def user_has_item(self, user_id: str, item: str) -> bool:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
         user = self.users_ids.get(user_id)
         return user.has_item(item)
 
-    def get_user_shop_list(self, user_id: str, current_time: datetime) -> list:
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+    def get_user_shop_list(self, user_id: str) -> list:
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        self._validate_user_expired_session(user_id, current_time)
-        user = self.users_ids.get(user_id)
-        return user.get_user_shop_list()
+        self._validate_user_expired_session(user_id)
+        user_session = self.users_ids.get(user_id)
+        return user_session.get_user_shop_list()
 
-    def add_book_to_user(
-        self, user_id: str, isbn: str, amount: int, current_time: datetime
-    ):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+    def add_book_to_user(self, user_id: str, isbn: str, amount: int):
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
+        self._validate_user_expired_session(user_id)
         self._cant_add_non_positive_amount_of_books_validation(amount)
-        self._validate_user_expired_session(user_id, current_time)
-        return user.add_book(isbn, amount)
+        return user_session.add_book(isbn, amount)
 
-    def checkout(self, user_id: str, card: Card, current_time: datetime):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+    def checkout(self, user_id: str, card: Card):
+        self._validate_user_expired_session(user_id)
+
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        self._validate_user_expired_session(user_id, current_time)
-        return user.check_out_user(self.checkout_instance, card)
+
+        user_cart = user_session.user_cart()
+        ticket = self.cashier.check_out(user_cart, card, user_id)
+        user_session.empty_cart()
+
+        return ticket
 
     def user_shop_history(self, user_id: str):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
-            self.user_does_not_exist_error()
-        return user.shop_history_list()
+        try:
+            return self.shopping_history.user_shopping_history(user_id).history()
+        except Exception:
+            return []

@@ -22,6 +22,11 @@ class ShopCart:
         self.item: Bag = Bag.new()
         self.catalog: dict[str, str] = catalog
 
+    """visitor"""
+
+    def accept_visitor(self, visitor):
+        visitor.visit_items(self.item)
+
     """Main protocol"""
 
     def is_empty(self) -> bool:
@@ -38,3 +43,9 @@ class ShopCart:
 
     def list_items(self) -> List[Tuple[str, int]]:
         return list(self.item.list_items())
+
+    def total_amount(self):
+        total_amount: float = 0
+        for item in self.list_items():
+            total_amount += float(self.catalog[item[0]]) * float(item[1])
+        return total_amount

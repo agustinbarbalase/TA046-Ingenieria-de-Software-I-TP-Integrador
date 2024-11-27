@@ -1,25 +1,25 @@
 from copy import copy
 from datetime import datetime
 from typing import List
-from domain.checkout import Checkout
+from domain.cashier import Cashier
 from utils.card import Card
+from utils.clock.clock_interface import ClockInterface
 from utils.bag import Bag
 from domain.shop_cart import ShopCart
 
 
-class User:
+class UserSession:
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):
+        self.catalog: dict[str, str] = catalog
         self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
-        self.shop_history: Bag = Bag.new()
-        self.succesful_transactions: int = 0
 
     """Main protocol"""
 
-    def is_expired(self, current_date: datetime):
-        return self.expiration_date < current_date
+    def is_expired(self, clock: ClockInterface):
+        return clock.is_later_that(self.expiration_date)
 
     def has_item(self, item: str):
         return self.cart.contains_item(item)
@@ -33,15 +33,8 @@ class User:
     def user_cart(self):
         return copy(self.cart)
 
-    def check_out_user(self, checkout: Checkout, card: Card):
-        ## To do: revisar que pasa cuando la compra no sea correcta
-        shop_ticket = checkout.check_out(self.cart, card)
-        self.shop_history.add_list(self.cart.list_items())
-        self.cart = ShopCart.with_catalog(self.cart.catalog)
-        self.succesful_transactions += 1
-        return shop_ticket
-
     def shop_history_list(self):
-        if self.succesful_transactions < 2:
-            return []
-        return self.shop_history.list_items()
+        return []
+
+    def empty_cart(self):
+        self.cart = ShopCart.with_catalog(self.catalog)

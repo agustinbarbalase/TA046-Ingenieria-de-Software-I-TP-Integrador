@@ -1,12 +1,13 @@
 import sys
 import json
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, request
 from typing import *
 
 from flask_cors import CORS
 
+from utils.clock.clock import Clock
 from domain.my_books_app import MyBooksApp
 from domain.rest_interface import RestInterface
 from domain.auth.auth_service import AuthService
@@ -20,7 +21,8 @@ class TusLibrosWebServer:
         )
 
         self.auth = AuthService.with_users(users)
-        self.app = MyBooksApp.with_catalog_and_auth(catalog, self.auth)
+        counter_clock = Clock.with_time_now()
+        self.app = MyBooksApp.with_catalog_and_auth(catalog, self.auth, counter_clock)
         self.rest_interface = RestInterface.with_app(self.app)
 
         @self.flask_app.route("/createCart", methods=["GET"])
