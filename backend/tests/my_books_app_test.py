@@ -50,9 +50,7 @@ class MyBooksAppTest(unittest.TestCase):
     def test02_user_can_add_items_to_cart(self):
         self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
-        self.assertTrue(
-            self.app.user_has_item(self.user_one, self.item_one, self.user_action)
-        )
+        self.assertTrue(self.app.user_has_item(self.user_one, self.item_one))
 
     def test03_can_create_multiple_carts_and_each_users_add_for_each_cart(self):
         self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
@@ -61,19 +59,11 @@ class MyBooksAppTest(unittest.TestCase):
         self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
         self.app.add_book_to_user(self.user_two, self.item_two, 1, self.user_action)
 
-        self.assertTrue(
-            self.app.user_has_item(self.user_one, self.item_one, self.user_action)
-        )
-        self.assertTrue(
-            self.app.user_has_item(self.user_two, self.item_two, self.user_action)
-        )
+        self.assertTrue(self.app.user_has_item(self.user_one, self.item_one))
+        self.assertTrue(self.app.user_has_item(self.user_two, self.item_two))
 
-        self.assertFalse(
-            self.app.user_has_item(self.user_one, self.item_two, self.user_action)
-        )
-        self.assertFalse(
-            self.app.user_has_item(self.user_two, self.item_one, self.user_action)
-        )
+        self.assertFalse(self.app.user_has_item(self.user_one, self.item_two))
+        self.assertFalse(self.app.user_has_item(self.user_two, self.item_one))
 
     def test04_can_list_items_from_cart(self):
         self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
@@ -95,9 +85,7 @@ class MyBooksAppTest(unittest.TestCase):
 
     def test06_cannot_check_items_for_non_existent_user(self):
         with self.assertRaises(Exception) as context:
-            self.app.user_has_item(
-                self.non_existent_user, self.item_one, self.user_action
-            )
+            self.app.user_has_item(self.non_existent_user, self.item_one)
 
         self.assertEqual(
             str(context.exception), MyBooksApp.user_doesnot_exist_message_error()

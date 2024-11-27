@@ -75,7 +75,7 @@ class MyBooksApp:
     def has_user(self, user_id: str) -> bool:
         return user_id in self.users_ids
 
-    def user_has_item(self, user_id: str, item: str, current_time: datetime) -> bool:
+    def user_has_item(self, user_id: str, item: str) -> bool:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
