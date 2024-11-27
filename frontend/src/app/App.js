@@ -82,6 +82,10 @@ export class App {
         ];
     }
 
+    bookWithIsbn(anIsbn) {
+        return this.books().find( (each) => each.isbn === anIsbn );
+    }
+
     createCart(userId, aPassword){
         return this._interface().createCart(userId, aPassword)
     }
@@ -98,13 +102,17 @@ export class App {
         return this._interface().checkout(aCard, aCart);
     }
 
+    listPurchases(userId, aPassword){
+        return this._interface().listPurchases(userId, aPassword)
+    }
+
     totalOf(aCart) {
         return aCart.items.reduce( (total, aCartItem) => total + this._priceOf(aCartItem), 0)
     }
 
-    _priceOf(aCartItem){
-        const price = parseFloat(aCartItem.article.price.replace('.', ''));
-        const quantity = parseInt(aCartItem.quantity);
+    _priceOf(anItem){
+        const price = parseFloat(anItem.article.price.replace('.', ''));
+        const quantity = parseInt(anItem.quantity);
         return price * quantity
     }
 
@@ -124,7 +132,7 @@ export class App {
 
     _setUpRequester() {
         if (this._isUsingFakeApi()) {
-            return new FakeRequester({});
+            return new FakeRequester();
         }
 
         const authorizationManager = new NaiveAuthorizationManager();

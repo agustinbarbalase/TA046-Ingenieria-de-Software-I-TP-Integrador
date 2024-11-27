@@ -133,6 +133,7 @@ class MyBooksApp:
 
     def user_shop_history(self, user_id: str):
         try:
+            print(self.shopping_history.user_shopping_history(user_id).history())
             return self.shopping_history.user_shopping_history(user_id).history()
         except Exception:
             return []

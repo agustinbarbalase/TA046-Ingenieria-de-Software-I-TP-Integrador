@@ -9,8 +9,10 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import PropTypes from "prop-types";
 import {Ticket} from "./Ticket";
+import ContinueChoosingButton from "../Base/ContinueChoosingButton";
 
 
 export default class Checkout extends React.Component {
@@ -20,6 +22,7 @@ export default class Checkout extends React.Component {
         cart: PropTypes.object.isRequired,
         notifyMessageWith: PropTypes.func.isRequired,
         cancelCheckout: PropTypes.func.isRequired,
+        listPurchases: PropTypes.func.isRequired,
     };
 
     _STEP_ENTER_CARD = 0;
@@ -40,6 +43,13 @@ export default class Checkout extends React.Component {
     }
 
     render() {
+        return <>
+            {this.renderContent()}
+            {this.renderContinueChoosingButton()}
+        </>
+    }
+
+    renderContent() {
         return (
             <Box
                 sx={{
@@ -72,10 +82,6 @@ export default class Checkout extends React.Component {
                 <EnterCreditCard card={this.state.card}
                                  onChangeCard={(cardField, cardValue) => this._changeCard(cardField, cardValue)}/>
                 <Stack direction="row" justifyContent="space-around" gap={1}>
-                    <Button variant="contained" color="secondary" startIcon={<ArrowBackIosIcon/>}
-                            onClick={() => this.props.cancelCheckout()}>
-                        Seguir comprando
-                    </Button>
                     <Button variant="contained" startIcon={<ShoppingCartIcon/>}
                             onClick={() => this.setState({step: this._STEP_CONFIRM_CHECKOUT})}>
                         Siguiente
@@ -116,12 +122,16 @@ export default class Checkout extends React.Component {
                     m: 1,
                 }}>
                     <Button variant="contained" color="secondary" size="small"
-                            onClick={() => this.props.cancelCheckout()}>
-                        Seguir comprando
+                            onClick={() => this.props.listPurchases()} startIcon={<ShoppingBagIcon />}>
+                        Ver mis compras
                     </Button>
                 </Box>
             </StepContent>
         </>;
+    }
+
+    renderContinueChoosingButton() {
+        return <ContinueChoosingButton onClick={() => this.props.cancelCheckout()} />
     }
 
     _checkout() {

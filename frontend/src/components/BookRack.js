@@ -9,7 +9,7 @@ import CardActions from "@mui/material/CardActions";
 import {Rating} from "@mui/material";
 import AddBooksToCart from "./AddBooksToCart";
 import Stack from "@mui/material/Stack";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import {Price} from "./Base/Price";
 
 
 export default class BookRack extends Component {
@@ -74,10 +74,7 @@ export default class BookRack extends Component {
     }
 
     renderPriceOf(aBook) {
-        return <Stack direction="row" justifyContent="flex-end" alignItems="center">
-            <AttachMoneyIcon fontSize="small"/>
-            <Typography variant="h6">{aBook.price}</Typography>
-        </Stack>;
+        return <Price value={aBook.price} />;
     }
 
     renderAddToCartBar(aBook) {

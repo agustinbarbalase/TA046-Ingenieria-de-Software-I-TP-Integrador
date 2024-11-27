@@ -45,6 +45,11 @@ class TusLibrosWebServer:
             response = self.rest_interface.checkout(request.args.to_dict())
             return response.body, response.status_code
 
+        @self.flask_app.route("/listPurchases", methods=["GET"])
+        def list_purchases():
+            response = self.rest_interface.list_purchases(request.args.to_dict())
+            return response.body, response.status_code
+
     def listening_on(self, port: int):
         self.flask_app.run(port=port)
 

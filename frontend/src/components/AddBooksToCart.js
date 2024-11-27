@@ -8,6 +8,7 @@ import {styled} from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import PropTypes from "prop-types";
+import Pluralizer from "../lib/Pluralizer";
 
 export default class AddBooksToCart extends Component {
 
@@ -82,8 +83,9 @@ export default class AddBooksToCart extends Component {
         this.setState({numberOfCopiesToOrder: 0})
     }
 
-    pluralize(count, noun, suffix = 's') {
-        return `${count} ${noun}${count !== 1 ? suffix : ''}`;
+    pluralize(count, noun) {
+        const pluralizer = Pluralizer.for(count, noun);
+        return pluralizer.value()
     }
 
 }

@@ -5,6 +5,7 @@ import {CartResponse} from "./responses/CartResponse";
 import ApiResponseHandler from "@eryxcoop/appyx-comm/src/errors/ApiResponseHandler";
 import {CreateCartResponse} from "./responses/CreateCartResponse";
 import {SuccessfulCheckoutResponse} from "./responses/SuccessfulCheckoutResponse";
+import {ListPurchasesResponse} from "./responses/ListPurchasesResponse";
 
 
 export class TusLibrosRestInterface{
@@ -40,6 +41,11 @@ export class TusLibrosRestInterface{
             cco: aCard.name
         };
         return this._callEndpoint(this._checkoutCartEndpoint(), values);
+    }
+
+    listPurchases(userId, aPassword) {
+        const values = {userId: userId, password: aPassword};
+        return this._callEndpoint(this._listPurchasesEndpoint(), values);
     }
 
     _callEndpoint(endpoint, values) {
@@ -87,4 +93,12 @@ export class TusLibrosRestInterface{
         })
     }
 
+    _listPurchasesEndpoint() {
+        return Endpoint.newGet({
+            url: 'listPurchases',
+            ownResponses:  [ListPurchasesResponse, ErrorResponse],
+            needsAuthorization: false,
+            contentType: 'application/json'
+        })
+    }
 }
