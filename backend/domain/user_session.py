@@ -38,7 +38,7 @@ class UserSession:
         self.shop_history.add_list(purcharse)
         self.cart = ShopCart.with_catalog(self.cart.catalog)
 
-    def shop_history_list(self):
-        if self.succesful_transactions < 2:
-            return []
-        return self.shop_history.list_items()
+    # def shop_history_list(self):
+    #     if self.succesful_transactions < 2:
+    #         return []
+    #     return self.shop_history.list_items()
