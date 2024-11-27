@@ -39,7 +39,7 @@ class RestInterfaceTest(unittest.TestCase):
         response = self.rest_interface.create_cart(params)
 
         self.assertEqual(response.body, "0|OK")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
     def test02_list_empty_cart(self):
         params_for_create_cart = {"userId": self.user_id, "password": self.password}

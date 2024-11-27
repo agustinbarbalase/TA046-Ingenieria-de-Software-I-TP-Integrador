@@ -71,7 +71,7 @@ class RestInterface:
         def closure():
             self._validate_params(params, ["userId", "password"])
             self.book_app.add_user(params["userId"], params["password"])
-            return Response("0|OK", 200)
+            return Response("0|OK", 201)
 
         return self._return_response(closure)
 
