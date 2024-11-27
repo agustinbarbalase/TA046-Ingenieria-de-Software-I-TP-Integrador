@@ -17,9 +17,6 @@ class UserSession:
     """Main protocol"""
 
     def is_expired(self, current_date: datetime):
-        print(self.expiration_date)
-        print(current_date)
-        print(self.expiration_date < current_date)
         return self.expiration_date < current_date
 
     def has_item(self, item: str):
