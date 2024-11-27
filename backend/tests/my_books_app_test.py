@@ -131,12 +131,9 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.app.add_user(self.user_one, self.password_one)
 
-        # self.app.clock.current = lambda: datetime(2022, 1, 1, 0, 0, 1)
         self.app.clock = Clock(
-            lambda: datetime(2018, 1, 2, 2, 0, 1), lambda: timedelta(seconds=0)
+            lambda: datetime(2018, 1, 2, 2, 0, 0), lambda: timedelta(seconds=0)
         )
-
-        # self.app.add_book_to_user(self.user_one, self.item_one, 1)
 
         with self.assertRaises(Exception) as ctx:
             self.app.add_book_to_user(self.user_one, self.item_one, 1)
