@@ -5,7 +5,7 @@ from utils.gregorian_month_of_year import GregorianMonthOfYear
 from domain.postnet.postnet_interface import PostnetInterface
 
 
-class Checkout:
+class Cashier:
     """Instance creation - class"""
 
     @classmethod
@@ -31,11 +31,11 @@ class Checkout:
 
     def _check_empty_cart(self, cart):
         if cart.is_empty():
-            raise Exception(Checkout.empty_cart_message_error())
+            raise Exception(Cashier.empty_cart_message_error())
 
     def _check_expired(self, card):
         if card.is_expired(GregorianMonthOfYear.current()):
-            raise Exception(Checkout.expired_card_message_error())
+            raise Exception(Cashier.expired_card_message_error())
 
     """Main Protocol"""
 

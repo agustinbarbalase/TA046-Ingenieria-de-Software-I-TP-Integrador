@@ -3,7 +3,7 @@ from typing import *
 from utils.clock.clock_interface import ClockInterface
 from domain.auth.auth_service_interface import AuthServiceInterface
 from domain.user_session import UserSession
-from domain.checkout import Checkout
+from domain.cashier import Cashier
 
 from domain.postnet.postnet import Postnet
 from utils.card import Card
@@ -45,7 +45,7 @@ class MyBooksApp:
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
-        self.checkout_instance = Checkout.with_postnet(Postnet())
+        self.cashier = Cashier.with_postnet(Postnet())
         self.clock = clock
 
     def user_does_not_exist_error(self):
@@ -122,14 +122,10 @@ class MyBooksApp:
             self.user_does_not_exist_error()
 
         user_cart = user_session.user_cart()
-        ticket = self.checkout_instance.check_out(user_cart, card)
+        ticket = self.cashier.check_out(user_cart, card)
         # user_session.register_purcharse(user_cart.list_items())
         return ticket
 
     def user_shop_history(self, user_id: str):
-        user_session = self.users_ids.get(
-            user_id, self.user_doesnot_exist_validation(user_id)
-        )
-        if user_session is None:
-            self.user_does_not_exist_error()
-        return user_session.shop_history_list()
+        # user_shoping_history = self.shoping_history.get_history_for(user_id)
+        return []

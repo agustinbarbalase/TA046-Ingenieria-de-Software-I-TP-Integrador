@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from domain.checkout import Checkout
+from domain.cashier import Cashier
 from domain.shop_cart import ShopCart
 from tests.stub.postnet_stub import PostNetStub
 from utils.card import Card
@@ -35,23 +35,23 @@ class CheckOutTest(unittest.TestCase):
         self.fully_cart.add_item("The Lord of the rings", 1)
 
         self.postnet = PostNetStub()
-        self.check_out = Checkout.with_postnet(self.postnet)
+        self.cashier = Cashier.with_postnet(self.postnet)
 
     """tests"""
 
     def test01_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:
-            self.check_out.check_out(self.empty_cart, self.valid_card)
+            self.cashier.check_out(self.empty_cart, self.valid_card)
 
-        self.assertEqual(str(context.exception), Checkout.empty_cart_message_error())
+        self.assertEqual(str(context.exception), Cashier.empty_cart_message_error())
 
     def test02_checkout_with_expired_card(self):
         with self.assertRaises(Exception) as context:
-            self.check_out.check_out(self.fully_cart, self.expired_card)
+            self.cashier.check_out(self.fully_cart, self.expired_card)
 
-        self.assertEqual(str(context.exception), Checkout.expired_card_message_error())
+        self.assertEqual(str(context.exception), Cashier.expired_card_message_error())
 
     def test03_checkout_sucessfully(self):
-        ticket = self.check_out.check_out(self.fully_cart, self.valid_card)
+        ticket = self.cashier.check_out(self.fully_cart, self.valid_card)
 
         self.assertEqual(ticket, "Sucessfully sell")

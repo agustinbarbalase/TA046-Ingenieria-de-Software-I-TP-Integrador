@@ -150,14 +150,14 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertEqual(self.app.user_shop_history(self.user_one), [])
 
     # def test13_after_shopping_two_times_the_user_has_shopping_history(self):
-    #     self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-    #     self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
-    #     self.app.checkout(self.user_one, self.valid_card, self.user_action)
+    #     self.app.add_user(self.user_one, self.password_one)
+    #     self.app.add_book_to_user(self.user_one, self.item_one, 1)
+    #     self.app.checkout(self.user_one, self.valid_card)
 
-    #     self.app.add_book_to_user(self.user_one, self.item_two, 1, self.user_action)
-    #     self.app.checkout(self.user_one, self.valid_card, self.user_action)
+    #     self.app.add_book_to_user(self.user_one, self.item_two, 1)
+    #     self.app.checkout(self.user_one, self.valid_card)
 
-    #     history = Bag()
+    #     history = Bag.new()
     #     history.add_with_amount(self.item_one, 1)
     #     history.add_with_amount(self.item_two, 1)
     #     list_items = history.list_items()
