@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import *
-from utils.clock import Clock
+from utils.clock.clock_interface import ClockInterface
 from domain.auth.auth_service_interface import AuthServiceInterface
 from domain.user_session import UserSession
 from domain.checkout import Checkout
@@ -19,7 +19,7 @@ class MyBooksApp:
     ## To-do: Change name, also add postnet
     @classmethod
     def with_catalog_and_auth(
-        cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: Clock
+        cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
     ):
         return cls(catalog, auth, clock)
 
@@ -40,7 +40,7 @@ class MyBooksApp:
     """Initialization"""
 
     def __init__(
-        self, catalog: dict[str, str], auth: AuthServiceInterface, clock: Clock
+        self, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
     ):
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog

@@ -5,7 +5,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.clock import Clock
+from tests.stub.clock_stub import ClockStub
 from domain.rest_interface import RestInterface
 from domain.my_books_app import MyBooksApp
 from tests.stub.auth_service_stub import AuthServiceStub
@@ -21,7 +21,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.book_isbn_one = "9780387862545"
         self.book_isbn_two = "9780387862546"
         self.catalog = {self.book_isbn_one: "π", self.book_isbn_two: "e"}
-        self.clock = Clock.with_current_time(datetime(2023, 1, 1, 0, 0))
+        self.clock = ClockStub.with_current_time(datetime(2023, 1, 1, 0, 0))
 
         self.auth = AuthServiceStub.with_users({self.user_id: self.password})
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)

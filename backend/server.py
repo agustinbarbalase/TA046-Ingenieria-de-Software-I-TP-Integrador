@@ -7,7 +7,7 @@ from typing import *
 
 from flask_cors import CORS
 
-from utils.clock import Clock
+from utils.clock.clock import Clock
 from domain.my_books_app import MyBooksApp
 from domain.rest_interface import RestInterface
 from domain.auth.auth_service import AuthService

@@ -3,7 +3,7 @@ import sys
 import os
 import unittest
 
-from utils.clock import Clock
+from tests.stub.clock_stub import ClockStub
 from domain.user_session import UserSession
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,7 +13,7 @@ class UserSessionTest(unittest.TestCase):
 
     def setUp(self):
         self.current_time = datetime(2018, 12, 9, 0, 0)
-        self.clock = Clock.with_current_time(self.current_time)
+        self.clock = ClockStub.with_current_time(self.current_time)
 
     def test01_usser_session_is_not_expired(self):
         user_session = UserSession(

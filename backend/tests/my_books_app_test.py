@@ -3,7 +3,7 @@ import sys
 import os
 import unittest
 
-from utils.clock import Clock
+from tests.stub.clock_stub import ClockStub
 from utils.bag import Bag
 from utils.gregorian_month_of_year import GregorianMonthOfYear
 
@@ -37,7 +37,7 @@ class MyBooksAppTest(unittest.TestCase):
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
-        self.clock = Clock.with_current_time(self.user_creation_date)
+        self.clock = ClockStub.with_current_time(self.user_creation_date)
 
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
 

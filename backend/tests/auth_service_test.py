@@ -5,7 +5,7 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from utils.clock import Clock
+from tests.stub.clock_stub import ClockStub
 from tests.stub.auth_service_stub import AuthServiceStub
 from domain.my_books_app import MyBooksApp
 
@@ -25,7 +25,7 @@ class AuthServiceTest(unittest.TestCase):
         self.auth = AuthServiceStub.with_users({self.user: self.password})
 
         self.catalog = {"9781530959334": "π"}
-        self.clock = Clock.with_current_time(datetime(2023, 1, 1, 0, 0))
+        self.clock = ClockStub.with_current_time(datetime(2023, 1, 1, 0, 0))
 
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
