@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from utils.card import Card
 
 
 class PostnetInterface:
@@ -7,5 +8,5 @@ class PostnetInterface:
         pass
 
     @abstractmethod
-    def return_ticket(self, cart, card):
+    def return_ticket(self, card: Card, amount: int):
         pass

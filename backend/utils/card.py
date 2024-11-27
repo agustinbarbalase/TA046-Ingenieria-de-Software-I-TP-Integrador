@@ -30,3 +30,6 @@ class Card:
 
     def is_expired(self, date):
         return self.gregorian_month_of_year <= date
+
+    def get_number_card(self):
+        return self.number

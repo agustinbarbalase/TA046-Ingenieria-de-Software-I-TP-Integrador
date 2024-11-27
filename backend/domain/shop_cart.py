@@ -38,3 +38,9 @@ class ShopCart:
 
     def list_items(self) -> List[Tuple[str, int]]:
         return list(self.item.list_items())
+
+    def total_amount(self):
+        total_amount: float = 0
+        for item in self.list_items():
+            total_amount += float(self.catalog[item[0]]) * float(item[1])
+        return total_amount

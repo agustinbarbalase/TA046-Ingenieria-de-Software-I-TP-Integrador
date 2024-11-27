@@ -42,4 +42,5 @@ class Cashier:
     def check_out(self, cart: ShopCart, card: Card):
         self._check_expired(card)
         self._check_empty_cart(cart)
-        return self.postnet.return_ticket(cart, card)
+        print(cart.total_amount())
+        return self.postnet.return_ticket(card, cart.total_amount())

@@ -21,7 +21,8 @@ class Clock(ClockInterface):
     """Main protocol"""
 
     def is_later_that(self, other):
-        return datetime.now() > other
+        self.current_time = datetime.now()
+        return self.current_time > other
 
     def step_seconds(self, seconds: int):
         self.current_time = datetime.now() + timedelta(seconds=seconds)

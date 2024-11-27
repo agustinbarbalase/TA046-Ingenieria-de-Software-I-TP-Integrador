@@ -1,9 +1,11 @@
 from domain.postnet.postnet_interface import PostnetInterface
+from utils.card import Card
 
 
 class Postnet(PostnetInterface):
-    def __init__(self):
-        super().__init__()
 
-    def return_ticket(self, cart, card):
-        return "1234"
+    def __init__(self):
+        pass
+
+    def return_ticket(self, card: Card, amount: int):
+        pass
