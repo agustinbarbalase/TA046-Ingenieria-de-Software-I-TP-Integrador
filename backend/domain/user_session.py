@@ -7,7 +7,7 @@ from utils.bag import Bag
 from domain.shop_cart import ShopCart
 
 
-class User:
+class UserSession:
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):
@@ -38,7 +38,7 @@ class User:
         self.shop_history.add_list(purcharse)
         self.cart = ShopCart.with_catalog(self.cart.catalog)
 
-    def shop_history_list(self):
-        if self.succesful_transactions < 2:
-            return []
-        return self.shop_history.list_items()
+    # def shop_history_list(self):
+    #     if self.succesful_transactions < 2:
+    #         return []
+    #     return self.shop_history.list_items()
