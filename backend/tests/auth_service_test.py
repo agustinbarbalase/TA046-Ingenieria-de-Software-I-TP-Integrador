@@ -5,9 +5,11 @@ import unittest
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from domain.my_books_app import MyBooksApp
+from domain.shopping_history_book import ShopingHistoryBook
 from tests.stub.clock_stub import ClockStub
 from tests.stub.auth_service_stub import AuthServiceStub
-from domain.my_books_app import MyBooksApp
+from tests.stub.postnet_stub import PostnetStub
 
 
 class AuthServiceTest(unittest.TestCase):
@@ -31,8 +33,11 @@ class AuthServiceTest(unittest.TestCase):
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
 
-        self.app = MyBooksApp.with_catalog_and_auth(
-            self.catalog, self.auth, self.clock, 30
+        self.shopping_history = ShopingHistoryBook.new()
+        self.postnet = PostnetStub()
+
+        self.app = MyBooksApp.with_dependencies(
+            self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet
         )
 
     """tests"""

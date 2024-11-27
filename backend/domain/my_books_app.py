@@ -5,7 +5,7 @@ from domain.auth.auth_service_interface import AuthServiceInterface
 from domain.user_session import UserSession
 from domain.cashier import Cashier
 
-from domain.postnet.postnet import Postnet
+from domain.postnet.postnet_interface import PostnetInterface
 from domain.shopping_history_book import ShopingHistoryBook
 from utils.card import Card
 from domain.auth.auth_service import AuthService
@@ -19,14 +19,16 @@ class MyBooksApp:
 
     ## To-do: Change name, also add postnet
     @classmethod
-    def with_catalog_and_auth(
+    def with_dependencies(
         cls,
         catalog: dict[str, str],
         auth: AuthServiceInterface,
         clock: ClockInterface,
         user_session_time: int,
+        shopping_history: ShopingHistoryBook,
+        postnet: PostnetInterface,
     ):
-        return cls(catalog, auth, clock, user_session_time)
+        return cls(catalog, auth, clock, user_session_time, shopping_history, postnet)
 
     """Error messages - class"""
 
@@ -50,13 +52,15 @@ class MyBooksApp:
         auth: AuthServiceInterface,
         clock: ClockInterface,
         user_session_time: int,
+        shopping_history: ShopingHistoryBook,
+        postnet: PostnetInterface,
     ):
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
         self.shopping_history = ShopingHistoryBook.new()
         self.cashier = Cashier.with_postnet_and_shopping_history(
-            Postnet(), self.shopping_history
+            postnet, self.shopping_history
         )
         self.clock = clock
         self.user_session_time = user_session_time

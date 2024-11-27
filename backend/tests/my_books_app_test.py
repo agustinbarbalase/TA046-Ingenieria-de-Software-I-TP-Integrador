@@ -11,7 +11,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.card import Card
 from domain.my_books_app import MyBooksApp
+from domain.shopping_history_book import ShopingHistoryBook
 from tests.stub.auth_service_stub import AuthServiceStub
+from tests.stub.postnet_stub import PostnetStub
 
 
 class MyBooksAppTest(unittest.TestCase):
@@ -37,8 +39,11 @@ class MyBooksAppTest(unittest.TestCase):
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.clock = ClockStub.with_current_time(self.user_creation_date)
 
-        self.app = MyBooksApp.with_catalog_and_auth(
-            self.catalog, self.auth, self.clock, 30
+        self.shopping_history = ShopingHistoryBook.new()
+        self.postnet = PostnetStub()
+
+        self.app = MyBooksApp.with_dependencies(
+            self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet
         )
 
         self.valid_card = Card.with_number_and_month_of_year(
@@ -104,8 +109,8 @@ class MyBooksAppTest(unittest.TestCase):
     """tests - session expiration"""
 
     def test08_user_session_is_expired_when_list_cart(self):
-        self.app = MyBooksApp.with_catalog_and_auth(
-            self.catalog, self.auth, self.clock, 30
+        self.app = MyBooksApp.with_dependencies(
+            self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet
         )
         self.app.add_user(self.user_one, self.password_one)
 

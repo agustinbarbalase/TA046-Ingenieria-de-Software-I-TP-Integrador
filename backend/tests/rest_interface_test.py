@@ -8,7 +8,9 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from tests.stub.clock_stub import ClockStub
 from domain.rest_interface import RestInterface
 from domain.my_books_app import MyBooksApp
+from domain.shopping_history_book import ShopingHistoryBook
 from tests.stub.auth_service_stub import AuthServiceStub
+from tests.stub.postnet_stub import PostnetStub
 
 
 class RestInterfaceTest(unittest.TestCase):
@@ -24,8 +26,11 @@ class RestInterfaceTest(unittest.TestCase):
         self.clock = ClockStub.with_current_time(datetime(2023, 1, 1, 0, 0))
 
         self.auth = AuthServiceStub.with_users({self.user_id: self.password})
-        self.app = MyBooksApp.with_catalog_and_auth(
-            self.catalog, self.auth, self.clock, 30
+        self.shopping_history = ShopingHistoryBook.new()
+        self.postnet = PostnetStub()
+
+        self.app = MyBooksApp.with_dependencies(
+            self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet
         )
 
         self.rest_interface = RestInterface.with_app(self.app)

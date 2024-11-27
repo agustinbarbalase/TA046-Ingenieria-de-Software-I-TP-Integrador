@@ -11,6 +11,8 @@ from utils.clock.clock import Clock
 from domain.my_books_app import MyBooksApp
 from domain.rest_interface import RestInterface
 from domain.auth.auth_service import AuthService
+from domain.shopping_history_book import ShopingHistoryBook
+from domain.postnet.postnet import Postnet
 
 
 class TusLibrosWebServer:
@@ -23,9 +25,17 @@ class TusLibrosWebServer:
         )
 
         self.auth = AuthService.with_users(users)
-        counter_clock = Clock.with_time_now()
-        self.app = MyBooksApp.with_catalog_and_auth(
-            catalog, self.auth, counter_clock, user_session_time
+        self.shopping_history = ShopingHistoryBook.new()
+        self.postnet = Postnet()
+        self.clock = Clock.with_time_now()
+
+        self.app = MyBooksApp.with_dependencies(
+            catalog,
+            self.auth,
+            self.clock,
+            user_session_time,
+            self.shopping_history,
+            self.postnet,
         )
         self.rest_interface = RestInterface.with_app(self.app)
 
