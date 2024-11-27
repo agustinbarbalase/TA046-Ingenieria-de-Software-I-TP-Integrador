@@ -67,10 +67,10 @@ class RestInterface:
 
     """Main protocol"""
 
-    def create_cart(self, params: dict[str, str], current_time: datetime) -> Response:
+    def create_cart(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "password"])
-            self.book_app.add_user(params["userId"], params["password"], current_time)
+            self.book_app.add_user(params["userId"], params["password"])
             return Response("0|OK", 200)
 
         return self._return_response(closure)

@@ -44,17 +44,17 @@ class MyBooksAppTest(unittest.TestCase):
     """tests - main protocol"""
 
     def test01_can_create_cart_for_user(self):
-        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one)
         self.assertTrue(self.app.has_user(self.user_one))
 
     def test02_user_can_add_items_to_cart(self):
-        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one)
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.assertTrue(self.app.user_has_item(self.user_one, self.item_one))
 
     def test03_can_create_multiple_carts_and_each_users_add_for_each_cart(self):
-        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-        self.app.add_user(self.user_two, self.password_two, self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one)
+        self.app.add_user(self.user_two, self.password_two)
 
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.app.add_book_to_user(self.user_two, self.item_two, 1)
@@ -66,7 +66,7 @@ class MyBooksAppTest(unittest.TestCase):
         self.assertFalse(self.app.user_has_item(self.user_two, self.item_one))
 
     def test04_can_list_items_from_cart(self):
-        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one)
         self.app.add_book_to_user(self.user_one, self.item_one, 1)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one),
@@ -90,7 +90,7 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test07_can_add_multiple_items_to_cart(self):
-        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one)
         self.app.add_book_to_user(self.user_one, self.item_one, 2)
         self.assertEqual(
             self.app.get_user_shop_list(self.user_one),
@@ -110,7 +110,7 @@ class MyBooksAppTest(unittest.TestCase):
         pass
 
     def test09_user_session_is_not_expired_when_list_cart(self):
-        self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
+        self.app.add_user(self.user_one, self.password_one)
         self.app.get_user_shop_list(self.user_one)
 
     def test10_user_session_is_expired_when_try_add_item_in_cart(self):

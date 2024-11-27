@@ -65,11 +65,11 @@ class MyBooksApp:
 
     """Main protocol"""
 
-    def add_user(self, user_id: str, password: str, current: datetime):
+    def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
         duration = timedelta(seconds=SESSION_DURATION_IN_SECONDS)
-        new_user = UserSession(self.catalog, current + duration)
+        new_user = UserSession(self.catalog, datetime.now())
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:
