@@ -84,7 +84,6 @@ class MyBooksApp:
         new_user = UserSession(
             self.catalog, self.clock.later_date_to_seconds(SESSION_DURATION_IN_SECONDS)
         )
-        self.shopping_history.add_user(user_id)
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:
