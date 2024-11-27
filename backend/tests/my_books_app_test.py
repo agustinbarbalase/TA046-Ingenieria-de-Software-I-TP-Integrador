@@ -131,6 +131,7 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.app.add_user(self.user_one, self.password_one)
 
+        ## To-do: check if there is a better way to chenge this
         self.app.clock = Clock(
             lambda: datetime(2018, 1, 2, 2, 0, 0), lambda: timedelta(seconds=0)
         )
