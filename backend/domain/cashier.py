@@ -50,6 +50,5 @@ class Cashier:
     def check_out(self, cart: ShopCart, card: Card, user_id: str):
         self._check_expired(card)
         self._check_empty_cart(cart)
-        if self.shopping_history:
-            self.shopping_history.register_purcharse(user_id, cart)
+        self.shopping_history.register_purcharse(user_id, cart)
         return self.postnet.return_ticket(card, cart.total_amount())

@@ -36,7 +36,7 @@ class CheckOutTest(unittest.TestCase):
         self.fully_cart = ShopCart.with_catalog(self.catalog)
         self.fully_cart.add_item("The Lord of the rings", 1)
 
-        self.postnet = PostnetStub()
+        self.postnet = PostnetStub.new()
         self.cashier = Cashier.with_postnet(self.postnet)
 
     """tests"""

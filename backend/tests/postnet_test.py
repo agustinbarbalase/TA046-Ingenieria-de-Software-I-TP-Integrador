@@ -24,7 +24,7 @@ class PostNetTest(unittest.TestCase):
             6969696969696969, self.valid_gregorian_month_of_year
         )
 
-        self.postnet = PostnetStub()
+        self.postnet = PostnetStub.new()
 
     """tests"""
 

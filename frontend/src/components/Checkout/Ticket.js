@@ -25,7 +25,7 @@ export class Ticket extends React.Component {
     renderHeader() {
         return <CardHeader
             avatar={
-                <Avatar sx={{bgcolor: "secondary.main"}} aria-label="recipe">
+                <Avatar sx={{backgroundColor: "secondary.main"}} aria-label="recipe">
                     <CreditScoreIcon/>
                 </Avatar>
             }

@@ -1,4 +1,3 @@
-/* eslint-disable no-extend-native */
 
 
 Number.prototype.range = function (stop, step) {

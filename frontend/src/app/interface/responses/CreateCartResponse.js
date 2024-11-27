@@ -6,7 +6,7 @@ export class CreateCartResponse extends ApiResponse {
     static understandThis(aRawResponse) {
         const result = aRawResponse.split('|');
         const code = result[0];
-        return code === '0';
+        return code == '0';
     }
 
     static defaultResponse() {
@@ -18,4 +18,7 @@ export class CreateCartResponse extends ApiResponse {
         return []
     }
 
+    cartId(){
+        return this._rawResponse.split('|')[1];
+    }
 }

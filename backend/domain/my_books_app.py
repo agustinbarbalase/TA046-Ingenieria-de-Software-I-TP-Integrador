@@ -5,7 +5,7 @@ from domain.auth.auth_service_interface import AuthServiceInterface
 from domain.user_session import UserSession
 from domain.cashier import Cashier
 
-from domain.postnet.postnet import Postnet
+from domain.postnet.postnet_interface import PostnetInterface
 from domain.shopping_history_book import ShopingHistoryBook
 from utils.card import Card
 from domain.auth.auth_service import AuthService
@@ -19,10 +19,16 @@ class MyBooksApp:
 
     ## To-do: Change name, also add postnet
     @classmethod
-    def with_catalog_and_auth(
-        cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
+    def with_dependencies(
+        cls,
+        catalog: dict[str, str],
+        auth: AuthServiceInterface,
+        clock: ClockInterface,
+        user_session_time: int,
+        shopping_history: ShopingHistoryBook,
+        postnet: PostnetInterface,
     ):
-        return cls(catalog, auth, clock)
+        return cls(catalog, auth, clock, user_session_time, shopping_history, postnet)
 
     """Error messages - class"""
 
@@ -41,16 +47,23 @@ class MyBooksApp:
     """Initialization"""
 
     def __init__(
-        self, catalog: dict[str, str], auth: AuthServiceInterface, clock: ClockInterface
+        self,
+        catalog: dict[str, str],
+        auth: AuthServiceInterface,
+        clock: ClockInterface,
+        user_session_time: int,
+        shopping_history: ShopingHistoryBook,
+        postnet: PostnetInterface,
     ):
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
         self.shopping_history = ShopingHistoryBook.new()
         self.cashier = Cashier.with_postnet_and_shopping_history(
-            Postnet(), self.shopping_history
+            postnet, self.shopping_history
         )
         self.clock = clock
+        self.user_session_time = user_session_time
 
     def user_does_not_exist_error(self):
         raise Exception(MyBooksApp.user_doesnot_exist_message_error())
@@ -82,7 +95,7 @@ class MyBooksApp:
         if self.auth:
             self.auth.autenticate_user(user_id, password)
         new_user = UserSession(
-            self.catalog, self.clock.later_date_to_seconds(SESSION_DURATION_IN_SECONDS)
+            self.catalog, self.clock.later_date_to_seconds(self.user_session_time)
         )
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
@@ -131,8 +144,11 @@ class MyBooksApp:
 
         return ticket
 
-    def user_shop_history(self, user_id: str):
+    def user_shop_history(self, user_id: str, password: str):
+        if self.auth:
+            self.auth.autenticate_user(user_id, password)
         try:
-            return self.shopping_history.user_shopping_history(user_id).history()
-        except Exception:
-            return []
+            shop_history = self.shopping_history.history_for_user(user_id)
+            return shop_history.history()
+        except Exception as err:
+            return (0, [])
