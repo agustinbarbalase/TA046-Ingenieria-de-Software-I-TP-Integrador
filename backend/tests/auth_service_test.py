@@ -34,7 +34,7 @@ class AuthServiceTest(unittest.TestCase):
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
 
         self.shopping_history = ShopingHistoryBook.new()
-        self.postnet = PostnetStub()
+        self.postnet = PostnetStub.new()
 
         self.app = MyBooksApp.with_dependencies(
             self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet

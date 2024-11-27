@@ -40,7 +40,7 @@ class MyBooksAppTest(unittest.TestCase):
         self.clock = ClockStub.with_current_time(self.user_creation_date)
 
         self.shopping_history = ShopingHistoryBook.new()
-        self.postnet = PostnetStub()
+        self.postnet = PostnetStub.new()
 
         self.app = MyBooksApp.with_dependencies(
             self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet

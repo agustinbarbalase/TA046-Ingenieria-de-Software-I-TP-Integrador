@@ -27,7 +27,7 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.auth = AuthServiceStub.with_users({self.user_id: self.password})
         self.shopping_history = ShopingHistoryBook.new()
-        self.postnet = PostnetStub()
+        self.postnet = PostnetStub.new()
 
         self.app = MyBooksApp.with_dependencies(
             self.catalog, self.auth, self.clock, 30, self.shopping_history, self.postnet

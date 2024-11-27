@@ -26,7 +26,7 @@ class TusLibrosWebServer:
 
         self.auth = AuthService.with_users(users)
         self.shopping_history = ShopingHistoryBook.new()
-        self.postnet = Postnet()
+        self.postnet = Postnet.new()
         self.clock = Clock.with_time_now()
 
         self.app = MyBooksApp.with_dependencies(
