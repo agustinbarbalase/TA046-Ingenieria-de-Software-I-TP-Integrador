@@ -8,4 +8,4 @@ class Postnet(PostnetInterface):
         pass
 
     def return_ticket(self, card: Card, amount: int):
-        pass
+        return "1234"

@@ -12,7 +12,7 @@ class UserShoppingHistory:
     """Initialization"""
 
     def __init__(self):
-        self.books: Bag = Bag()
+        self.books: Bag = Bag.new()
         self.total_amount: int = 0
         self.total_successfull_transaction: int = 0
 
@@ -29,6 +29,4 @@ class UserShoppingHistory:
         self.total_successfull_transaction += 1
 
     def history(self):
-        if self.total_successfull_transaction < 2:
-            return (0, [])
         return (float("%.2f" % self.total_amount), self.books.list_items())

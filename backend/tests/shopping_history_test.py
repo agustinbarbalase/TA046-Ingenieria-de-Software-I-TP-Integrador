@@ -29,7 +29,7 @@ class ShoppingHistoryTest(unittest.TestCase):
 
     def test01(self):
         with self.assertRaises(Exception) as ctx:
-            self.shopping_history_book.user_shopping_history(self.user_one)
+            self.shopping_history_book.history_for_user(self.user_one)
 
         self.assertEqual(
             str(ctx.exception), ShopingHistoryBook.invalid_user_message_error()
@@ -39,7 +39,7 @@ class ShoppingHistoryTest(unittest.TestCase):
         self.shopping_history_book.register_purcharse(self.user_one, self.cart_one)
         self.shopping_history_book.register_purcharse(self.user_one, self.cart_one)
 
-        user_shopping_history = self.shopping_history_book.user_shopping_history(
+        user_shopping_history = self.shopping_history_book.history_for_user(
             self.user_one
         )
 
@@ -58,11 +58,11 @@ class ShoppingHistoryTest(unittest.TestCase):
         self.shopping_history_book.register_purcharse(self.user_two, self.cart_two)
         self.shopping_history_book.register_purcharse(self.user_two, self.cart_two)
 
-        user_shopping_history_one = self.shopping_history_book.user_shopping_history(
+        user_shopping_history_one = self.shopping_history_book.history_for_user(
             self.user_one
         )
 
-        user_shopping_history_two = self.shopping_history_book.user_shopping_history(
+        user_shopping_history_two = self.shopping_history_book.history_for_user(
             self.user_two
         )
 

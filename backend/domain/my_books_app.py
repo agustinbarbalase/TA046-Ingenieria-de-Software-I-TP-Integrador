@@ -84,6 +84,7 @@ class MyBooksApp:
         new_user = UserSession(
             self.catalog, self.clock.later_date_to_seconds(SESSION_DURATION_IN_SECONDS)
         )
+        self.shopping_history.add_user(user_id)
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:
@@ -131,9 +132,12 @@ class MyBooksApp:
 
         return ticket
 
-    def user_shop_history(self, user_id: str):
+    def user_shop_history(self, user_id: str, password: str):
+        if self.auth:
+            self.auth.autenticate_user(user_id, password)
         try:
-            print(self.shopping_history.user_shopping_history(user_id).history())
-            return self.shopping_history.user_shopping_history(user_id).history()
-        except Exception:
-            return []
+            shop_history = self.shopping_history.history_for_user(user_id)
+            print(shop_history)
+            return shop_history.history()
+        except Exception as err:
+            return (0, [])

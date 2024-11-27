@@ -14,7 +14,7 @@ class ShopingHistoryBook:
 
     @classmethod
     def invalid_user_message_error(cls):
-        return "Invalid user"
+        return "Invalid user dlasdlsad"
 
     """Initialization"""
 
@@ -29,8 +29,11 @@ class ShopingHistoryBook:
         )
         self.users_shopping_history[user_id].register_purcharse_for_user(cart)
 
-    def user_shopping_history(self, user_id):
+    def add_user(self, user_id):
+        self.users_shopping_history[user_id] = UserShoppingHistory()
+
+    def history_for_user(self, user_id):
         shopping_history = self.users_shopping_history.get(user_id, None)
         if shopping_history is None:
             raise Exception(ShopingHistoryBook.invalid_user_message_error())
-        return copy(shopping_history)
+        return shopping_history

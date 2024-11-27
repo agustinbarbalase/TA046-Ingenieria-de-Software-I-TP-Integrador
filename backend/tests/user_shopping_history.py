@@ -27,14 +27,6 @@ class ShoppingHistoryTest(unittest.TestCase):
     def test02(self):
 
         self.cart_one.add_item(self.book_isbn_one, 2)
-
-        self.user_shopping_history.register_purcharse_for_user(self.cart_one)
-
-        self.assertEqual(self.user_shopping_history.history(), (0, []))
-
-    def test03(self):
-
-        self.cart_one.add_item(self.book_isbn_one, 2)
         self.cart_two.add_item(self.book_isbn_one, 1)
         self.cart_two.add_item(self.book_isbn_two, 1)
 
