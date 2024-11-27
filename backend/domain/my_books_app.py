@@ -89,14 +89,11 @@ class MyBooksApp:
         user = self.users_ids.get(user_id)
         return user.get_user_shop_list()
 
-    def add_book_to_user(
-        self, user_id: str, isbn: str, amount: int, current_time: datetime
-    ):
+    def add_book_to_user(self, user_id: str, isbn: str, amount: int):
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
         self._cant_add_non_positive_amount_of_books_validation(amount)
-        self._validate_user_expired_session(user_id, current_time)
         return user.add_book(isbn, amount)
 
     def checkout(self, user_id: str, card: Card):

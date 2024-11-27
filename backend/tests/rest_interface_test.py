@@ -59,7 +59,7 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_list_cart = {"userId": self.user_id}
 
         self.rest_interface.create_cart(params_for_create_cart, self.user_creation_date)
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(response.body, f"0|{self.book_isbn_one}|1")
@@ -85,7 +85,7 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_list_cart = {"userId": self.user_id}
 
         self.rest_interface.create_cart(params_for_create_cart, self.user_creation_date)
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(response.body, f"0|{self.book_isbn_one}|2")
@@ -101,9 +101,7 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_list_cart = {"userId": self.user_id}
 
         self.rest_interface.create_cart(params_for_create_cart, self.user_creation_date)
-        response = self.rest_interface.add_to_cart(
-            params_for_add_to_cart, self.user_action
-        )
+        response = self.rest_interface.add_to_cart(params_for_add_to_cart)
 
         self.assertEqual(
             response.body,
@@ -148,9 +146,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "",
         }
 
-        response = self.rest_interface.add_to_cart(
-            params_for_add_to_cart, self.user_action
-        )
+        response = self.rest_interface.add_to_cart(params_for_add_to_cart)
 
         self.assertEqual(
             response.body,
@@ -188,9 +184,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "",
         }
 
-        response = self.rest_interface.add_to_cart(
-            params_for_add_to_cart, self.user_action
-        )
+        response = self.rest_interface.add_to_cart(params_for_add_to_cart)
 
         self.assertEqual(
             response.body,
@@ -209,7 +203,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "1",
         }
 
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         card_number = "1234567890123456"
         card_expiry = "122025"
         card_name = self.user_id
@@ -234,7 +228,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "1",
         }
 
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         card_number = "123456789012346"
         card_expiry = "122025"
         card_name = self.user_id
@@ -259,7 +253,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "1",
         }
 
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         card_number = "1234567890123461"
         card_expiry = "122023"
         card_name = self.user_id
@@ -303,7 +297,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "1",
         }
 
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         card_number = "1234567890123456"
         card_expiry = "122025"
         card_name = ""
@@ -328,7 +322,7 @@ class RestInterfaceTest(unittest.TestCase):
             "bookQuantity": "1",
         }
 
-        self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
         card_number = "1234567890123456"
         card_expiry = "122025"
         card_name = self.user_id
