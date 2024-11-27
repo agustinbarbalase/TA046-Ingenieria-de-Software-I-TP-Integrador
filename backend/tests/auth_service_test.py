@@ -25,16 +25,13 @@ class AuthServiceTest(unittest.TestCase):
         self.auth = AuthServiceStub.with_users({self.user: self.password})
 
         self.catalog = {"9781530959334": "π"}
-        self.clock = Clock(
-            lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=10)
-        )
-        self.clock = Clock(
-            lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=10)
-        )
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
+        self.clock = Clock.with_current_time(datetime(2023, 1, 1, 0, 0))
+
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
         self.user_action = datetime(2018, 12, 9, 0, 1)
         self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
+
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
 
     """tests"""
 

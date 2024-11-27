@@ -21,9 +21,7 @@ class RestInterfaceTest(unittest.TestCase):
         self.book_isbn_one = "9780387862545"
         self.book_isbn_two = "9780387862546"
         self.catalog = {self.book_isbn_one: "π", self.book_isbn_two: "e"}
-        self.clock = Clock(
-            lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=10)
-        )
+        self.clock = Clock.with_current_time(datetime(2023, 1, 1, 0, 0))
 
         self.auth = AuthServiceStub.with_users({self.user_id: self.password})
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)

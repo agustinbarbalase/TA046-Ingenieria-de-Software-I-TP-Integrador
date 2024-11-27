@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import List
 from domain.checkout import Checkout
 from utils.card import Card
+from utils.clock import Clock
 from utils.bag import Bag
 from domain.shop_cart import ShopCart
 
@@ -16,8 +17,8 @@ class UserSession:
 
     """Main protocol"""
 
-    def is_expired(self, current_date: datetime):
-        return self.expiration_date < current_date
+    def is_expired(self, clock: Clock):
+        return clock.is_later_that(self.expiration_date)
 
     def has_item(self, item: str):
         return self.cart.contains_item(item)

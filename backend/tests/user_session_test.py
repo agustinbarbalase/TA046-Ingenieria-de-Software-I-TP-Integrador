@@ -11,14 +11,24 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class UserSessionTest(unittest.TestCase):
 
+    def setUp(self):
+        self.current_time = datetime(2018, 12, 9, 0, 0)
+        self.clock = Clock.with_current_time(self.current_time)
+
     def test01_usser_session_is_not_expired(self):
-        clock = Clock(lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=10))
-        user_session = UserSession(catalog={}, expiration_date=clock.limit_date())
-        self.assertFalse(user_session.is_expired(clock.current()))
+        user_session = UserSession(
+            catalog={}, expiration_date=self.clock.later_date_to_seconds(30)
+        )
+
+        self.clock.step_seconds(29)
+
+        self.assertFalse(user_session.is_expired(self.clock))
 
     def test02_usser_session_is_expired(self):
-        clock = Clock(lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=10))
-        user_session = UserSession(catalog={}, expiration_date=clock.limit_date())
-        self.assertTrue(
-            user_session.is_expired(clock.current() + timedelta(seconds=11))
+        user_session = UserSession(
+            catalog={}, expiration_date=self.clock.later_date_to_seconds(30)
         )
+
+        self.clock.step_seconds(30)
+
+        self.assertFalse(user_session.is_expired(self.clock))

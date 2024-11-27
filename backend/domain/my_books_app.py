@@ -10,7 +10,7 @@ from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
 
-# SESSION_DURATION_IN_SECONDS = 60
+SESSION_DURATION_IN_SECONDS = 30
 
 
 class MyBooksApp:
@@ -63,11 +63,13 @@ class MyBooksApp:
                 MyBooksApp.cant_add_non_positive_amount_of_books_message_error()
             )
 
-    def _validate_user_expired_session(self, user_id: str, current_time: datetime):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+    def _validate_user_expired_session(self, user_id: str):
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        if user.is_expired(current_time):
+        if user_session.is_expired(self.clock):
             raise Exception(MyBooksApp.user_expired_session_message_error())
 
     """Main protocol"""
@@ -75,7 +77,9 @@ class MyBooksApp:
     def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
-        new_user = UserSession(self.catalog, self.clock.limit_date())
+        new_user = UserSession(
+            self.catalog, self.clock.later_date_to_seconds(SESSION_DURATION_IN_SECONDS)
+        )
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:
@@ -89,33 +93,41 @@ class MyBooksApp:
         return user.has_item(item)
 
     def get_user_shop_list(self, user_id: str) -> list:
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        self._validate_user_expired_session(user_id, self.clock.current())
-        user = self.users_ids.get(user_id)
-        return user.get_user_shop_list()
+        self._validate_user_expired_session(user_id)
+        user_session = self.users_ids.get(user_id)
+        return user_session.get_user_shop_list()
 
     def add_book_to_user(self, user_id: str, isbn: str, amount: int):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        self._validate_user_expired_session(user_id, self.clock.current())
+        self._validate_user_expired_session(user_id)
         self._cant_add_non_positive_amount_of_books_validation(amount)
-        return user.add_book(isbn, amount)
+        return user_session.add_book(isbn, amount)
 
     def checkout(self, user_id: str, card: Card):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
 
-        user_cart = user.user_cart()
+        user_cart = user_session.user_cart()
         ticket = self.checkout_instance.check_out(user_cart, card)
-        user.register_purcharse(user_cart.list_items())
+        user_session.register_purcharse(user_cart.list_items())
         return ticket
 
     def user_shop_history(self, user_id: str):
-        user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
-        if user is None:
+        user_session = self.users_ids.get(
+            user_id, self.user_doesnot_exist_validation(user_id)
+        )
+        if user_session is None:
             self.user_does_not_exist_error()
-        return user.shop_history_list()
+        return user_session.shop_history_list()

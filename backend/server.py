@@ -21,9 +21,7 @@ class TusLibrosWebServer:
         )
 
         self.auth = AuthService.with_users(users)
-        counter_clock = Clock(
-            lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=60)
-        )
+        counter_clock = Clock.with_time_now()
         self.app = MyBooksApp.with_catalog_and_auth(catalog, self.auth, counter_clock)
         self.rest_interface = RestInterface.with_app(self.app)
 
