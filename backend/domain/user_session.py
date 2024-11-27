@@ -13,8 +13,6 @@ class UserSession:
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):
         self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
-        self.shop_history: Bag = Bag.new()
-        self.succesful_transactions: int = 0
 
     """Main protocol"""
 
@@ -32,13 +30,3 @@ class UserSession:
 
     def user_cart(self):
         return copy(self.cart)
-
-    def register_purcharse(self, purcharse):
-        self.succesful_transactions += 1
-        self.shop_history.add_list(purcharse)
-        self.cart = ShopCart.with_catalog(self.cart.catalog)
-
-    # def shop_history_list(self):
-    #     if self.succesful_transactions < 2:
-    #         return []
-    #     return self.shop_history.list_items()
