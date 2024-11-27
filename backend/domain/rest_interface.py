@@ -75,10 +75,10 @@ class RestInterface:
 
         return self._return_response(closure)
 
-    def list_cart(self, params: dict[str, str], current_time: datetime) -> Response:
+    def list_cart(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId"])
-            book_list = self.book_app.get_user_shop_list(params["userId"], current_time)
+            book_list = self.book_app.get_user_shop_list(params["userId"])
             result = ["0"]
 
             for element in book_list:

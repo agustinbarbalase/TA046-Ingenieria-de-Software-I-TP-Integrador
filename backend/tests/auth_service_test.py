@@ -51,4 +51,4 @@ class AuthServiceTest(unittest.TestCase):
 
     def test03_valid_user_can_create_and_list_cart(self):
         self.app.add_user(self.user, self.password, self.user_creation_date)
-        self.assertEqual(self.app.get_user_shop_list(self.user, self.user_action), [])
+        self.assertEqual(self.app.get_user_shop_list(self.user), [])

@@ -44,7 +44,7 @@ class RestInterfaceTest(unittest.TestCase):
         params_for_list_cart = {"userId": self.user_id}
 
         self.rest_interface.create_cart(params_for_create_cart, self.user_creation_date)
-        response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
+        response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(response.body, "0|")
         self.assertEqual(response.status_code, 200)
@@ -60,14 +60,14 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.rest_interface.create_cart(params_for_create_cart, self.user_creation_date)
         self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
-        response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
+        response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(response.body, f"0|{self.book_isbn_one}|1")
         self.assertEqual(response.status_code, 200)
 
     def test04_try_list_not_created_cart_raise_error(self):
         params_for_list_cart = {"userId": self.user_id}
-        response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
+        response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(
             response.body,
@@ -86,7 +86,7 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.rest_interface.create_cart(params_for_create_cart, self.user_creation_date)
         self.rest_interface.add_to_cart(params_for_add_to_cart, self.user_action)
-        response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
+        response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(response.body, f"0|{self.book_isbn_one}|2")
         self.assertEqual(response.status_code, 200)
@@ -111,7 +111,7 @@ class RestInterfaceTest(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 422)
         self.assertEqual(
-            self.rest_interface.list_cart(params_for_list_cart, self.user_action).body,
+            self.rest_interface.list_cart(params_for_list_cart).body,
             "0|",
         )
 
@@ -133,7 +133,7 @@ class RestInterfaceTest(unittest.TestCase):
     def test08_validate_empty_params_in_list_cart(self):
         params_for_list_cart = {"userId": ""}
 
-        response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
+        response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(
             response.body,
@@ -174,7 +174,7 @@ class RestInterfaceTest(unittest.TestCase):
     def test11_validate_abstent_params_in_list_cart(self):
         params_for_list_cart: dict[str, str] = {}
 
-        response = self.rest_interface.list_cart(params_for_list_cart, self.user_action)
+        response = self.rest_interface.list_cart(params_for_list_cart)
 
         self.assertEqual(
             response.body,

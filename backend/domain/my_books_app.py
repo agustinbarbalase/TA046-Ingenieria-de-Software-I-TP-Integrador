@@ -82,11 +82,10 @@ class MyBooksApp:
         user = self.users_ids.get(user_id)
         return user.has_item(item)
 
-    def get_user_shop_list(self, user_id: str, current_time: datetime) -> list:
+    def get_user_shop_list(self, user_id: str) -> list:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
-        self._validate_user_expired_session(user_id, current_time)
         user = self.users_ids.get(user_id)
         return user.get_user_shop_list()
 
