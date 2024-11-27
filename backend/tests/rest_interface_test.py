@@ -341,53 +341,58 @@ class RestInterfaceTest(unittest.TestCase):
         params = {"userId": self.user_id, "password": self.password}
         response = self.rest_interface.list_purchases(params)
 
-        self.assertEqual(response.body, f"0||0")
+        self.assertEqual(response.body, "0||0")
 
-    # def test20_after_two_purchases_can_see_purchases(self):
-    #     params = {"userId": self.user_id, "password": self.password}
-    #     self.rest_interface.create_cart(params)
+    def test20_after_two_purchases_can_see_purchases(self):
+        params = {"userId": self.user_id, "password": self.password}
+        self.rest_interface.create_cart(params)
 
-    #     params_for_add_to_cart = {
-    #         "userId": self.user_id,
-    #         "bookIsbn": self.book_isbn_one,
-    #         "bookQuantity": "1",
-    #     }
-    #     self.rest_interface.add_to_cart(params_for_add_to_cart)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.book_isbn_one,
+            "bookQuantity": "1",
+        }
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
 
-    #     card_number = "1234567890123456"
-    #     card_expiry = "122025"
-    #     card_name = self.user_id
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
 
-    #     check_out_params = {
-    #         "userId": self.user_id,
-    #         "ccn": card_number,
-    #         "cced": card_expiry,
-    #     }
-    #     self.rest_interface.checkout(check_out_params)
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
+        response = self.rest_interface.checkout(check_out_params)
 
-    #     params_for_add_to_cart = {
-    #         "userId": self.user_id,
-    #         "bookIsbn": self.book_isbn_one,
-    #         "bookQuantity": "1",
-    #     }
-    #     self.rest_interface.add_to_cart(params_for_add_to_cart)
+        params_for_add_to_cart = {
+            "userId": self.user_id,
+            "bookIsbn": self.book_isbn_one,
+            "bookQuantity": "1",
+        }
 
-    #     card_number = "1234567890123456"
-    #     card_expiry = "122025"
-    #     card_name = self.user_id
+        response = self.rest_interface.list_purchases(params)
 
-    #     check_out_params = {
-    #         "userId": self.user_id,
-    #         "ccn": card_number,
-    #         "cced": card_expiry,
-    #     }
+        self.rest_interface.add_to_cart(params_for_add_to_cart)
 
-    #     self.rest_interface.checkout(check_out_params)
+        card_number = "1234567890123456"
+        card_expiry = "122025"
+        card_name = self.user_id
 
-    #     p = {"userId": "Gauss", "password": "30-04-1777"}
-    #     response = self.rest_interface.list_purchases(p)
+        check_out_params = {
+            "userId": self.user_id,
+            "ccn": card_number,
+            "cced": card_expiry,
+            "cco": card_name,
+        }
 
-    #     self.assertEqual(response.body, f"0|{self.book_isbn_one}|{2}|0")
+        self.rest_interface.checkout(check_out_params)
+
+        p = {"userId": "Gauss", "password": "30-04-1777"}
+        response = self.rest_interface.list_purchases(p)
+
+        self.assertEqual(response.body, f"0|{self.book_isbn_one}|{2}|6.28")
 
 
 if __name__ == "__main__":

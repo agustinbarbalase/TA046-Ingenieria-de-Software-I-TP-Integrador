@@ -114,7 +114,7 @@ class RestInterface:
     def list_purchases(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "password"])
-            result = ["0|"]
+            result = ["0"]
 
             shop_history = self.book_app.user_shop_history(
                 params["userId"], params["password"]
@@ -124,8 +124,10 @@ class RestInterface:
                 result.append(str(element[0]))
                 result.append(str(element[1]))
 
-            result.append(str(shop_history[0]))
+            result.append(
+                ("|" if len(shop_history[1]) == 0 else "") + str(shop_history[0])
+            )
 
-            return Response("|".join(result) + ("|" if len(result) == 1 else ""), 200)
+            return Response("|".join(result), 200)
 
         return self._return_response(closure)

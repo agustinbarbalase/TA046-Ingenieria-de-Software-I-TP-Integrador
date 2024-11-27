@@ -137,7 +137,6 @@ class MyBooksApp:
             self.auth.autenticate_user(user_id, password)
         try:
             shop_history = self.shopping_history.history_for_user(user_id)
-            print(shop_history)
             return shop_history.history()
         except Exception as err:
             return (0, [])
