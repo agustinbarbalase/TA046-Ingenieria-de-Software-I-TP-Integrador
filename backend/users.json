@@ -18,5 +18,9 @@
   {
     "user_id": "Leonhard Euler",
     "password": "2.71828"
+  },
+  {
+    "user_id": "proof",
+    "password": "1"
   }
 ]
