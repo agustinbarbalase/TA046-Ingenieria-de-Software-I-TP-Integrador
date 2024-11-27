@@ -145,9 +145,9 @@ class MyBooksAppTest(unittest.TestCase):
 
     """tests - user history"""
 
-    # def test12_new_user_shows_empty_buy_history(self):
-    #     self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-    #     self.assertEqual(self.app.user_shop_history(self.user_one), [])
+    def test12_new_user_shows_empty_buy_history(self):
+        self.app.add_user(self.user_one, self.password_one)
+        self.assertEqual(self.app.user_shop_history(self.user_one), [])
 
     # def test13_after_shopping_two_times_the_user_has_shopping_history(self):
     #     self.app.add_user(self.user_one, self.password_one, self.user_creation_date)

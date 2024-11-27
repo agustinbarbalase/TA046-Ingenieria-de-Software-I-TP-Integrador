@@ -31,3 +31,6 @@ class UserSession:
 
     def user_cart(self):
         return copy(self.cart)
+
+    def shop_history_list(self):
+        return []
