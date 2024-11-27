@@ -35,8 +35,6 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
         self.user_creation_date = datetime(2018, 12, 9, 0, 0)
-        self.user_action = datetime(2018, 12, 9, 0, 1)
-        self.user_expirated_date = datetime(2018, 12, 9, 0, 31)
         self.clock = ClockStub.with_current_time(self.user_creation_date)
 
         self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
@@ -121,8 +119,6 @@ class MyBooksAppTest(unittest.TestCase):
         self.app.get_user_shop_list(self.user_one)
 
     def test10_user_session_is_expired_when_try_add_item_in_cart(self):
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
-
         self.app.add_user(self.user_one, self.password_one)
 
         self.clock.step_seconds(31)
@@ -135,16 +131,17 @@ class MyBooksAppTest(unittest.TestCase):
         )
 
     def test11_user_session_is_expired_when_try_add_item_in_cart(self):
-        # self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-        # self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
+        self.app.add_user(self.user_one, self.password_one)
+        self.app.add_book_to_user(self.user_one, self.item_one, 1)
 
-        # with self.assertRaises(Exception) as ctx:
-        #     self.app.checkout(self.user_one, self.valid_card)
+        self.clock.step_seconds(31)
 
-        # self.assertEqual(
-        #     str(ctx.exception), MyBooksApp.user_expired_session_message_error()
-        # )
-        pass
+        with self.assertRaises(Exception) as ctx:
+            self.app.checkout(self.user_one, self.valid_card)
+
+        self.assertEqual(
+            str(ctx.exception), MyBooksApp.user_expired_session_message_error()
+        )
 
     """tests - user history"""
 

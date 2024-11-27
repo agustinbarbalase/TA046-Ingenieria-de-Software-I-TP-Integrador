@@ -113,6 +113,8 @@ class MyBooksApp:
         return user_session.add_book(isbn, amount)
 
     def checkout(self, user_id: str, card: Card):
+        self._validate_user_expired_session(user_id)
+
         user_session = self.users_ids.get(
             user_id, self.user_doesnot_exist_validation(user_id)
         )
@@ -121,7 +123,7 @@ class MyBooksApp:
 
         user_cart = user_session.user_cart()
         ticket = self.checkout_instance.check_out(user_cart, card)
-        user_session.register_purcharse(user_cart.list_items())
+        # user_session.register_purcharse(user_cart.list_items())
         return ticket
 
     def user_shop_history(self, user_id: str):
