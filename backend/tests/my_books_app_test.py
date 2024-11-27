@@ -123,18 +123,27 @@ class MyBooksAppTest(unittest.TestCase):
         self.app.get_user_shop_list(self.user_one)
 
     def test10_user_session_is_expired_when_try_add_item_in_cart(self):
-        # self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-        # self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
 
-        # with self.assertRaises(Exception) as ctx:
-        #     self.app.add_book_to_user(
-        #         self.user_one, self.item_one, 1, self.user_expirated_date
-        #     )
+        self.clock = Clock(
+            lambda: datetime(2018, 1, 1, 0, 0, 0), lambda: timedelta(seconds=0)
+        )
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
 
-        # self.assertEqual(
-        #     str(ctx.exception), MyBooksApp.user_expired_session_message_error()
-        # )
-        pass
+        self.app.add_user(self.user_one, self.password_one)
+
+        # self.app.clock.current = lambda: datetime(2022, 1, 1, 0, 0, 1)
+        self.app.clock = Clock(
+            lambda: datetime(2018, 1, 2, 2, 0, 1), lambda: timedelta(seconds=0)
+        )
+
+        # self.app.add_book_to_user(self.user_one, self.item_one, 1)
+
+        with self.assertRaises(Exception) as ctx:
+            self.app.add_book_to_user(self.user_one, self.item_one, 1)
+
+        self.assertEqual(
+            str(ctx.exception), MyBooksApp.user_expired_session_message_error()
+        )
 
     def test11_user_session_is_expired_when_try_add_item_in_cart(self):
         # self.app.add_user(self.user_one, self.password_one, self.user_creation_date)

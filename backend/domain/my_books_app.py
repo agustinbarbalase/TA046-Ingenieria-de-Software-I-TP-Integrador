@@ -100,6 +100,7 @@ class MyBooksApp:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
+        self._validate_user_expired_session(user_id, self.clock.current())
         self._cant_add_non_positive_amount_of_books_validation(amount)
         return user.add_book(isbn, amount)
 
