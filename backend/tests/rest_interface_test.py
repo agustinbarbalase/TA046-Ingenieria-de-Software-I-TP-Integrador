@@ -394,6 +394,12 @@ class RestInterfaceTest(unittest.TestCase):
 
         self.assertEqual(response.body, f"0|{self.book_isbn_one}|{2}|6.28")
 
+    def test21_invalid_user_cannot_list_purchases(self):
+        params = {"userId": "Alan Kay", "password": "1234"}
+        response = self.rest_interface.list_purchases(params)
+
+        self.assertEqual(response.body, f"1|INVALID USER")
+
 
 if __name__ == "__main__":
     unittest.main()
