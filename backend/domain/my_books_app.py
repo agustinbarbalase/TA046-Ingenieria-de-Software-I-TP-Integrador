@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from typing import *
+from utils.clock import Clock
 from domain.auth.auth_service_interface import AuthServiceInterface
 from domain.user_session import UserSession
 from domain.checkout import Checkout
@@ -16,8 +17,10 @@ class MyBooksApp:
     """Instance creation - class"""
 
     @classmethod
-    def with_catalog_and_auth(cls, catalog: dict[str, str], auth: AuthServiceInterface):
-        return cls(catalog, auth)
+    def with_catalog_and_auth(
+        cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: Clock
+    ):
+        return cls(catalog, auth, clock)
 
     """Error messages - class"""
 
@@ -35,11 +38,14 @@ class MyBooksApp:
 
     """Initialization"""
 
-    def __init__(self, catalog: dict[str, str], auth: AuthServiceInterface):
+    def __init__(
+        self, catalog: dict[str, str], auth: AuthServiceInterface, clock: Clock
+    ):
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
         self.checkout_instance = Checkout.with_postnet(Postnet())
+        self.clock = clock
 
     def user_does_not_exist_error(self):
         raise Exception(MyBooksApp.user_doesnot_exist_message_error())

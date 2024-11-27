@@ -1,8 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 import os
 import unittest
 
+from utils.clock import Clock
 from utils.bag import Bag
 from utils.gregorian_month_of_year import GregorianMonthOfYear
 
@@ -32,7 +33,12 @@ class MyBooksAppTest(unittest.TestCase):
         self.auth = AuthServiceStub.with_users(
             {self.user_one: self.password_one, self.user_two: self.password_two}
         )
-        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth)
+
+        self.clock = Clock(
+            lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=10)
+        )
+
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
 
         self.valid_card = Card.with_number_and_month_of_year(
             1234567891234567, GregorianMonthOfYear.with_month_and_year(11, 2028)
