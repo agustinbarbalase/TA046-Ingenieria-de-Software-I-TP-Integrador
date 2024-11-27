@@ -39,8 +39,8 @@ class Cashier:
 
     """Main Protocol"""
 
-    def check_out(self, cart: ShopCart, card: Card):
+    def check_out(self, cart: ShopCart, card: Card, user_id: str):
         self._check_expired(card)
         self._check_empty_cart(cart)
-        print(cart.total_amount())
+        # self.shopping_history.register_purcharse(user_id, cart)
         return self.postnet.return_ticket(card, cart.total_amount())

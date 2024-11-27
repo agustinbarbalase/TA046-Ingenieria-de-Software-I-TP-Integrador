@@ -122,7 +122,7 @@ class MyBooksApp:
             self.user_does_not_exist_error()
 
         user_cart = user_session.user_cart()
-        ticket = self.cashier.check_out(user_cart, card)
+        ticket = self.cashier.check_out(user_cart, card, user_id)
         # user_session.register_purcharse(user_cart.list_items())
         return ticket
 

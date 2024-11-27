@@ -15,6 +15,8 @@ class CheckOutTest(unittest.TestCase):
     """setup"""
 
     def setUp(self):
+        self.user_id = "Einstein"
+
         self.valid_gregorian_month_of_year = GregorianMonthOfYear.with_month_and_year(
             11, 2028
         )
@@ -41,17 +43,17 @@ class CheckOutTest(unittest.TestCase):
 
     def test01_checkout_with_empty_cart(self):
         with self.assertRaises(Exception) as context:
-            self.cashier.check_out(self.empty_cart, self.valid_card)
+            self.cashier.check_out(self.empty_cart, self.valid_card, self.user_id)
 
         self.assertEqual(str(context.exception), Cashier.empty_cart_message_error())
 
     def test02_checkout_with_expired_card(self):
         with self.assertRaises(Exception) as context:
-            self.cashier.check_out(self.fully_cart, self.expired_card)
+            self.cashier.check_out(self.fully_cart, self.expired_card, self.user_id)
 
         self.assertEqual(str(context.exception), Cashier.expired_card_message_error())
 
     def test03_checkout_sucessfully(self):
-        ticket = self.cashier.check_out(self.fully_cart, self.valid_card)
+        ticket = self.cashier.check_out(self.fully_cart, self.valid_card, self.user_id)
 
         self.assertEqual(ticket, "1234")

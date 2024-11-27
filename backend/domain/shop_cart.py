@@ -22,6 +22,11 @@ class ShopCart:
         self.item: Bag = Bag.new()
         self.catalog: dict[str, str] = catalog
 
+    """visitor"""
+
+    def accept_visitor(self, visitor):
+        visitor.visit_items(self.item)
+
     """Main protocol"""
 
     def is_empty(self) -> bool:

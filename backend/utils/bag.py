@@ -38,6 +38,6 @@ class Bag:
             self.add_with_amount(item[0], item[1])
 
     def merge(self, other):
-        for item in self.items:
+        for item in other.items:
             other_count = other.items.get(item, 0)
             self.items[item] = self.items.get(item, 0) + other_count
