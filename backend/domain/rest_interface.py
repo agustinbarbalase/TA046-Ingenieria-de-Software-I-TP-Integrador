@@ -102,13 +102,11 @@ class RestInterface:
 
         return self._return_response(closure)
 
-    def checkout(self, params: dict[str, str], current_time: datetime) -> Response:
+    def checkout(self, params: dict[str, str]) -> Response:
         def closure():
             self._validate_params(params, ["userId", "ccn", "cced", "cco"])
             card: Card = self._create_card(params)
-            transaction_id = self.book_app.checkout(
-                params["userId"], card, current_time
-            )
+            transaction_id = self.book_app.checkout(params["userId"], card)
             return Response(
                 f"0|{transaction_id}",
                 200,

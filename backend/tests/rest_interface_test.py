@@ -221,7 +221,7 @@ class RestInterfaceTest(unittest.TestCase):
             "cco": card_name,
         }
 
-        response = self.rest_interface.checkout(check_out_params, self.user_action)
+        response = self.rest_interface.checkout(check_out_params)
 
         self.assertEqual(response.body, "0|1234")
 
@@ -246,7 +246,7 @@ class RestInterfaceTest(unittest.TestCase):
             "cco": card_name,
         }
 
-        response = self.rest_interface.checkout(check_out_params, self.user_action)
+        response = self.rest_interface.checkout(check_out_params)
 
         self.assertEqual(response.body, "1|CARD WITH INVALID NUMBER CAN NOT BE CREATED")
 
@@ -271,7 +271,7 @@ class RestInterfaceTest(unittest.TestCase):
             "cco": card_name,
         }
 
-        response = self.rest_interface.checkout(check_out_params, self.user_action)
+        response = self.rest_interface.checkout(check_out_params)
 
         self.assertEqual(response.body, "1|EXPIRED CARD")
 
@@ -290,7 +290,7 @@ class RestInterfaceTest(unittest.TestCase):
             "cco": card_name,
         }
 
-        response = self.rest_interface.checkout(check_out_params, self.user_action)
+        response = self.rest_interface.checkout(check_out_params)
 
         self.assertEqual(response.body, "1|EMPTY CART")
 
@@ -315,7 +315,7 @@ class RestInterfaceTest(unittest.TestCase):
             "cco": card_name,
         }
 
-        response = self.rest_interface.checkout(check_out_params, self.user_action)
+        response = self.rest_interface.checkout(check_out_params)
 
         self.assertEqual(response.body, "1|CAN'T SEND EMPTY PARAMS")
 
@@ -339,7 +339,7 @@ class RestInterfaceTest(unittest.TestCase):
             "cced": card_expiry,
         }
 
-        response = self.rest_interface.checkout(check_out_params, self.user_action)
+        response = self.rest_interface.checkout(check_out_params)
 
         self.assertEqual(response.body, "1|CAN'T SENT REQUEST WITH ABSTENT PARAMS")
 
