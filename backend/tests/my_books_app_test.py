@@ -106,14 +106,17 @@ class MyBooksAppTest(unittest.TestCase):
     """tests - session expiration"""
 
     def test08_user_session_is_expired_when_list_cart(self):
-        # self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-        # with self.assertRaises(Exception) as ctx:
-        #     self.app.get_user_shop_list(self.user_one, self.user_expirated_date)
+        self.clock = Clock(
+            lambda: datetime(2023, 1, 1, 0, 0), lambda: timedelta(seconds=-30)
+        )
+        self.app = MyBooksApp.with_catalog_and_auth(self.catalog, self.auth, self.clock)
+        self.app.add_user(self.user_one, self.password_one)
+        with self.assertRaises(Exception) as ctx:
+            self.app.get_user_shop_list(self.user_one)
 
-        # self.assertEqual(
-        #     str(ctx.exception), MyBooksApp.user_expired_session_message_error()
-        # )
-        pass
+        self.assertEqual(
+            str(ctx.exception), MyBooksApp.user_expired_session_message_error()
+        )
 
     def test09_user_session_is_not_expired_when_list_cart(self):
         self.app.add_user(self.user_one, self.password_one)

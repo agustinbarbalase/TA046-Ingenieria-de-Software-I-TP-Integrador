@@ -75,7 +75,6 @@ class MyBooksApp:
     def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
-        # duration = timedelta(seconds=SESSION_DURATION_IN_SECONDS)
         new_user = UserSession(self.catalog, self.clock.limit_date())
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
@@ -93,6 +92,7 @@ class MyBooksApp:
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
+        self._validate_user_expired_session(user_id, self.clock.current())
         user = self.users_ids.get(user_id)
         return user.get_user_shop_list()
 
