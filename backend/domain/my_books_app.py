@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import *
 from domain.auth.auth_service_interface import AuthServiceInterface
-from domain.user import User
+from domain.user_session import UserSession
 from domain.checkout import Checkout
 
 from domain.postnet.postnet import Postnet
@@ -36,7 +36,7 @@ class MyBooksApp:
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str], auth: AuthServiceInterface):
-        self.users_ids: dict[str, User] = dict()
+        self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
         self.checkout_instance = Checkout.with_postnet(Postnet())
@@ -69,7 +69,7 @@ class MyBooksApp:
         if self.auth:
             self.auth.autenticate_user(user_id, password)
         duration = timedelta(seconds=SESSION_DURATION_IN_SECONDS)
-        new_user = User(self.catalog, current + duration)
+        new_user = UserSession(self.catalog, current + duration)
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:

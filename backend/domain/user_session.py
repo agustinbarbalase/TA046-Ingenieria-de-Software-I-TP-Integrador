@@ -7,7 +7,7 @@ from utils.bag import Bag
 from domain.shop_cart import ShopCart
 
 
-class User:
+class UserSession:
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):
