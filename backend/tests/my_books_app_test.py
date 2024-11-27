@@ -26,7 +26,7 @@ class MyBooksAppTest(unittest.TestCase):
 
         self.item_one = "Brand new world"
         self.item_two = "Animal Farm"
-        self.catalog = {self.item_one: "π", self.item_two: "e"}
+        self.catalog = {self.item_one: "3.14", self.item_two: "2.71"}
 
         self.invalid_item = "50 sombras de Grey"
 
@@ -149,34 +149,34 @@ class MyBooksAppTest(unittest.TestCase):
         self.app.add_user(self.user_one, self.password_one)
         self.assertEqual(self.app.user_shop_history(self.user_one), [])
 
-    # def test13_after_shopping_two_times_the_user_has_shopping_history(self):
-    #     self.app.add_user(self.user_one, self.password_one)
-    #     self.app.add_book_to_user(self.user_one, self.item_one, 1)
-    #     self.app.checkout(self.user_one, self.valid_card)
+    def test13_after_shopping_two_times_the_user_has_shopping_history(self):
+        self.app.add_user(self.user_one, self.password_one)
+        self.app.add_book_to_user(self.user_one, self.item_one, 1)
+        self.app.checkout(self.user_one, self.valid_card)
 
-    #     self.app.add_book_to_user(self.user_one, self.item_two, 1)
-    #     self.app.checkout(self.user_one, self.valid_card)
+        self.app.add_book_to_user(self.user_one, self.item_two, 1)
+        self.app.checkout(self.user_one, self.valid_card)
 
-    #     history = Bag.new()
-    #     history.add_with_amount(self.item_one, 1)
-    #     history.add_with_amount(self.item_two, 1)
-    #     list_items = history.list_items()
+        history = Bag.new()
+        history.add_with_amount(self.item_one, 1)
+        history.add_with_amount(self.item_two, 1)
+        list_items = (5.85, history.list_items())
 
-    #     self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
+        self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
 
-    # def test14_shopping_the_same_book_counts_in_a_single_registration(self):
-    #     self.app.add_user(self.user_one, self.password_one, self.user_creation_date)
-    #     self.app.add_book_to_user(self.user_one, self.item_one, 1, self.user_action)
-    #     self.app.checkout(self.user_one, self.valid_card, self.user_action)
+    def test14_shopping_the_same_book_counts_in_a_single_registration(self):
+        self.app.add_user(self.user_one, self.password_one)
+        self.app.add_book_to_user(self.user_one, self.item_one, 1)
+        self.app.checkout(self.user_one, self.valid_card)
 
-    #     self.app.add_book_to_user(self.user_one, self.item_one, 4, self.user_action)
-    #     self.app.checkout(self.user_one, self.valid_card, self.user_action)
+        self.app.add_book_to_user(self.user_one, self.item_one, 4)
+        self.app.checkout(self.user_one, self.valid_card)
 
-    #     history = Bag()
-    #     history.add_with_amount(self.item_one, 5)
-    #     list_items = history.list_items()
+        history = Bag()
+        history.add_with_amount(self.item_one, 5)
+        list_items = (15.7, history.list_items())
 
-    #     self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
+        self.assertEqual(self.app.user_shop_history(self.user_one), list_items)
 
 
 if __name__ == "__main__":

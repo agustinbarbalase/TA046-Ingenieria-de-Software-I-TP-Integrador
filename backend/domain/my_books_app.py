@@ -6,6 +6,7 @@ from domain.user_session import UserSession
 from domain.cashier import Cashier
 
 from domain.postnet.postnet import Postnet
+from domain.shopping_history_book import ShopingHistoryBook
 from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
@@ -45,7 +46,10 @@ class MyBooksApp:
         self.users_ids: dict[str, UserSession] = dict()
         self.catalog: dict[str, str] = catalog
         self.auth = auth
-        self.cashier = Cashier.with_postnet(Postnet())
+        self.shopping_history = ShopingHistoryBook.new()
+        self.cashier = Cashier.with_postnet_and_shopping_history(
+            Postnet(), self.shopping_history
+        )
         self.clock = clock
 
     def user_does_not_exist_error(self):
@@ -123,9 +127,12 @@ class MyBooksApp:
 
         user_cart = user_session.user_cart()
         ticket = self.cashier.check_out(user_cart, card, user_id)
-        # user_session.register_purcharse(user_cart.list_items())
+        user_session.empty_cart()
+
         return ticket
 
     def user_shop_history(self, user_id: str):
-        # user_shoping_history = self.shoping_history.get_history_for(user_id)
-        return []
+        try:
+            return self.shopping_history.user_shopping_history(user_id).history()
+        except Exception:
+            return []

@@ -12,6 +12,7 @@ class UserSession:
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):
+        self.catalog: dict[str, str] = catalog
         self.cart: ShopCart = ShopCart.with_catalog(catalog)
         self.expiration_date = expiration_date
 
@@ -34,3 +35,6 @@ class UserSession:
 
     def shop_history_list(self):
         return []
+
+    def empty_cart(self):
+        self.cart = ShopCart.with_catalog(self.catalog)
