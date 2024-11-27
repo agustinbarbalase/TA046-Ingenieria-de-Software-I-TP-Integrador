@@ -10,12 +10,13 @@ from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
 
-SESSION_DURATION_IN_SECONDS = 60
+# SESSION_DURATION_IN_SECONDS = 60
 
 
 class MyBooksApp:
     """Instance creation - class"""
 
+    ## To-do: Change name, also add postnet
     @classmethod
     def with_catalog_and_auth(
         cls, catalog: dict[str, str], auth: AuthServiceInterface, clock: Clock
@@ -74,8 +75,8 @@ class MyBooksApp:
     def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
-        duration = timedelta(seconds=SESSION_DURATION_IN_SECONDS)
-        new_user = UserSession(self.catalog, datetime.now())
+        # duration = timedelta(seconds=SESSION_DURATION_IN_SECONDS)
+        new_user = UserSession(self.catalog, self.clock.limit_date())
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
 
     def has_user(self, user_id: str) -> bool:
