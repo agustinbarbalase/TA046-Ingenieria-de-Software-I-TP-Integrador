@@ -2,16 +2,13 @@ from domain.auth.auth_service_interface import AuthServiceInterface
 
 
 class AuthService(AuthServiceInterface):
-    """Initialization"""
-
-    def __init__(self, registered_users: dict[str, str]):
-        self.registered_users = registered_users
+    """Instance creation - class"""
 
     @classmethod
     def with_users(cls, registered_users: dict[str, str]):
         return cls(registered_users)
 
-    """Error messages"""
+    """Error messages - class"""
 
     @classmethod
     def invalid_user_message_error(cls):
@@ -20,6 +17,11 @@ class AuthService(AuthServiceInterface):
     @classmethod
     def invalid_password_message_error(cls):
         return "Invalid password"
+
+    """Initialization"""
+
+    def __init__(self, registered_users: dict[str, str]):
+        self.registered_users = registered_users
 
     """Main protocol"""
 

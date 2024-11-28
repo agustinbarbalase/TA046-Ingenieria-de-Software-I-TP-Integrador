@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class ShoppingHistoryTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
 
@@ -27,7 +28,9 @@ class ShoppingHistoryTest(unittest.TestCase):
 
         self.shopping_history_book = ShopingHistoryBook.new()
 
-    def test01(self):
+    """tests"""
+
+    def test01_check_history_for_non_existed_user_raise_error(self):
         with self.assertRaises(Exception) as ctx:
             self.shopping_history_book.history_for_user(self.user_one)
 
@@ -35,7 +38,7 @@ class ShoppingHistoryTest(unittest.TestCase):
             str(ctx.exception), ShopingHistoryBook.invalid_user_message_error()
         )
 
-    def test02(self):
+    def test02_after_two_purcharse_can_see_history(self):
         self.shopping_history_book.register_purcharse(self.user_one, self.cart_one)
         self.shopping_history_book.register_purcharse(self.user_one, self.cart_one)
 
@@ -51,7 +54,7 @@ class ShoppingHistoryTest(unittest.TestCase):
             ),
         )
 
-    def test03(self):
+    def test03_can_register_purcharse_for_multiple_users(self):
         self.shopping_history_book.register_purcharse(self.user_one, self.cart_one)
         self.shopping_history_book.register_purcharse(self.user_one, self.cart_one)
 

@@ -10,13 +10,16 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class UserSessionTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
         self.current_time = datetime(2018, 12, 9, 0, 0)
         self.clock = ClockStub.with_current_time(self.current_time)
 
+    """tests"""
+
     def test01_usser_session_is_not_expired(self):
-        user_session = UserSession(
+        user_session = UserSession.with_catalog_and_expiration_date(
             catalog={}, expiration_date=self.clock.later_date_to_seconds(30)
         )
 
@@ -25,7 +28,7 @@ class UserSessionTest(unittest.TestCase):
         self.assertFalse(user_session.is_expired(self.clock))
 
     def test02_usser_session_is_expired(self):
-        user_session = UserSession(
+        user_session = UserSession.with_catalog_and_expiration_date(
             catalog={}, expiration_date=self.clock.later_date_to_seconds(30)
         )
 

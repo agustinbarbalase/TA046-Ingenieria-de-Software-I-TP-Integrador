@@ -2,13 +2,7 @@ from abc import abstractmethod
 
 
 class AuthServiceInterface:
-    """Initialization"""
-
-    @abstractmethod
-    def __init__(self, registered_users: dict[str, str]):
-        pass
-
-    """Error messages"""
+    """Error messages - class"""
 
     @abstractmethod
     def invalid_user_message_error(cls):
@@ -16,6 +10,12 @@ class AuthServiceInterface:
 
     @abstractmethod
     def invalid_password_message_error(cls):
+        pass
+
+    """Initialization"""
+
+    @abstractmethod
+    def __init__(self, registered_users: dict[str, str]):
         pass
 
     """Main protocol"""

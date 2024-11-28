@@ -11,13 +11,10 @@ from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
 
-SESSION_DURATION_IN_SECONDS = 30
-
 
 class MyBooksApp:
     """Instance creation - class"""
 
-    ## To-do: Change name, also add postnet
     @classmethod
     def with_dependencies(
         cls,
@@ -44,6 +41,10 @@ class MyBooksApp:
     def user_expired_session_message_error(cls):
         return "User session expired"
 
+    @classmethod
+    def user_dont_logged_message_error(cls):
+        return "User is not logged"
+
     """Initialization"""
 
     def __init__(
@@ -64,6 +65,8 @@ class MyBooksApp:
         )
         self.clock = clock
         self.user_session_time = user_session_time
+
+    """Error raise"""
 
     def user_does_not_exist_error(self):
         raise Exception(MyBooksApp.user_doesnot_exist_message_error())
@@ -89,20 +92,25 @@ class MyBooksApp:
         if user_session.is_expired(self.clock):
             raise Exception(MyBooksApp.user_expired_session_message_error())
 
+    def _is_user_dont_logged(self, user_id):
+        if user_id == "notLoggedInUser":
+            raise Exception(MyBooksApp.user_dont_logged_message_error())
+
     """Main protocol"""
 
     def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
-        new_user = UserSession(
+        new_user = UserSession.with_catalog_and_expiration_date(
             self.catalog, self.clock.later_date_to_seconds(self.user_session_time)
         )
-        self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
+        self.users_ids[user_id] = new_user
 
     def has_user(self, user_id: str) -> bool:
         return user_id in self.users_ids
 
     def user_has_item(self, user_id: str, item: str) -> bool:
+        self._is_user_dont_logged(user_id)
         user = self.users_ids.get(user_id, self.user_doesnot_exist_validation(user_id))
         if user is None:
             self.user_does_not_exist_error()
@@ -110,6 +118,7 @@ class MyBooksApp:
         return user.has_item(item)
 
     def get_user_shop_list(self, user_id: str) -> list:
+        self._is_user_dont_logged(user_id)
         user_session = self.users_ids.get(
             user_id, self.user_doesnot_exist_validation(user_id)
         )
@@ -120,6 +129,7 @@ class MyBooksApp:
         return user_session.get_user_shop_list()
 
     def add_book_to_user(self, user_id: str, isbn: str, amount: int):
+        self._is_user_dont_logged(user_id)
         user_session = self.users_ids.get(
             user_id, self.user_doesnot_exist_validation(user_id)
         )
@@ -130,6 +140,7 @@ class MyBooksApp:
         return user_session.add_book(isbn, amount)
 
     def checkout(self, user_id: str, card: Card):
+        self._is_user_dont_logged(user_id)
         self._validate_user_expired_session(user_id)
 
         user_session = self.users_ids.get(
@@ -145,6 +156,7 @@ class MyBooksApp:
         return ticket
 
     def user_shop_history(self, user_id: str, password: str):
+        self._is_user_dont_logged(user_id)
         if self.auth:
             self.auth.autenticate_user(user_id, password)
         try:
