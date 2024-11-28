@@ -8,7 +8,7 @@ from domain.shop_cart import ShopCart
 
 
 class ShopCartTest(unittest.TestCase):
-    """setupt"""
+    """setup"""
 
     def setUp(self):
         self.item_name_one = "Cincuenta sombras de Alan key"

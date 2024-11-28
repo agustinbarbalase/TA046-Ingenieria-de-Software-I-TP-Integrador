@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class ShoppingHistoryTest(unittest.TestCase):
+    """setup"""
 
     def setUp(self):
 
@@ -21,10 +22,12 @@ class ShoppingHistoryTest(unittest.TestCase):
 
         self.user_shopping_history = UserShoppingHistory.new()
 
-    def test01(self):
+    """tests"""
+
+    def test01_a_recent_created_user_shopping_history_is_empty(self):
         self.assertEqual(self.user_shopping_history.history(), (0, []))
 
-    def test02(self):
+    def test02_for_see_history_needs_two_purcharse(self):
 
         self.cart_one.add_item(self.book_isbn_one, 2)
         self.cart_two.add_item(self.book_isbn_one, 1)
