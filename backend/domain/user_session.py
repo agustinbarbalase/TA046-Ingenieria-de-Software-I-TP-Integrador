@@ -9,6 +9,14 @@ from domain.shop_cart import ShopCart
 
 
 class UserSession:
+    """Instance creation - class"""
+
+    @classmethod
+    def with_catalog_and_expiration_date(
+        cls, catalog: dict[str, str], expiration_date: datetime
+    ):
+        return cls(catalog, expiration_date)
+
     """Initialization"""
 
     def __init__(self, catalog: dict[str, str], expiration_date: datetime):

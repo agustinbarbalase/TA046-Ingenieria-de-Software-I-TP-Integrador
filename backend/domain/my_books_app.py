@@ -11,13 +11,10 @@ from utils.card import Card
 from domain.auth.auth_service import AuthService
 from domain.shop_cart import ShopCart
 
-SESSION_DURATION_IN_SECONDS = 30
-
 
 class MyBooksApp:
     """Instance creation - class"""
 
-    ## To-do: Change name, also add postnet
     @classmethod
     def with_dependencies(
         cls,
@@ -94,7 +91,7 @@ class MyBooksApp:
     def add_user(self, user_id: str, password: str):
         if self.auth:
             self.auth.autenticate_user(user_id, password)
-        new_user = UserSession(
+        new_user = UserSession.with_catalog_and_expiration_date(
             self.catalog, self.clock.later_date_to_seconds(self.user_session_time)
         )
         self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
