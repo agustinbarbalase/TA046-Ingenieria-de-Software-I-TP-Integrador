@@ -94,7 +94,7 @@ class MyBooksApp:
         new_user = UserSession.with_catalog_and_expiration_date(
             self.catalog, self.clock.later_date_to_seconds(self.user_session_time)
         )
-        self.users_ids[user_id] = self.users_ids.get(user_id, new_user)
+        self.users_ids[user_id] = new_user
 
     def has_user(self, user_id: str) -> bool:
         return user_id in self.users_ids
